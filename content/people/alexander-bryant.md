@@ -1,5 +1,4 @@
-\---
-
+---
 name: Alexander Bryant
 role: MChem?
 group: undergrad              # lead | postdoc | phd | masters | undergrad | visitor | alumni

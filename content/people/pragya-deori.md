@@ -1,5 +1,4 @@
-\---
-
+---
 name: Pragya Deori
 role: BSc?
 group: undergrad              # lead | postdoc | phd | masters | undergrad | visitor | alumni

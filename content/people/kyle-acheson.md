@@ -1,5 +1,4 @@
-\---
-
+---
 name: Kyle Acheson
 role: Postdoctoral Researcher
 group: postdoc              # lead | postdoc | phd | masters | undergrad | visitor | alumni

@@ -1,5 +1,4 @@
-\---
-
+---
 name: Ellie Heywood
 role: PhD student
 group: phd              # lead | postdoc | phd | masters | undergrad | visitor | alumni

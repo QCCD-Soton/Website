@@ -18,8 +18,15 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "templates/style.css": "style.css" });
   eleventyConfig.addPassthroughCopy({ "templates/site.js": "site.js" });
 
+  // Fails the build with the file's name if a person has no name, which usually means
+  // the first line of the file isn't exactly ---, so its details weren't read.
   eleventyConfig.addCollection("people", (api) =>
-    api.getFilteredByGlob("content/people/*.md")
+    api.getFilteredByGlob("content/people/*.md").map((p) => {
+      if (!p.data.name) {
+        throw new Error(`${p.inputPath}: no name found. Check the file starts with a line that is exactly ---`);
+      }
+      return p;
+    })
   );
   // Research themes live in content/research/<track>/; the track pages are content/research-<track>.md.
   eleventyConfig.addCollection("research", (api) =>
@@ -64,7 +71,7 @@ export default function (eleventyConfig) {
 
   // Bolds group members in a publication's author list and links them to their card on the People page.
   // A member matches on surname and first initial, ignoring accents and titles.
-  const plain = (s) => s.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+  const plain = (s = "") => String(s).normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
   const nameKey = (name) => {
     const parts = plain(name).replace(/^(dr|prof)\.?\s+/, "").replace(/[.,]/g, " ").split(/\s+/).filter(Boolean);
     return parts.length ? `${parts[0][0]} ${parts.at(-1)}` : "";
@@ -74,7 +81,7 @@ export default function (eleventyConfig) {
     const members = new Map(
       people.filter((p) => p.data.group !== "alumni").map((p) => [nameKey(p.data.name), p.fileSlug])
     );
-    return authors.map((a) => {
+    return authors.filter(Boolean).map((a) => {
       const slug = members.get(nameKey(a));
       return slug ? `<a class="author" href="/people/#${slug}"><b>${escape(a)}</b></a>` : escape(a);
     }).join(", ");

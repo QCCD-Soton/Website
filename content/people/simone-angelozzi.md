@@ -1,5 +1,4 @@
-\---
-
+---
 name: Simone Angelozzi
 role: PhD student
 group: phd              # lead | postdoc | phd | masters | undergrad | visitor | alumni
