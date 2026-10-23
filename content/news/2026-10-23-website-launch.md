@@ -1,5 +1,5 @@
 ---
-title: The group has a new website
+title: The group has a website!
 kind: Group               # short label above the title: Paper, Funding, People, Event, Talk…
 summary: TODO one sentence shown on the news timeline.
 ---
