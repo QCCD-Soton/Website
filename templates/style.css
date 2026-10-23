@@ -306,6 +306,10 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .face { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; min-width: 0; }
 .face.back { transform: rotateY(180deg); background: var(--accent-wash); border-color: var(--accent); }
 .card.flipped .flip { transform: rotateY(180deg); }
+/* Only the card's own (unmoving) box decides hover. Mid-turn, perspective makes the turning faces bulge past
+   the card's edges, and if they counted the pointer near an edge would flicker the flip on and off. */
+.card .flip { pointer-events: none; }
+.card.flipped .face.back a, .card:hover .face.back a { pointer-events: auto; }
 @media (hover: hover) { .card:hover .flip { transform: rotateY(180deg); } }
 .cue { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); margin-top: auto; padding-top: 10px; }
 .avatar {
