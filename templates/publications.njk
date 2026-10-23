@@ -8,7 +8,7 @@ layout: base.njk
     <div class="sec-head">
       <div>
         <h2 id="pubs-title">{{ heading or title }}</h2>
-        <div class="lede prose">{{ content | safe }}</div>
+        {% if content | trim %}<div class="lede prose">{{ content | safe }}</div>{% endif %}
       </div>
     </div>
     <div class="sec-body">
