@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if title and title != "Home" %}{{ title }} · {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ site.tagline }}">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">{{ site.title }}<span>{{ site.institution }}</span></a>
+      <nav aria-label="Main">
+        {%- for item in [["Research", "/research/"], ["People", "/people/"], ["Publications", "/publications/"], ["News", "/news/"], ["Join us", "/join/"], ["Contact", "/contact/"]] %}
+        <a href="{{ item[1] }}"{% if page.url == item[1] %} aria-current="page"{% endif %}>{{ item[0] }}</a>
+        {%- endfor %}
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    {{ content | safe }}
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      {% if site.logos.length %}
+      <div class="logos">
+        {% for l in site.logos %}<a href="{{ l.url }}"><img src="{{ l.logo | img }}" alt="{{ l.name }}"></a>{% endfor %}
+      </div>
+      {% endif %}
+      <p>{{ site.title }} · {{ site.institution }}{% if site.email %} · <a href="mailto:{{ site.email }}">{{ site.email }}</a>{% endif %}</p>
+    </div>
+  </footer>
+</body>
+</html>

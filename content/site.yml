@@ -1,0 +1,21 @@
+# Details used on every page. Edit here, not in the templates.
+title: Quantum Computing & Quantum Chemistry
+short_title: QCCD
+institution: School of Chemistry, University of Southampton
+tagline: Quantum computers, built to answer chemical questions.
+email:                 # TODO: group contact address
+address: |
+  School of Chemistry
+  University of Southampton
+  Highfield Campus
+  Southampton SO17 1BJ, UK
+
+# Publications are fetched for every current member with an ORCID iD,
+# from this year onwards.
+publications_since: 2024
+
+# Funder and partner logos for the home page footer strip. Files go in images/.
+logos: []
+#  - name: EPSRC
+#    logo: logo-epsrc.svg
+#    url: https://www.ukri.org/councils/epsrc/

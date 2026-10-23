@@ -1,0 +1,17 @@
+{
+  "name": "qccd-website",
+  "private": true,
+  "type": "module",
+  "description": "Website for the Quantum Computing & Quantum Chemistry group, University of Southampton",
+  "scripts": {
+    "build": "eleventy",
+    "start": "eleventy --serve"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "3.1.6",
+    "js-yaml": "4.1.0"
+  }
+}

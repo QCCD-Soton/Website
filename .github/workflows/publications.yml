@@ -1,0 +1,30 @@
+# Refreshes data/publications.json from ORCID and OpenAlex every Monday,
+# and opens a pull request if anything changed so a person can check it first.
+name: Update publications
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/fetch_publications.py
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: update-publications
+          commit-message: Update publications from ORCID and OpenAlex
+          title: Update publications
+          body: Weekly refresh of `data/publications.json`. Check that the new entries belong to the group, then merge to publish them.
+          add-paths: data/publications.json
+          delete-branch: true

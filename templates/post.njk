@@ -1,0 +1,10 @@
+---
+layout: base.njk
+---
+<article>
+  <time datetime="{{ page.date.toISOString() }}">{{ page.date | date }}</time>
+  <h1>{{ title }}</h1>
+  {% if image %}<img src="{{ image | img }}" alt="{{ image_alt }}">{% endif %}
+  <div class="prose">{{ content | safe }}</div>
+</article>
+<p><a href="/news/">All news</a></p>

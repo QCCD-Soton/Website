@@ -1,0 +1,63 @@
+/* Placeholder styling. Replaced by the chosen design concept (professional, modern or circuit). */
+:root {
+  --paper: #f6f7f9;
+  --surface: #ffffff;
+  --ink: #0e1a2b;
+  --muted: #6b778a;
+  --line: #d9dee6;
+  --accent: #0b7285;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: "Helvetica Neue", Arial, system-ui, sans-serif;
+  --maxw: 1100px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0b1220;
+    --surface: #111a2b;
+    --ink: #e7ecf4;
+    --muted: #8592a8;
+    --line: #243149;
+    --accent: #5cc3d1;
+  }
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 var(--font-body); }
+a { color: var(--accent); }
+img { max-width: 100%; height: auto; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 500; line-height: 1.2; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 16px; }
+
+.site-header { border-bottom: 1px solid var(--line); background: var(--surface); }
+.site-header .wrap { display: flex; flex-wrap: wrap; gap: 12px 32px; align-items: center; justify-content: space-between; padding-block: 16px; }
+.brand { color: var(--ink); text-decoration: none; font-family: var(--font-display); font-size: 1.15rem; }
+.brand span { display: block; font: 0.8rem var(--font-body); color: var(--muted); }
+nav { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+nav a { color: var(--ink); text-decoration: none; }
+nav a[aria-current] { color: var(--accent); }
+
+main { padding-block: 32px 64px; }
+section { margin-block: 48px; }
+.hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); max-width: 18ch; }
+.prose { max-width: 68ch; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 20px; color: inherit; text-decoration: none; }
+.card h3 { margin-top: 0; }
+a.card:hover { border-color: var(--accent); }
+.person img, .person .initials { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; }
+.person .initials { display: grid; place-items: center; background: var(--line); font: 2rem var(--font-display); }
+.role, time, .authors, .venue { color: var(--muted); font-size: 0.9rem; }
+.links { display: flex; gap: 12px; font-size: 0.9rem; }
+
+.pubs { list-style: none; padding: 0; }
+.pub { padding-block: 12px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
+.pub-title { color: var(--ink); font-weight: 600; text-decoration: none; }
+.badge { align-self: flex-start; font-size: 0.75rem; border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; }
+
+.news-item { padding-block: 8px; }
+.news-item h3 { margin: 0; font-size: 1.15rem; }
+
+.site-footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; padding-block: 24px; }
+.logos { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; margin-bottom: 16px; }
+.logos img { height: 40px; width: auto; }

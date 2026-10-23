@@ -1,0 +1,13 @@
+---
+layout: base.njk
+---
+<h1>{{ title }}</h1>
+<div class="prose">{{ content | safe }}</div>
+{% for year, pubs in publications | groupByYear %}
+<section>
+  <h2>{{ year }}</h2>
+  <ol class="pubs">{% for pub in pubs %}{% include "publication.njk" %}{% endfor %}</ol>
+</section>
+{% else %}
+<p>No publications fetched yet. They appear here once the weekly update has run.</p>
+{% endfor %}

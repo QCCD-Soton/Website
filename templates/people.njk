@@ -1,0 +1,36 @@
+---
+layout: base.njk
+---
+{%- set headings = { lead: "Group leader", postdoc: "Postdoctoral researchers", phd: "PhD students", masters: "Masters students", visitor: "Visitors" } -%}
+<h1>{{ title }}</h1>
+<div class="prose">{{ content | safe }}</div>
+{% for g in collections.people | byGroup %}
+<section>
+  <h2>{{ headings[g.group] }}</h2>
+  <div class="cards people">
+    {% for person in g.people %}
+    <article class="card person">
+      {% if person.data.photo %}
+      <img src="{{ person.data.photo | img }}" alt="{{ person.data.name }}">
+      {% else %}
+      <div class="initials" aria-hidden="true">{{ person.data.name | replace("Dr ", "") | first }}</div>
+      {% endif %}
+      <h3>{{ person.data.name }}</h3>
+      <p class="role">{{ person.data.role }}</p>
+      <div class="prose">{{ person.content | safe }}</div>
+      <p class="links">
+        {% if person.data.orcid %}<a href="https://orcid.org/{{ person.data.orcid }}">ORCID</a>{% endif %}
+        {% for name, url in person.data.links %}<a href="{{ url }}">{{ name | capitalize }}</a>{% endfor %}
+      </p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% set alumni = collections.people | alumni %}
+{% if alumni.length %}
+<section>
+  <h2>Alumni</h2>
+  <ul>{% for p in alumni %}<li>{{ p.data.name }}, {{ p.data.role }}</li>{% endfor %}</ul>
+</section>
+{% endif %}
