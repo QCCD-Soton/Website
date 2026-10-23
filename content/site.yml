@@ -27,7 +27,10 @@ partners: []
 #    field: Quantum hardware
 
 # Funder and partner logos for the home page strip. Files go in images/.
-logos: []
-#  - name: EPSRC
-#    logo: logo-epsrc.svg
-#    url: https://www.ukri.org/councils/epsrc/
+logos:
+  - name: UKRI Engineering and Physical Sciences Research Council
+    logo: logo-ukri-epsrc.png
+    url: https://www.ukri.org/councils/epsrc/
+  - name: The Leverhulme Trust
+    logo: logo-leverhulme-trust.jpg
+    url: https://www.leverhulme.ac.uk/
