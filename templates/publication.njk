@@ -1,4 +1,4 @@
-<li class="pub" data-year="{{ pub.year }}">
+<li class="pub{% if more %} pub-more{% endif %}" data-year="{{ pub.year }}"{% if more %} hidden{% endif %}>
   <span class="pub-year">{{ pub.year }}</span>
   <div class="pub-main">
     <a class="pub-title" href="{{ pub.url }}">{{ pub.title }}</a>

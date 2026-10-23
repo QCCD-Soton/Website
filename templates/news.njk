@@ -1,8 +1,9 @@
 ---
 layout: base.njk
 ---
-{#- News timeline (latest four, the rest behind a button), then a few recent publications. -#}
+{#- News timeline and publications: the latest few of each, the rest behind a button. -#}
 {%- set shown = 4 %}
+{%- set shown_pubs = 6 %}
 <section class="block" aria-labelledby="news-title">
   <div class="wrap">
     <div class="sec-head">
@@ -26,14 +27,20 @@ layout: base.njk
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <h2 id="pubs-title">Selected publications</h2>
+        <h2 id="pubs-title">Publications</h2>
         <p class="lede">{{ publications_intro }}</p>
       </div>
     </div>
     <div class="sec-body">
       {% if publications.length %}
-      <ol class="pubs">{% for pub in publications | head(6) %}{% include "publication.njk" %}{% endfor %}</ol>
-      <p class="pub-foot"><a href="/publications/">View all {{ publications.length }} publications</a></p>
+      <div class="pub-tools" role="group" aria-label="Filter by year">
+        <button class="chip" data-year="all" aria-pressed="true">All</button>
+        {% for year, pubs in publications | groupByYear %}<button class="chip" data-year="{{ year }}" aria-pressed="false">{{ year }}</button>{% endfor %}
+      </div>
+      <ol class="pubs" id="pubs">{% for pub in publications %}{% set more = loop.index > shown_pubs %}{% include "publication.njk" %}{% endfor %}</ol>
+      {% if publications.length > shown_pubs %}
+      <button class="tl-toggle pub-toggle" id="pubToggle" aria-expanded="false" aria-controls="pubs">Show all {{ publications.length }} publications</button>
+      {% endif %}
       {% else %}
       <p class="pub-foot">No publications fetched yet. They appear here once the weekly update has run.</p>
       {% endif %}

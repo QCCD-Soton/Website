@@ -29,15 +29,27 @@
   });
   nav.addEventListener('click', function (e) { if (e.target.tagName === 'A') { nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); } });
 
-  // Publication filter
-  var chips = document.querySelectorAll('.pub-tools .chip');
+  // Publications: the latest few are shown, the rest on request; a year button shows every paper from that year
+  var chips = document.querySelectorAll('.pub-tools .chip'), pubs = document.querySelectorAll('.pub');
+  var pubBtn = document.getElementById('pubToggle'), pubYear = 'all', pubOpen = false;
+  function showPubs() {
+    pubs.forEach(function (p) {
+      p.hidden = pubYear === 'all' ? !pubOpen && p.classList.contains('pub-more') : p.getAttribute('data-year') !== pubYear;
+    });
+    if (pubBtn) {
+      pubBtn.hidden = pubYear !== 'all';
+      pubBtn.setAttribute('aria-expanded', String(pubOpen));
+      pubBtn.textContent = pubOpen ? 'Show fewer' : 'Show all ' + pubs.length + ' publications';
+    }
+  }
   chips.forEach(function (c) {
     c.addEventListener('click', function () {
-      var y = c.getAttribute('data-year');
+      pubYear = c.getAttribute('data-year');
       chips.forEach(function (o) { o.setAttribute('aria-pressed', String(o === c)); });
-      document.querySelectorAll('.pub').forEach(function (p) { p.hidden = !(y === 'all' || p.getAttribute('data-year') === y); });
+      showPubs();
     });
   });
+  if (pubBtn) pubBtn.addEventListener('click', function () { pubOpen = !pubOpen; showPubs(); });
 
   // Flip cards: tap or Enter/Space toggles; hover flips on devices with a pointer
   document.querySelectorAll('.card').forEach(function (c) {

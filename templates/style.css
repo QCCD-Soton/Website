@@ -502,3 +502,5 @@ a.oa { text-decoration: none; }
 .post .sec-head > div { max-width: 68ch; }
 .post .sec-body { max-width: 68ch; font-size: 17px; color: var(--ink-2); }
 .post-img { display: block; margin-bottom: 32px; border-radius: 4px; }
+[hidden] { display: none !important; }
+.pub-toggle { margin-left: 0; }
