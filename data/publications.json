@@ -1,1 +1,269 @@
-[]
+[
+  {
+    "title": "Reduced Density Matrix and Cumulant Approximations of Quantum Linear Response",
+    "year": 2026,
+    "doi": "10.1021/acs.jctc.5c01353",
+    "venue": "Journal of Chemical Theory and Computation",
+    "url": "https://doi.org/10.1021/acs.jctc.5c01353",
+    "preprint": false,
+    "authors": [
+      "Theo Juncker von Buchwald",
+      "Erik Rosendahl Kjellgren",
+      "Jacob Kongsted",
+      "Stephan P. A. Sauer",
+      "Sonia Coriani",
+      "Karl Michael Ziems"
+    ],
+    "open_access_url": "https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.5c01353?ref=article_openPDF"
+  },
+  {
+    "title": "Cost-Effective Scalable Quantum Error Mitigation for Tiled Ansätze.",
+    "year": 2026,
+    "doi": "10.1021/acs.jctc.6c00603",
+    "venue": "PubMed",
+    "url": "https://doi.org/10.1021/acs.jctc.6c00603",
+    "preprint": false,
+    "authors": [
+      "Oskar Graulund Lentz Rasmussen",
+      "Erik Rosendahl Kjellgren",
+      "Peter Reinholdt",
+      "Stephan P. A. Sauer",
+      "Sonia Coriani",
+      "Karl Michael Ziems",
+      "Jacob Kongsted"
+    ],
+    "open_access_url": null
+  },
+  {
+    "title": "Understanding and mitigating noise in molecular quantum linear response for spectroscopic properties on quantum computers",
+    "year": 2025,
+    "doi": "10.1039/d4sc05839a",
+    "venue": "Chemical Science",
+    "url": "https://doi.org/10.1039/d4sc05839a",
+    "preprint": false,
+    "authors": [
+      "Karl Michael Ziems",
+      "Erik Rosendahl Kjellgren",
+      "Stephan P. A. Sauer",
+      "Jacob Kongsted",
+      "Sonia Coriani"
+    ],
+    "open_access_url": "https://pubs.rsc.org/en/content/articlepdf/2025/sc/d4sc05839a"
+  },
+  {
+    "title": "Self-consistent Quantum Linear Response with a Polarizable Embedding Environment",
+    "year": 2025,
+    "doi": "10.1021/acs.jpca.4c07534",
+    "venue": "The Journal of Physical Chemistry A",
+    "url": "https://doi.org/10.1021/acs.jpca.4c07534",
+    "preprint": false,
+    "authors": [
+      "Peter Reinholdt",
+      "Erik Rosendahl Kjellgren",
+      "Karl Michael Ziems",
+      "Sonia Coriani",
+      "Stephan P. A. Sauer",
+      "Jacob Kongsted"
+    ],
+    "open_access_url": "https://arxiv.org/pdf/2411.03852"
+  },
+  {
+    "title": "Redundant parameter dependencies in conventional and quantum linear response and equation of motion theory for unitary parameterized wave functions",
+    "year": 2025,
+    "doi": "10.1063/5.0284287",
+    "venue": "The Journal of Chemical Physics",
+    "url": "https://doi.org/10.1063/5.0284287",
+    "preprint": false,
+    "authors": [
+      "Erik Rosendahl Kjellgren",
+      "Peter Reinholdt",
+      "Karl Michael Ziems",
+      "Stephan P. A. Sauer",
+      "Sonia Coriani",
+      "Jacob Kongsted"
+    ],
+    "open_access_url": "https://researchprofiles.ku.dk/da/publications/e37d397d-536b-495d-9f27-866337d4c7c1"
+  },
+  {
+    "title": "Hyperfine Coupling Constants on Quantum Computers: Performance, Errors, and Future Prospects",
+    "year": 2025,
+    "doi": "10.1021/acs.jctc.5c00893",
+    "venue": "Journal of Chemical Theory and Computation",
+    "url": "https://doi.org/10.1021/acs.jctc.5c00893",
+    "preprint": false,
+    "authors": [
+      "Phillip W. K. Jensen",
+      "Gustav Stausbøll Hedemark",
+      "Karl Michael Ziems",
+      "Erik Rosendahl Kjellgren",
+      "Peter Reinholdt",
+      "Stefan Knecht",
+      "Sonia Coriani",
+      "Jacob Kongsted",
+      "Stephan P. A. Sauer"
+    ],
+    "open_access_url": "https://portal.findresearcher.sdu.dk/da/publications/05d96e25-3c96-4fda-ba4c-b64a6fbede94"
+  },
+  {
+    "title": "Exact closed-form expressions for unitary spin-adapted fermionic singlet double excitation operators",
+    "year": 2025,
+    "doi": "10.1063/5.0278717",
+    "venue": "The Journal of Chemical Physics",
+    "url": "https://doi.org/10.1063/5.0278717",
+    "preprint": false,
+    "authors": [
+      "Erik Rosendahl Kjellgren",
+      "Karl Michael Ziems",
+      "Peter Reinholdt",
+      "Stephan P. A. Sauer",
+      "Sonia Coriani",
+      "Jacob Kongsted"
+    ],
+    "open_access_url": "https://researchprofiles.ku.dk/da/publications/554bf0d4-d4a5-4bd0-ac84-8eab70b6ce79"
+  },
+  {
+    "title": "Critical Limitations in Quantum-Selected Configuration Interaction Methods",
+    "year": 2025,
+    "doi": "10.1021/acs.jctc.5c00375",
+    "venue": "Journal of Chemical Theory and Computation",
+    "url": "https://doi.org/10.1021/acs.jctc.5c00375",
+    "preprint": false,
+    "authors": [
+      "Peter Reinholdt",
+      "Karl Michael Ziems",
+      "Erik Rosendahl Kjellgren",
+      "Sonia Coriani",
+      "Stephan P. A. Sauer",
+      "Jacob Kongsted"
+    ],
+    "open_access_url": "https://arxiv.org/pdf/2501.07231"
+  },
+  {
+    "title": "Which Options Exist for NISQ-Friendly Linear Response Formulations?",
+    "year": 2024,
+    "doi": "10.1021/acs.jctc.3c01402",
+    "venue": "Journal of Chemical Theory and Computation",
+    "url": "https://doi.org/10.1021/acs.jctc.3c01402",
+    "preprint": false,
+    "authors": [
+      "Karl Michael Ziems",
+      "Erik Rosendahl Kjellgren",
+      "Peter Reinholdt",
+      "Phillip W. K. Jensen",
+      "Stephan P. A. Sauer",
+      "Jacob Kongsted",
+      "Sonia Coriani"
+    ],
+    "open_access_url": "https://arxiv.org/pdf/2312.13937"
+  },
+  {
+    "title": "Subspace Methods for the Simulation of Molecular Response Properties on a Quantum Computer",
+    "year": 2024,
+    "doi": "10.1021/acs.jctc.4c00211",
+    "venue": "Journal of Chemical Theory and Computation",
+    "url": "https://doi.org/10.1021/acs.jctc.4c00211",
+    "preprint": false,
+    "authors": [
+      "Peter Reinholdt",
+      "Erik Rosendahl Kjellgren",
+      "Juliane Holst Fuglsbjerg",
+      "Karl Michael Ziems",
+      "Sonia Coriani",
+      "Stephan P. A. Sauer",
+      "Jacob Kongsted"
+    ],
+    "open_access_url": "https://arxiv.org/pdf/2402.12186"
+  },
+  {
+    "title": "Reduced Density Matrix Formulation of Quantum Linear Response",
+    "year": 2024,
+    "doi": "10.1021/acs.jctc.4c00574",
+    "venue": "Journal of Chemical Theory and Computation",
+    "url": "https://doi.org/10.1021/acs.jctc.4c00574",
+    "preprint": false,
+    "authors": [
+      "Theo Juncker von Buchwald",
+      "Karl Michael Ziems",
+      "Erik Rosendahl Kjellgren",
+      "Stephan P. A. Sauer",
+      "Jacob Kongsted",
+      "Sonia Coriani"
+    ],
+    "open_access_url": "https://researchprofiles.ku.dk/da/publications/105e0487-1669-478e-a945-a683cf595c5a"
+  },
+  {
+    "title": "Quantum Equation of Motion with Orbital Optimization for Computing Molecular Properties in Near-Term Quantum Computing",
+    "year": 2024,
+    "doi": "10.1021/acs.jctc.4c00069",
+    "venue": "Journal of Chemical Theory and Computation",
+    "url": "https://doi.org/10.1021/acs.jctc.4c00069",
+    "preprint": false,
+    "authors": [
+      "Phillip W. K. Jensen",
+      "Erik Rosendahl Kjellgren",
+      "Peter Reinholdt",
+      "Karl Michael Ziems",
+      "Sonia Coriani",
+      "Jacob Kongsted",
+      "Stephan P. A. Sauer"
+    ],
+    "open_access_url": "https://arxiv.org/pdf/2312.12386"
+  },
+  {
+    "title": "Electric Field Gradient Calculations for Ice VIII and IX Using Polarizable Embedding: A Comparative Study on Classical Computers and Quantum Simulators.",
+    "year": 2024,
+    "doi": "10.1021/acs.jpca.4c02697",
+    "venue": "PubMed",
+    "url": "https://doi.org/10.1021/acs.jpca.4c02697",
+    "preprint": false,
+    "authors": [
+      "Dániel Nagy",
+      "Peter Reinholdt",
+      "Phillip W K Jensen",
+      "Erik Rosendahl Kjellgren",
+      "Karl Michael Ziems",
+      "Aaron Fitzpatrick",
+      "Stefan Knecht",
+      "Jacob Kongsted",
+      "Sonia Coriani",
+      "Stephan P A Sauer"
+    ],
+    "open_access_url": null
+  },
+  {
+    "title": "Divergences in classical and quantum linear response and equation of motion formulations",
+    "year": 2024,
+    "doi": "10.1063/5.0225409",
+    "venue": "The Journal of Chemical Physics",
+    "url": "https://doi.org/10.1063/5.0225409",
+    "preprint": false,
+    "authors": [
+      "Erik Rosendahl Kjellgren",
+      "Peter Reinholdt",
+      "Karl Michael Ziems",
+      "Stephan P. A. Sauer",
+      "Sonia Coriani",
+      "Jacob Kongsted"
+    ],
+    "open_access_url": "https://arxiv.org/pdf/2406.17141"
+  },
+  {
+    "title": "Attosecond core-level absorption spectroscopy reveals the electronic and nuclear dynamics of molecular ring opening",
+    "year": 2024,
+    "doi": "10.1038/s41566-024-01436-9",
+    "venue": "Nature Photonics",
+    "url": "https://doi.org/10.1038/s41566-024-01436-9",
+    "preprint": false,
+    "authors": [
+      "Stefano Severino",
+      "Karl Michael Ziems",
+      "Maurizio Reduzzi",
+      "Adam M. Summers",
+      "Hung-Wei Sun",
+      "Ying-Hao Chien",
+      "Stefanie Gräfe",
+      "Jens Biegert"
+    ],
+    "open_access_url": "http://dx.doi.org/10.21203/rs.3.rs-3429001/v1"
+  }
+]
