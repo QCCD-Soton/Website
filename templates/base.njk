@@ -5,31 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% if title and title != "Home" %}{{ title }} · {% endif %}{{ site.title }}</title>
   <meta name="description" content="{{ site.tagline }}">
+  <script>try { var t = localStorage.getItem('qccd-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="/">{{ site.title }}<span>{{ site.institution }}</span></a>
-      <nav aria-label="Main">
-        {%- for item in [["Research", "/research/"], ["People", "/people/"], ["Publications", "/publications/"], ["News", "/news/"], ["Join us", "/join/"], ["Contact", "/contact/"]] %}
-        <a href="{{ item[1] }}"{% if page.url == item[1] %} aria-current="page"{% endif %}>{{ item[0] }}</a>
-        {%- endfor %}
-      </nav>
-    </div>
-  </header>
-  <main class="wrap">
-    {{ content | safe }}
-  </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      {% if site.logos.length %}
-      <div class="logos">
-        {% for l in site.logos %}<a href="{{ l.url }}"><img src="{{ l.logo | img }}" alt="{{ l.name }}"></a>{% endfor %}
+{%- set section = page.url.split("/")[1] %}
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="{{ site.title }} home">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="13.5" stroke="currentColor" stroke-width="1.2" opacity=".35"></circle>
+        <ellipse cx="16" cy="16" rx="13.5" ry="5" stroke="currentColor" stroke-width="1.2" transform="rotate(-30 16 16)"></ellipse>
+        <ellipse cx="16" cy="16" rx="13.5" ry="5" stroke="currentColor" stroke-width="1.2" transform="rotate(30 16 16)" opacity=".55"></ellipse>
+        <circle cx="16" cy="16" r="2.6" fill="var(--accent)"></circle>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">{{ site.title }}</span>
+        <span class="brand-sub">{{ site.university }}</span>
+      </span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="/"{% if page.url == "/" %} aria-current="page"{% endif %}>Home</a>
+      <div class="nav-drop">
+        <a href="/research/" class="drop-trigger" aria-haspopup="true"{% if section == "research" %} aria-current="page"{% endif %}>Research <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" fill="none"></path></svg></a>
+        <div class="drop-menu" role="menu">
+          {%- for track in collections.tracks %}
+          <a href="{{ track.url }}" role="menuitem"{% if page.url == track.url %} aria-current="page"{% endif %}><b>{{ track.data.title }}</b><span>{{ track.data.summary }}</span></a>
+          {%- endfor %}
+        </div>
       </div>
-      {% endif %}
-      <p>{{ site.title }} · {{ site.institution }}{% if site.email %} · <a href="mailto:{{ site.email }}">{{ site.email }}</a>{% endif %}</p>
+      <a href="/people/"{% if section == "people" %} aria-current="page"{% endif %}>People</a>
+      <a href="/news/"{% if section == "news" or section == "publications" %} aria-current="page"{% endif %}>News &amp; publications</a>
+      <a class="cta" href="/join/"{% if section == "join" %} aria-current="page"{% endif %}>Join us</a>
+    </nav>
+    <button class="theme-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4.5h12M2 8h12M2 11.5h12" stroke="currentColor" stroke-width="1.4" fill="none"></path></svg>
+    </button>
+    <button class="theme-btn t" id="themeBtn" aria-label="Toggle light or dark theme">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.3" fill="none"></circle><path d="M8 2.5a5.5 5.5 0 0 1 0 11z" fill="currentColor"></path></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  {{ content | safe }}
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="legal">
+      <span>© {{ "now" | year }} {{ site.title }}, {{ site.university }}</span>
+      {% if site.email %}<a href="mailto:{{ site.email }}">{{ site.email }}</a>{% endif %}
     </div>
-  </footer>
+  </div>
+</footer>
+<script src="/site.js"></script>
 </body>
 </html>

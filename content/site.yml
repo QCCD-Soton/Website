@@ -1,7 +1,8 @@
 # Details used on every page. Edit here, not in the templates.
 title: Quantum Computing & Quantum Chemistry
 short_title: QCCD
-institution: School of Chemistry, University of Southampton
+school: School of Chemistry
+university: University of Southampton
 tagline: Quantum computers, built to answer chemical questions.
 email:                 # TODO: group contact address
 address: |
@@ -9,12 +10,26 @@ address: |
   University of Southampton
   Highfield Campus
   Southampton SO17 1BJ, UK
+find_us:               # e.g. Building 27, ten minutes from Southampton Airport Parkway
 
 # Publications are fetched for every current member with an ORCID iD,
 # from this year onwards.
 publications_since: 2024
 
-# Funder and partner logos for the home page footer strip. Files go in images/.
+# Picture in the side panel of the classical research page, which doubles as its scroll bar:
+# 1 particle in a box, 2 benzene orbital, 3 reaction path, 4 spectrometer, 5 electron density, 6 tunnelling.
+classical_scrollbar: 1
+
+# Listed at the bottom of the People page. Each is hidden while its list is empty.
+collaborators: []
+#  - name: Prof Jane Smith
+#    affiliation: University of Oxford
+#    url: https://...        # optional
+partners: []
+#  - name: Example Quantum Ltd
+#    field: Quantum hardware
+
+# Funder and partner logos for the home page strip. Files go in images/.
 logos: []
 #  - name: EPSRC
 #    logo: logo-epsrc.svg

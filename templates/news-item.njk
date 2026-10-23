@@ -1,4 +1,8 @@
-<article class="news-item">
-  <time datetime="{{ post.date.toISOString() }}">{{ post.date | date }}</time>
-  <h3><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
-</article>
+<li class="tl{% if more %} tl-more{% endif %}">
+  <time datetime="{{ post.date.toISOString() }}">{{ post.date | date }}</time><span class="dot" aria-hidden="true"></span>
+  <div class="tl-body">
+    {% if post.data.kind %}<span class="tl-kind">{{ post.data.kind }}</span>{% endif %}
+    <h3><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
+    <p>{{ post.data.summary or (post.rawInput | firstSentence) }}</p>
+  </div>
+</li>

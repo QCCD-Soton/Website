@@ -1,0 +1,63 @@
+---
+layout: base.njk
+---
+{#- Quantum themes hang off a qubit wire, one gate per theme in this order; classical themes get the side-panel scroll bar. -#}
+{%- set themes = collections.research | track(track) %}
+{%- set gates = ["h", "cx", "rz", "m"] %}
+{%- set prefix = "rq-" if track == "quantum" else "rc-" %}
+<section class="block" id="research-{{ track }}" aria-labelledby="track-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2 id="track-title">{{ heading or title }}</h2>
+        <div class="lede prose">{{ content | safe }}</div>
+      </div>
+    </div>
+    <div class="sec-body">
+      <nav class="theme-index" aria-label="Major themes">
+        <span class="eyebrow">Major themes</span>
+        <ol>{% for theme in themes %}<li><a href="#{{ prefix }}{{ theme.fileSlug }}"><span class="n">{{ loop.index | pad }}</span>{{ theme.data.title }}</a></li>{% endfor %}</ol>
+      </nav>
+    </div>
+
+    {% if track == "quantum" %}
+    <div class="sec-body themes wired" id="qwire">
+      <div class="rail" aria-hidden="true"><div class="clip"><div class="fill"></div><div class="cover"></div></div><div class="photon"><div class="spin"><i class="q a"></i><i class="q b"></i></div></div></div>
+      {% for theme in themes %}
+      {%- set gate = gates[(loop.index0) % 4] %}
+      <article class="theme g-{{ gate }}" id="{{ prefix }}{{ theme.fileSlug }}">
+        <div class="tgate" aria-hidden="true">
+          {%- if gate == "h" %}H
+          {%- elif gate == "cx" %}Z
+          {%- elif gate == "rz" %}<span>R<sub>x</sub></span>
+          {%- else %}<svg viewBox="0 0 44 44"><path d="M8 32 A14 14 0 0 1 36 32" fill="none" stroke="currentColor" stroke-width="2"></path><line x1="22" y1="32" x2="33" y2="13" stroke="currentColor" stroke-width="2"></line></svg>{% endif -%}
+        </div>
+        {% include "theme.njk" %}
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="cgrid">
+      <div class="sec-body themes" id="cwire">
+        {% for theme in themes %}
+        <article class="theme" id="{{ prefix }}{{ theme.fileSlug }}">
+          {% include "theme.njk" %}
+        </article>
+        {% endfor %}
+      </div>
+      <aside class="cside" id="cbox" data-mode="{{ site.classical_scrollbar }}" aria-label="Page position">
+        <div class="cbox">
+          <span class="eyebrow"></span>
+          <div class="cbox-body">
+            <canvas role="slider" tabindex="0" aria-label="Scroll through the research themes" aria-valuemin="0" aria-valuemax="100"></canvas>
+            <ol class="cbox-list">
+              {% for theme in themes %}<li><a href="#{{ prefix }}{{ theme.fileSlug }}"><span class="n">{{ loop.index | pad }}</span>{{ theme.data.short_title or theme.data.title }}</a></li>{% endfor %}
+            </ol>
+          </div>
+          <span class="cbox-n"></span>
+        </div>
+      </aside>
+    </div>
+    {% endif %}
+  </div>
+</section>

@@ -1,5 +1,42 @@
 ---
 layout: base.njk
 ---
-<h1>{{ title }}</h1>
-{% for post in collections.news %}{% include "news-item.njk" %}{% endfor %}
+{#- News timeline (latest four, the rest behind a button), then a few recent publications. -#}
+{%- set shown = 4 %}
+<section class="block" aria-labelledby="news-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2 id="news-title">{{ heading or title }}</h2>
+        {% if content | trim %}<div class="lede prose">{{ content | safe }}</div>{% endif %}
+      </div>
+    </div>
+    <div class="sec-body">
+      <ol class="timeline" id="timeline">
+        {% for post in collections.news %}{% set more = loop.index > shown %}{% include "news-item.njk" %}{% endfor %}
+      </ol>
+      {% if collections.news.length > shown %}
+      <button class="tl-toggle" id="tlToggle" aria-expanded="false" aria-controls="timeline">Show older news ({{ collections.news.length - shown }})</button>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="block" id="publications" aria-labelledby="pubs-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2 id="pubs-title">Selected publications</h2>
+        <p class="lede">{{ publications_intro }}</p>
+      </div>
+    </div>
+    <div class="sec-body">
+      {% if publications.length %}
+      <ol class="pubs">{% for pub in publications | head(6) %}{% include "publication.njk" %}{% endfor %}</ol>
+      <p class="pub-foot"><a href="/publications/">View all {{ publications.length }} publications</a></p>
+      {% else %}
+      <p class="pub-foot">No publications fetched yet. They appear here once the weekly update has run.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>

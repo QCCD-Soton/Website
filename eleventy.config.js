@@ -3,7 +3,7 @@ import yaml from "js-yaml";
 import { HtmlBasePlugin } from "@11ty/eleventy";
 
 // Order that people groups appear on the People page.
-const PEOPLE_GROUPS = ["lead", "postdoc", "phd", "masters", "visitor"];
+const PEOPLE_GROUPS = ["lead", "postdoc", "phd", "masters", "undergrad", "visitor"];
 
 export default function (eleventyConfig) {
   // Adds the GitHub Pages path prefix (e.g. /website/) to every link and image.
@@ -16,13 +16,22 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("images");
   eleventyConfig.addPassthroughCopy({ "templates/style.css": "style.css" });
+  eleventyConfig.addPassthroughCopy({ "templates/site.js": "site.js" });
 
   eleventyConfig.addCollection("people", (api) =>
     api.getFilteredByGlob("content/people/*.md")
   );
+  // Research themes live in content/research/<track>/; the track pages are content/research-<track>.md.
   eleventyConfig.addCollection("research", (api) =>
-    api.getFilteredByGlob("content/research/*.md")
+    api.getFilteredByGlob("content/research/*/*.md")
       .sort((a, b) => a.inputPath.localeCompare(b.inputPath))
+  );
+  eleventyConfig.addCollection("tracks", (api) =>
+    api.getFilteredByGlob("content/research-*.md")
+      .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  );
+  eleventyConfig.addFilter("track", (themes, track) =>
+    themes.filter((t) => t.inputPath.includes(`/research/${track}/`))
   );
   eleventyConfig.addCollection("news", (api) =>
     api.getFilteredByGlob("content/news/*.md").reverse()
@@ -52,6 +61,35 @@ export default function (eleventyConfig) {
     }
     return `/images/${name}`;
   });
+
+  // Bolds group members in a publication's author list and links them to their card on the People page.
+  // A member matches on surname and first initial, ignoring accents and titles.
+  const plain = (s) => s.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+  const nameKey = (name) => {
+    const parts = plain(name).replace(/^(dr|prof)\.?\s+/, "").replace(/[.,]/g, " ").split(/\s+/).filter(Boolean);
+    return parts.length ? `${parts[0][0]} ${parts.at(-1)}` : "";
+  };
+  const escape = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  eleventyConfig.addFilter("authorList", (authors = [], people = []) => {
+    const members = new Map(
+      people.filter((p) => p.data.group !== "alumni").map((p) => [nameKey(p.data.name), p.fileSlug])
+    );
+    return authors.map((a) => {
+      const slug = members.get(nameKey(a));
+      return slug ? `<a class="author" href="/people/#${slug}"><b>${escape(a)}</b></a>` : escape(a);
+    }).join(", ");
+  });
+
+  // Placeholder avatar: initials, and a blue-ish hue that stays the same for each name.
+  eleventyConfig.addFilter("initials", (name = "") =>
+    name.replace(/^(Dr|Prof)\.?\s+/, "").split(/\s+/).filter((w, i, all) => i === 0 || i === all.length - 1)
+      .map((w) => w[0]).join("").toUpperCase()
+  );
+  eleventyConfig.addFilter("hue", (name = "") =>
+    184 + ([...name].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % 64)
+  );
+  eleventyConfig.addFilter("pad", (n) => String(n).padStart(2, "0"));
+  eleventyConfig.addFilter("year", () => new Date().getFullYear());
 
   eleventyConfig.addFilter("head", (arr = [], n) => arr.slice(0, n));
   eleventyConfig.addFilter("date", (d) =>

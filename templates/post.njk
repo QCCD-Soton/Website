@@ -1,10 +1,16 @@
 ---
 layout: base.njk
 ---
-<article>
-  <time datetime="{{ page.date.toISOString() }}">{{ page.date | date }}</time>
-  <h1>{{ title }}</h1>
-  {% if image %}<img src="{{ image | img }}" alt="{{ image_alt }}">{% endif %}
-  <div class="prose">{{ content | safe }}</div>
-</article>
-<p><a href="/news/">All news</a></p>
+<section class="block">
+  <article class="wrap post">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow"><time datetime="{{ page.date.toISOString() }}">{{ page.date | date }}</time>{% if kind %} · {{ kind }}{% endif %}</span>
+        <h2>{{ title }}</h2>
+      </div>
+    </div>
+    {% if image %}<img class="post-img" src="{{ image | img }}" alt="{{ image_alt }}">{% endif %}
+    <div class="sec-body prose">{{ content | safe }}</div>
+    <p class="pub-foot"><a href="/news/">← All news</a></p>
+  </article>
+</section>

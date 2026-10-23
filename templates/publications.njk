@@ -1,13 +1,25 @@
 ---
 layout: base.njk
 ---
-<h1>{{ title }}</h1>
-<div class="prose">{{ content | safe }}</div>
-{% for year, pubs in publications | groupByYear %}
-<section>
-  <h2>{{ year }}</h2>
-  <ol class="pubs">{% for pub in pubs %}{% include "publication.njk" %}{% endfor %}</ol>
+{%- set years = publications | groupByYear %}
+<section class="block" aria-labelledby="pubs-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2 id="pubs-title">{{ heading or title }}</h2>
+        <div class="lede prose">{{ content | safe }}</div>
+      </div>
+    </div>
+    <div class="sec-body">
+      {% if publications.length %}
+      <div class="pub-tools" role="group" aria-label="Filter by year">
+        <button class="chip" data-year="all" aria-pressed="true">All</button>
+        {% for year, pubs in years %}<button class="chip" data-year="{{ year }}" aria-pressed="false">{{ year }}</button>{% endfor %}
+      </div>
+      <ol class="pubs">{% for pub in publications %}{% include "publication.njk" %}{% endfor %}</ol>
+      {% else %}
+      <p class="pub-foot">No publications fetched yet. They appear here once the weekly update has run.</p>
+      {% endif %}
+    </div>
+  </div>
 </section>
-{% else %}
-<p>No publications fetched yet. They appear here once the weekly update has run.</p>
-{% endfor %}

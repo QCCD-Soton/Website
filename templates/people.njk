@@ -1,36 +1,98 @@
 ---
 layout: base.njk
 ---
-{%- set headings = { lead: "Group leader", postdoc: "Postdoctoral researchers", phd: "PhD students", masters: "Masters students", visitor: "Visitors" } -%}
-<h1>{{ title }}</h1>
-<div class="prose">{{ content | safe }}</div>
-{% for g in collections.people | byGroup %}
-<section>
-  <h2>{{ headings[g.group] }}</h2>
-  <div class="cards people">
-    {% for person in g.people %}
-    <article class="card person">
-      {% if person.data.photo %}
-      <img src="{{ person.data.photo | img }}" alt="{{ person.data.name }}">
+{%- set headings = { postdoc: "Postdoctoral researchers", phd: "PhD students", masters: "Masters students", undergrad: "Undergraduates", visitor: "Visitors" } -%}
+{%- set alumni = collections.people | alumni %}
+<section class="block" aria-labelledby="people-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2 id="people-title">{{ heading or title }}</h2>
+        <div class="lede prose">{{ content | safe }}</div>
+      </div>
+    </div>
+    <div class="sec-body">
+      {% for g in collections.people | byGroup %}
+      {% if g.group == "lead" %}
+      {% for person in g.people %}
+      <div class="card pi-card" id="{{ person.fileSlug }}" tabindex="0" role="button" aria-pressed="false" aria-label="{{ person.data.name }}: show more">
+        <div class="flip">
+          <article class="face front pi">
+            {% include "avatar.njk" %}
+            <div class="pi-body">
+              <span class="eyebrow">Principal Investigator</span>
+              <h3 style="font-size:30px">{{ person.data.name }}</h3>
+              <span class="role">{{ person.data.role }} · {{ site.school }}, {{ site.university }}</span>
+              <span class="cue">More ↻</span>
+            </div>
+          </article>
+          <div class="face back pi">
+            <div class="pi-body">
+              <span class="eyebrow">{{ person.data.name }}</span>
+              <div class="prose">{{ person.content | safe }}</div>
+              <div class="pi-links">
+                <a href="/news/#publications">Selected publications</a>
+                <a href="/join/#contact">Contact</a>
+                <a href="/join/">Supervision enquiries</a>
+                {% if person.data.orcid %}<a href="https://orcid.org/{{ person.data.orcid }}">ORCID</a>{% endif %}
+                {% for name, url in person.data.links %}<a href="{{ url }}">{{ name | capitalize }}</a>{% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
       {% else %}
-      <div class="initials" aria-hidden="true">{{ person.data.name | replace("Dr ", "") | first }}</div>
+      <div class="group-label"><h3>{{ headings[g.group] }}</h3><span class="count">{{ g.people.length }}</span></div>
+      <div class="people">
+        {% for person in g.people %}
+        <div class="card person" id="{{ person.fileSlug }}" tabindex="0" role="button" aria-pressed="false" aria-label="{{ person.data.name }}: show more">
+          <div class="flip">
+            <div class="face front">
+              {% include "avatar.njk" %}
+              <span class="name">{{ person.data.name }}</span>
+              <span class="role">{{ person.data.role }}</span>
+              {% if person.data.topic %}<span class="topic">{{ person.data.topic }}</span>{% endif %}
+              <span class="cue">More ↻</span>
+            </div>
+            <div class="face back">
+              <span class="name">{{ person.data.name }}</span>
+              <div class="bio">{{ person.content | safe }}</div>
+              {% if person.data.topic %}<span class="int">{{ person.data.topic }}</span>{% endif %}
+              <span class="links">
+                {%- set sep = joiner(" · ") %}
+                {%- if person.data.orcid %}{{ sep() }}<a href="https://orcid.org/{{ person.data.orcid }}">ORCID</a>{% endif %}
+                {%- for name, url in person.data.links %}{{ sep() }}<a href="{{ url }}">{{ name | capitalize }}</a>{% endfor %}
+                {%- if person.data.email %}{{ sep() }}<a href="mailto:{{ person.data.email }}">Email</a>{% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
       {% endif %}
-      <h3>{{ person.data.name }}</h3>
-      <p class="role">{{ person.data.role }}</p>
-      <div class="prose">{{ person.content | safe }}</div>
-      <p class="links">
-        {% if person.data.orcid %}<a href="https://orcid.org/{{ person.data.orcid }}">ORCID</a>{% endif %}
-        {% for name, url in person.data.links %}<a href="{{ url }}">{{ name | capitalize }}</a>{% endfor %}
-      </p>
-    </article>
-    {% endfor %}
+      {% endfor %}
+
+      {% if alumni.length %}
+      <div class="group-label"><h3>Alumni</h3><span class="count">{{ alumni.length }}</span></div>
+      <div class="alumni">
+        {% for p in alumni %}<div class="alum"><span>{{ p.data.name }}</span><span>{{ p.data.role }}</span></div>{% endfor %}
+      </div>
+      {% endif %}
+
+      {% if site.collaborators.length %}
+      <div class="group-label collab-label"><h3>Academic collaborators</h3><span class="count">{{ site.collaborators.length }}</span></div>
+      <div class="alumni">
+        {% for c in site.collaborators %}<div class="alum"><span>{% if c.url %}<a href="{{ c.url }}">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}</span><span>{{ c.affiliation }}</span></div>{% endfor %}
+      </div>
+      {% endif %}
+
+      {% if site.partners.length %}
+      <div class="group-label collab-label"><h3>Industry partners</h3><span class="count">{{ site.partners.length }}</span></div>
+      <div class="alumni">
+        {% for c in site.partners %}<div class="alum"><span>{% if c.url %}<a href="{{ c.url }}">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}</span><span>{{ c.field }}</span></div>{% endfor %}
+      </div>
+      {% endif %}
+    </div>
   </div>
 </section>
-{% endfor %}
-{% set alumni = collections.people | alumni %}
-{% if alumni.length %}
-<section>
-  <h2>Alumni</h2>
-  <ul>{% for p in alumni %}<li>{{ p.data.name }}, {{ p.data.role }}</li>{% endfor %}</ul>
-</section>
-{% endif %}

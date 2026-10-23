@@ -1,12 +1,23 @@
 ---
 layout: base.njk
 ---
-<h1>{{ title }}</h1>
-<div class="prose">{{ content | safe }}</div>
-{% for theme in collections.research %}
-<section class="theme" id="{{ theme.fileSlug }}">
-  <h2>{{ theme.data.title }}</h2>
-  {% if theme.data.image %}<img src="{{ theme.data.image | img }}" alt="{{ theme.data.image_alt }}">{% endif %}
-  <div class="prose">{{ theme.content | safe }}</div>
+<section class="block" aria-labelledby="research-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2 id="research-title">{{ heading or title }}</h2>
+        <div class="lede prose">{{ content | safe }}</div>
+      </div>
+    </div>
+    <div class="sec-body choose">
+      {% for track in collections.tracks %}
+      <a class="choice" href="{{ track.url }}">
+        <span class="eyebrow">{{ track.data.title }}</span>
+        <h3>{{ track.data.summary }}</h3>
+        <p>{{ track.data.card }}</p>
+        <span class="go">See the themes →</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
 </section>
-{% endfor %}

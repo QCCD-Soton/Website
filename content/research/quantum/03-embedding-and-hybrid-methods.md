@@ -1,0 +1,9 @@
+---
+title: "Embedding and hybrid methods"
+summary: TODO one-line summary shown under the title
+tags: [DMET, active spaces, QM/MM]
+image:                  # optional figure in images/
+image_alt:
+caption:                # optional figure caption
+---
+TODO: two plain-language paragraphs on this theme.

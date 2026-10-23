@@ -1,7 +1,13 @@
-<li class="pub">
-  <a class="pub-title" href="{{ pub.url }}">{{ pub.title }}</a>
-  <span class="authors">{{ pub.authors | join(", ") }}</span>
-  <span class="venue">{{ pub.venue }}{% if pub.year %} ({{ pub.year }}){% endif %}</span>
-  {% if pub.preprint %}<span class="badge">Preprint</span>{% endif %}
-  {% if pub.open_access_url %}<a class="badge" href="{{ pub.open_access_url }}">Open access</a>{% endif %}
+<li class="pub" data-year="{{ pub.year }}">
+  <span class="pub-year">{{ pub.year }}</span>
+  <div class="pub-main">
+    <a class="pub-title" href="{{ pub.url }}">{{ pub.title }}</a>
+    {% if pub.authors.length %}<span class="pub-authors">{{ pub.authors | authorList(collections.people) | safe }}</span>{% endif %}
+    <div class="pub-meta">
+      {% if pub.venue %}<span class="journal">{{ pub.venue }}</span>{% endif %}
+      {% if pub.preprint %}<span class="tag">Preprint</span>{% endif %}
+      {% if pub.doi %}<a class="doi" href="https://doi.org/{{ pub.doi }}">doi:{{ pub.doi }}</a>{% endif %}
+    </div>
+  </div>
+  <div class="pub-side">{% if pub.open_access_url %}<a class="oa" href="{{ pub.open_access_url }}">Open access</a>{% endif %}</div>
 </li>

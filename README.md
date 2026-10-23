@@ -9,9 +9,9 @@ All the text lives in `content/` as Markdown files. Every change merged into `ma
 | Folder | What's in it | Who edits it |
 |---|---|---|
 | `content/` | All page text, one Markdown file per page, person, research theme or news item | Anyone in the group |
-| `content/site.yml` | Site title, contact email, address, funder logos | Maintainers |
+| `content/site.yml` | Site title, contact email, address, collaborators, funder logos | Maintainers |
 | `images/` | Photos, figures and logos | Anyone in the group |
-| `templates/` | HTML layouts and `style.css`: how the site looks | Maintainers |
+| `templates/` | HTML layouts, `style.css` and `site.js`: how the site looks and moves (the "QCCD Classic" design) | Maintainers |
 | `data/publications.json` | Publication list. **Generated weekly, don't edit by hand** | The update workflow |
 | `scripts/fetch_publications.py` | Fetches publications from ORCID and OpenAlex | Maintainers |
 | `.github/workflows/` | Builds and deploys the site, refreshes publications | Maintainers |
@@ -23,11 +23,13 @@ The `*.11tydata.json` files in `content/people/`, `content/research/` and `conte
 ### Add a person
 
 1. Copy `content/people/example-student.md` to `content/people/firstname-lastname.md`.
-2. Fill in the header: `name`, `role`, `group` (one of `lead`, `postdoc`, `phd`, `masters`, `visitor`, `alumni`) and `orcid`.
-3. Write a short bio below the second `---`.
-4. Put a square headshot in `images/` named `firstname-lastname.jpg` and set `photo: firstname-lastname.jpg`.
+2. Fill in the header: `name`, `role`, `group` (one of `lead`, `postdoc`, `phd`, `masters`, `undergrad`, `visitor`, `alumni`), `topic` (a few words on their project), `orcid` and `email`.
+3. Write a short bio below the second `---`. It shows on the back of their card.
+4. Put a portrait headshot (4:5, e.g. 800×1000) in `images/` named `firstname-lastname.jpg` and set `photo: firstname-lastname.jpg`. Until then a coloured silhouette stands in.
 
-When someone leaves, change their `group` to `alumni`. They move to the alumni list and their new papers stop being fetched.
+When someone leaves, change their `group` to `alumni` and their `role` to a one-liner such as `PhD 2025 → Postdoc`. They move to the alumni list and their new papers stop being fetched.
+
+Academic collaborators and industry partners are listed in `site.yml`.
 
 ### Post news
 
@@ -36,17 +38,25 @@ Add `content/news/YYYY-MM-DD-short-title.md`:
 ```markdown
 ---
 title: Jane's paper is out in JCTC
+kind: Paper                  # label above the title: Paper, Funding, People, Event, Talk…
+summary: One sentence for the news timeline.
 image: news-jctc-cover.jpg   # optional
 image_alt: Journal cover
 ---
 One or two paragraphs.
 ```
 
-The date in the filename sets the date shown and the order.
+The date in the filename sets the date shown and the order. The News page shows the latest four, with a button for older ones.
 
 ### Edit a research theme
 
-The files in `content/research/` appear in filename order, so `01-…` comes first. Each one has a `title`, an optional `image` and `image_alt`, and the text.
+Research has two sides, each with its own page: quantum computing (`content/research-quantum.md`) and classical quantum chemistry (`content/research-classical.md`). Their themes are the files in `content/research/quantum/` and `content/research/classical/`, shown in filename order, so `01-…` comes first. Each theme has a `title`, a one-line `summary`, `tags`, an optional `image`, `image_alt` and `caption`, and the text.
+
+On the quantum page each theme sits on a qubit wire behind a gate (H, Z, Rx, then a measurement, in that order). On the classical page a small picture in the side panel doubles as the scroll bar; `classical_scrollbar` in `site.yml` picks which of six.
+
+### Open positions and contact
+
+`content/join.md` lists open positions under `roles:` and holds the Join us text. The contact details on that page come from `email`, `address` and `find_us` in `site.yml`.
 
 ### Images
 

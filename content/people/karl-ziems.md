@@ -2,6 +2,7 @@
 name: Dr Karl Michael Ziems
 role: Group leader
 group: lead
+topic:
 photo:                  # e.g. karl-ziems.jpg in images/
 orcid:                  # e.g. 0000-0000-0000-0000
 links:

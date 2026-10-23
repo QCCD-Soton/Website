@@ -1,0 +1,4 @@
+{#- Headshot, or a coloured silhouette until there is one. Expects `person`. -#}
+<div class="avatar{% if person.data.photo %} has-photo{% endif %}" style="--h:{{ person.data.name | hue }}">
+  {%- if person.data.photo %}<img src="{{ person.data.photo | img }}" alt="{{ person.data.name }}">{% else %}{{ person.data.name | initials }}{% endif -%}
+</div>

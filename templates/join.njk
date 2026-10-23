@@ -1,0 +1,37 @@
+---
+layout: base.njk
+---
+<section class="block join" aria-labelledby="join-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2 id="join-title">{{ heading or title }}</h2>
+        <div class="lede prose">{{ content | safe }}</div>
+      </div>
+    </div>
+    <div class="sec-body">
+      {% if roles.length %}
+      <div class="roles">
+        {% for r in roles %}
+        <div class="role-card"><span class="k">{{ r.level }}</span><h3>{{ r.title }}</h3>
+          <p>{{ r.text }}</p>{% if r.status %}<span class="status">{{ r.status }}</span>{% endif %}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if site.email %}
+      <div class="join-actions">
+        <a class="btn primary" href="mailto:{{ site.email }}">Make an enquiry</a>
+        {% if enquiries %}<span>{{ enquiries }}</span>{% endif %}
+      </div>
+      {% endif %}
+      <div class="contact-block" id="contact" aria-labelledby="contact-title">
+        <h3 id="contact-title">Contact</h3>
+        <div class="contact-grid">
+          {% if site.email %}<div><span class="k">Email</span><a href="mailto:{{ site.email }}">{{ site.email }}</a></div>{% endif %}
+          <div><span class="k">Address</span><address>{{ site.address | trim | replace("\n", "<br>") | safe }}</address></div>
+          {% if site.find_us %}<div><span class="k">Find us</span><p>{{ site.find_us }}</p></div>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
