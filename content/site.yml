@@ -27,7 +27,7 @@ partners: []
 #    field: Quantum hardware
 
 # Funder and partner logos for the home page strip. Files go in images/.
-# Use a PNG or SVG with a transparent background where you can; JPGs get a white tile.
+# Each logo sits on a white tile.
 logos:
   - name: UKRI Engineering and Physical Sciences Research Council
     logo: logo-ukri-epsrc.png

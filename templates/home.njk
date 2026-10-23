@@ -31,7 +31,7 @@ layout: base.njk
     <div class="funders" aria-labelledby="funders-title">
       <span class="eyebrow" id="funders-title">Funded by and working with</span>
       <ul class="funder-row">
-        {% for l in site.logos %}<li{% if l.logo.endsWith(".jpg") or l.logo.endsWith(".jpeg") %} class="solid"{% endif %}><a href="{{ l.url }}"><img src="{{ l.logo | img }}" alt="{{ l.name }}"></a></li>{% endfor %}
+        {% for l in site.logos %}<li><a href="{{ l.url }}"><img src="{{ l.logo | img }}" alt="{{ l.name }}"></a></li>{% endfor %}
       </ul>
     </div>
   </div>

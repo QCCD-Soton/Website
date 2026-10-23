@@ -482,9 +482,8 @@ img { max-width: 100%; height: auto; }
 .theme-fig .fig { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; border: 1px solid var(--line); }
 .avatar.has-photo { background: var(--line-soft); overflow: hidden; }
 .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* transparent logos stay transparent; a logo with its own white background (a JPG) gets a white tile to match */
-.funder-row li { height: 96px; border-style: solid; padding: 10px 14px; }
-.funder-row li.solid { background: #fff; }
+/* logos sit on white tiles so they read the same in dark mode */
+.funder-row li { height: 96px; border-style: solid; padding: 10px 14px; background: #fff; }
 .funder-row li a { display: grid; place-items: center; width: 100%; height: 100%; }
 .funder-row img { max-height: 74px; max-width: 100%; width: auto; object-fit: contain; }
 .prose > * + * { margin-top: 1em; }
