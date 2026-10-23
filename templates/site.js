@@ -110,22 +110,16 @@
     measure(); onScroll();
   })();
 
-  // Classical research page: a small physics picture in the side panel doubles as the scroll bar.
-  // Six pictures are drawn below; `classical_scrollbar` in content/site.yml picks one (data-mode on #cbox).
-  // Drag the picture to scroll, click a theme name to jump to it
+  // Classical research page: a particle in a box tracks your place on the page. Each theme adds a node; between themes the state
+  // is a superposition of two levels, so the density sloshes. Click a theme name to jump to it
   (function () {
     var page = document.getElementById('research-classical'), box = document.getElementById('cwire'), side = document.getElementById('cbox');
     if (!page || !box || !side) return;
-    var card = side.querySelector('.cbox'), cv = side.querySelector('canvas'), ctx = cv.getContext('2d');
-    var nOut = side.querySelector('.cbox-n'), title = side.querySelector('.cbox .eyebrow');
+    var cv = side.querySelector('canvas'), ctx = cv.getContext('2d'), nOut = side.querySelector('.cbox-n');
     var themes = Array.prototype.slice.call(box.querySelectorAll('.theme'));
-    var names = themes.map(function (t) { return t.querySelector('h3').textContent; });
     var items = Array.prototype.slice.call(side.querySelectorAll('.cbox-list li'));
     var reduceB = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var raf = 0, C = {}, s0 = 0, s1 = 1, bnd = [0, .25, .5, .75], k = -1, measured = false, PAD = 12, mode = 1;
-    var TITLES = [null, 'Particle in a box', 'Benzene π orbital', 'Reaction path', 'Spectrometer', 'Electron density', 'Tunnelling'];
-    var TALL = [false, true, false, false, true, false, true];
-    var m0 = +side.dataset.mode; if (m0 >= 1 && m0 <= 6) mode = m0;
+    var raf = 0, C = {}, s0 = 0, s1 = 1, bnd = [0, .25, .5, .75], k = -1, measured = false, PAD = 12;
 
     function rgba(hex, a) {
       var h = hex.replace('#', ''); if (h.length === 3) h = h.replace(/./g, '$&$&');
@@ -134,10 +128,9 @@
     function colors() {
       var cs = getComputedStyle(document.documentElement);
       function t(n) { return cs.getPropertyValue(n).trim(); }
-      C = { accent: t('--accent'), ink: t('--ink'), line: t('--line'), muted: t('--muted'), wash: t('--accent-wash'), ink2: t('--ink-2') };
+      C = { accent: t('--accent'), ink: t('--ink'), line: t('--line'), muted: t('--muted'), wash: t('--accent-wash') };
     }
     function cl(v, a, b) { return Math.max(a, Math.min(b, v)); }
-    function smooth(f) { return f * f * (3 - 2 * f); }
     function measure() {
       if (!page.offsetParent) return;
       var top = box.getBoundingClientRect().top + scrollY, h = box.offsetHeight;
@@ -146,44 +139,20 @@
       s1 = Math.max(s0 + 1, Math.min(maxS, top + h - innerHeight * .6));
       bnd = themes.map(function (t) { return cl((t.getBoundingClientRect().top + scrollY - innerHeight * .4 - s0) / (s1 - s0), 0, 1); });
       var H = cv.clientHeight;
-      items.forEach(function (li, i) { li.style.top = TALL[mode] ? (PAD + bnd[i] * (H - 2 * PAD)) + 'px' : ''; });
-      colors(); measured = true; cache = {};
+      items.forEach(function (li, i) { li.style.top = (PAD + bnd[i] * (H - 2 * PAD)) + 'px'; });
+      colors(); measured = true;
     }
     function prog() { return cl((scrollY - s0) / (s1 - s0), 0, 1); }
     function secOf(p) { var i = 0; while (i + 1 < bnd.length && bnd[i + 1] <= p + 1e-4) i++; return i; }
-    function local(p) { var kk = secOf(p), b0 = bnd[kk], b1 = kk + 1 < bnd.length ? bnd[kk + 1] : 1; return { k: kk, f: cl((p - b0) / Math.max(1e-3, b1 - b0), 0, 1) }; }
     function goP(p) { scrollTo(0, s0 + cl(p, 0, 1) * (s1 - s0)); }
     function goTheme(i) { i = cl(i, 0, themes.length - 1); goP(bnd[i] + .002); }
-    function marker(ctx, W, T, B, p) {
-      var yp = T + p * (B - T);
-      ctx.strokeStyle = C.ink; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(0, yp); ctx.lineTo(W, yp); ctx.stroke();
-      ctx.fillStyle = C.ink; ctx.beginPath(); ctx.arc(W - 1.5, yp, 3, 0, 6.2832); ctx.fill();
-    }
-    // marching squares: line segments where f crosses level on an nx x ny grid over the canvas
-    function contour(F, nx, ny, W, H, level) {
-      var seg = [], dx = W / (nx - 1), dy = H / (ny - 1);
-      function lerp(a, b) { return (level - a) / (b - a); }
-      for (var j = 0; j < ny - 1; j++) for (var i = 0; i < nx - 1; i++) {
-        var a = F[j * nx + i], b = F[j * nx + i + 1], c = F[(j + 1) * nx + i + 1], d = F[(j + 1) * nx + i];
-        var idx = (a > level) | (b > level) << 1 | (c > level) << 2 | (d > level) << 3;
-        if (idx === 0 || idx === 15) continue;
-        var x = i * dx, y = j * dy, pts = [];
-        if ((a > level) !== (b > level)) pts.push([x + lerp(a, b) * dx, y]);
-        if ((b > level) !== (c > level)) pts.push([x + dx, y + lerp(b, c) * dy]);
-        if ((d > level) !== (c > level)) pts.push([x + lerp(d, c) * dx, y + dy]);
-        if ((a > level) !== (d > level)) pts.push([x, y + lerp(a, d) * dy]);
-        if (pts.length >= 2) seg.push(pts[0], pts[1]);
-        if (pts.length === 4) seg.push(pts[2], pts[3]);
-      }
-      return seg;
-    }
-    function strokeSeg(seg) { ctx.beginPath(); for (var i = 0; i < seg.length; i += 2) { ctx.moveTo(seg[i][0], seg[i][1]); ctx.lineTo(seg[i + 1][0], seg[i + 1][1]); } ctx.stroke(); }
-    var cache = {};
 
-    // 1. Particle in a box: each theme adds a node; between themes the state is a superposition, so the density sloshes
-    function d1(W, H, p, t) {
-      var T = PAD, B = H - PAD, cx = W / 2, A = W / 2 - 3, L = local(p), f = smooth(L.f);
-      var n = L.k + 1, m = n + 1, c1 = Math.sqrt(1 - f), c2 = Math.sqrt(f), En = .55 * n * n, Em = .55 * m * m, pts = [];
+    function draw(W, H, p, t) {
+      var T = PAD, B = H - PAD, cx = W / 2, A = W / 2 - 3;
+      var kk = secOf(p), b0 = bnd[kk], b1 = kk + 1 < bnd.length ? bnd[kk + 1] : 1, f = cl((p - b0) / Math.max(1e-3, b1 - b0), 0, 1);
+      f = kk + 1 < bnd.length ? f * f * (3 - 2 * f) : 0;
+      var n = kk + 1, m = n + 1, c1 = Math.sqrt(1 - f), c2 = Math.sqrt(f), En = .55 * n * n, Em = .55 * m * m, pts = [];
+      // walls: the box's ends are the infinite walls
       ctx.strokeStyle = C.ink; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(4, T); ctx.lineTo(W - 4, T); ctx.moveTo(4, B); ctx.lineTo(W - 4, B); ctx.stroke();
       ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(cx, T); ctx.lineTo(cx, B); ctx.stroke();
@@ -197,154 +166,11 @@
       ctx.closePath(); ctx.fillStyle = rgba(C.accent, .16); ctx.fill();
       ctx.beginPath(); pts.forEach(function (q, i) { var x = cx + A * q[1] * .5; if (!i) ctx.moveTo(x, q[0]); else ctx.lineTo(x, q[0]); });
       ctx.strokeStyle = C.accent; ctx.lineWidth = 1.6; ctx.stroke();
-      marker(ctx, W, T, B, p);
-      return f < .08 ? 'n = ' + n : f > .92 && L.k + 1 < bnd.length ? 'n = ' + m : 'n = ' + n + ' → ' + m;
-    }
-
-    // 2. The benzene π orbital from the home page draws itself in, contour by contour
-    function d2(W, H, p, t) {
-      var cx = W / 2, cy = H / 2, R = Math.min(W, H) * .17, rot = reduceB ? 0 : t * .05, drawn = 0;
-      ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.beginPath();
-      for (var i = 0; i <= 6; i++) { var a = rot - Math.PI / 2 + i * Math.PI / 3, x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R; if (!i) ctx.moveTo(x, y); else ctx.lineTo(x, y); }
-      ctx.stroke();
-      for (i = 0; i < 6; i++) {
-        var q = cl(p * 6.3 - i * 1.02, 0, 1), ang = rot - Math.PI / 2 + i * Math.PI / 3;
-        var vx = cx + Math.cos(ang) * R, vy = cy + Math.sin(ang) * R;
-        ctx.fillStyle = q > 0 ? C.ink : C.line; ctx.beginPath(); ctx.arc(vx, vy, 2.2, 0, 6.2832); ctx.fill();
-        if (q <= 0) continue;
-        drawn++;
-        var lx = cx + Math.cos(ang) * R * 1.62, ly = cy + Math.sin(ang) * R * 1.62;
-        [1, .72, .46].forEach(function (s, j) {
-          var qq = cl(q * 1.6 - j * .3, 0, 1); if (qq <= 0) return;
-          ctx.strokeStyle = i % 2 ? rgba(C.muted, .8) : C.accent; ctx.lineWidth = j ? 1 : 1.4;
-          ctx.beginPath(); ctx.ellipse(lx - Math.cos(ang) * R * .62 * (1 - s), ly - Math.sin(ang) * R * .62 * (1 - s), R * .62 * s, R * .36 * s, ang, 0, qq * 6.2832); ctx.stroke();
-        });
-      }
-      if (p > .97) { ctx.setLineDash([2, 3]); ctx.strokeStyle = C.accent; ctx.beginPath(); ctx.arc(cx, cy, R * .62, 0, 6.2832); ctx.stroke(); ctx.setLineDash([]); }
-      ctx.fillStyle = C.ink; ctx.fillRect(0, H - 3, W * p, 3);
-      return drawn + ' of 6 lobes';
-    }
-
-    // 3. A marble rolls along the reaction path on a potential energy surface, stopping at a waypoint for each theme
-    var WP = [[.2, .14], [.72, .36], [.28, .62], [.74, .87]];
-    function pes(u, v) {
-      var V = 1.2 * ((u - .5) * (u - .5) + (v - .5) * (v - .5) * .5);
-      WP.forEach(function (w, i) { var d = (u - w[0]) * (u - w[0]) + (v - w[1]) * (v - w[1]); V -= (.55 + .1 * i) * Math.exp(-d / .02); });
-      V -= .25 * Math.exp(-((u - .5) * (u - .5) + (v - .25) * (v - .25)) / .03) + .25 * Math.exp(-((u - .5) * (u - .5) + (v - .75) * (v - .75)) / .03);
-      return V;
-    }
-    function pathAt(s) { // Catmull-Rom through the waypoints, s in [0, 3]
-      var i = Math.min(2, Math.floor(s)), f = s - i, P = [WP[Math.max(0, i - 1)], WP[i], WP[i + 1], WP[Math.min(3, i + 2)]];
-      function cr(a, b, c, d) { return .5 * (2 * b + (-a + c) * f + (2 * a - 5 * b + 4 * c - d) * f * f + (-a + 3 * b - 3 * c + d) * f * f * f); }
-      return [cr(P[0][0], P[1][0], P[2][0], P[3][0]), cr(P[0][1], P[1][1], P[2][1], P[3][1])];
-    }
-    function d3(W, H, p, t) {
-      var key = 'pes' + W + 'x' + H;
-      if (!cache[key]) {
-        var nx = 46, ny = Math.round(46 * H / W), F = new Float32Array(nx * ny), lo = 1e9, hi = -1e9;
-        for (var j = 0; j < ny; j++) for (var i = 0; i < nx; i++) { var v = pes(i / (nx - 1), j / (ny - 1)); F[j * nx + i] = v; lo = Math.min(lo, v); hi = Math.max(hi, v); }
-        cache[key] = []; for (var l = 1; l <= 11; l++) cache[key].push(contour(F, nx, ny, W, H, lo + (hi - lo) * l / 12));
-      }
-      cache[key].forEach(function (seg, l) { ctx.strokeStyle = l < 4 ? rgba(C.accent, .55 - l * .08) : C.line; ctx.lineWidth = 1; strokeSeg(seg); });
-      var L = local(p), s = L.k < 3 ? L.k + smooth(L.f) : 3;
-      ctx.strokeStyle = C.ink; ctx.lineWidth = 1.6; ctx.setLineDash([3, 3]); ctx.beginPath();
-      for (var q = 0; q <= s + 1e-6; q += .04) { var pt = pathAt(Math.min(q, s)); if (!q) ctx.moveTo(pt[0] * W, pt[1] * H); else ctx.lineTo(pt[0] * W, pt[1] * H); }
-      ctx.stroke(); ctx.setLineDash([]);
-      WP.forEach(function (w, i) {
-        ctx.fillStyle = i <= L.k ? C.ink : 'transparent'; ctx.strokeStyle = C.ink; ctx.lineWidth = 1.2;
-        ctx.beginPath(); ctx.arc(w[0] * W, w[1] * H, 4, 0, 6.2832); ctx.fill(); ctx.stroke();
-      });
-      var m = pathAt(s), wob = L.k === 3 && !reduceB ? 1.5 * Math.sin(t * 3) : 0;
-      var gr = ctx.createRadialGradient(m[0] * W + wob, m[1] * H, 0, m[0] * W + wob, m[1] * H, 13);
-      gr.addColorStop(0, rgba(C.accent, .5)); gr.addColorStop(1, rgba(C.accent, 0));
-      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(m[0] * W + wob, m[1] * H, 13, 0, 6.2832); ctx.fill();
-      ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(m[0] * W + wob, m[1] * H, 5.5, 0, 6.2832); ctx.fill();
-      return ['minimum', 'conical intersection', 'solvent basin', 'excitation'][L.k];
-    }
-
-    // 4. A spectrometer sweeps down in wavelength; peaks appear as each theme is reached, coloured by the light
-    var PK = [[[.45, .95, 7]], [[.5, .55, 40]], [[.32, .5, 5], [.45, .8, 5], [.58, .45, 5]], [[.25, .9, 6], [.4, .65, 6], [.55, .42, 6], [.7, .25, 6]]];
-    function wl(nm) {
-      var r = 0, g = 0, b = 0;
-      if (nm < 440) { r = (440 - nm) / 60; b = 1; } else if (nm < 490) { g = (nm - 440) / 50; b = 1; } else if (nm < 510) { g = 1; b = (510 - nm) / 20; }
-      else if (nm < 580) { r = (nm - 510) / 70; g = 1; } else if (nm < 645) { r = 1; g = (645 - nm) / 65; } else r = 1;
-      var k2 = nm < 420 ? .4 + .6 * (nm - 380) / 40 : nm > 700 ? .4 + .6 * (750 - nm) / 50 : 1;
-      return 'rgb(' + Math.round(255 * r * k2) + ',' + Math.round(255 * g * k2) + ',' + Math.round(255 * b * k2) + ')';
-    }
-    function d4(W, H, p, t) {
-      var T = PAD, B = H - PAD, x0 = 9, M = W - 13;
-      function spec(y) {
-        var v = .02 * (1 + Math.sin(y * 1.7) * Math.sin(y * .31));
-        for (var kk = 0; kk < bnd.length; kk++) {
-          var a = T + bnd[kk] * (B - T), b = T + (kk + 1 < bnd.length ? bnd[kk + 1] : 1) * (B - T);
-          PK[kk].forEach(function (q) { var d = y - (a + q[0] * (b - a)); v += q[1] * q[2] * q[2] / (d * d + q[2] * q[2]); });
-        }
-        return Math.min(1, v);
-      }
-      for (var y = T; y < B; y += 2) { ctx.fillStyle = wl(380 + 370 * (y - T) / (B - T)); ctx.fillRect(2, y, 3, 2); }
-      ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0, T); ctx.lineTo(x0, B); ctx.stroke();
+      // where you are on the page
       var yp = T + p * (B - T);
-      for (y = T; y < yp; y += 2) {
-        var c = wl(380 + 370 * (y - T) / (B - T)), v = spec(y), v2 = spec(y + 2);
-        ctx.fillStyle = c.replace('rgb', 'rgba').replace(')', ',.22)'); ctx.fillRect(x0, y, v * M, 2);
-        ctx.strokeStyle = c; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x0 + v * M, y); ctx.lineTo(x0 + v2 * M, y + 2); ctx.stroke();
-      }
-      marker(ctx, W, T, B, p);
-      return Math.round(380 + 370 * p) + ' nm';
-    }
-
-    // 5. Electron density contours that reshape into a different molecule for each theme
-    var MOL = (function () {
-      function ring(n, r, cx, cy, w, a0) { var o = []; for (var i = 0; i < n; i++) { var a = (a0 || 0) + i * 2 * Math.PI / n; o.push([cx + r * Math.cos(a), cy + r * Math.sin(a), w]); } return o; }
-      function pad(a) { while (a.length < 12) a.push([0, 0, 0]); return a; }
-      return [
-        pad([[-.42, 0, 1], [-.14, .08, 1], [.14, -.08, 1], [.42, 0, 1], [-.55, .22, .5], [.55, -.22, .5]]),
-        pad(ring(6, .3, 0, 0, 1, Math.PI / 6).concat(ring(6, .52, 0, 0, .45, Math.PI / 6))),
-        pad([[0, 0, 1.6]].concat(ring(6, .42, 0, 0, .7, 0))),
-        pad(ring(6, .24, -.21, 0, 1, Math.PI / 6).concat(ring(6, .24, .21, 0, 1, Math.PI / 6)).slice(0, 12))
-      ];
-    })();
-    function d5(W, H, p, t) {
-      var L = local(p), f = smooth(cl((L.f - .55) / .45, 0, 1)), A = MOL[L.k], Bm = MOL[Math.min(3, L.k + 1)];
-      var rot = reduceB ? 0 : t * .08, S = Math.min(W, H) * .78, cx = W / 2, cy = H / 2, at = [];
-      for (var i = 0; i < 12; i++) {
-        var x = A[i][0] + (Bm[i][0] - A[i][0]) * f, y = A[i][1] + (Bm[i][1] - A[i][1]) * f, w = A[i][2] + (Bm[i][2] - A[i][2]) * f;
-        var c = Math.cos(rot), s = Math.sin(rot);
-        at.push([cx + (x * c - y * s) * S * .5 / .6, cy + (x * s + y * c) * S * .5 / .6, w]);
-      }
-      var nx = 48, ny = Math.round(48 * H / W), F = new Float32Array(nx * ny), sg = (S * .09) * (S * .09);
-      for (var j = 0; j < ny; j++) for (var ii = 0; ii < nx; ii++) {
-        var px = ii * W / (nx - 1), py = j * H / (ny - 1), v = 0;
-        for (var a = 0; a < 12; a++) if (at[a][2] > 0) { var dx = px - at[a][0], dy = py - at[a][1]; v += at[a][2] * Math.exp(-(dx * dx + dy * dy) / sg); }
-        F[j * nx + ii] = v;
-      }
-      [.18, .35, .6, .9, 1.25].forEach(function (lv, l) { ctx.strokeStyle = rgba(C.accent, .35 + l * .15); ctx.lineWidth = l === 4 ? 1.4 : 1; strokeSeg(contour(F, nx, ny, W, H, lv)); });
-      at.forEach(function (q) { if (q[2] > .2) { ctx.fillStyle = C.ink; ctx.beginPath(); ctx.arc(q[0], q[1], 1.6, 0, 6.2832); ctx.fill(); } });
-      ctx.fillStyle = C.ink; ctx.fillRect(0, H - 3, W * p, 3);
-      return ['diradical', 'aromatic ring', 'solvated ion', 'dye'][f > .5 ? Math.min(3, L.k + 1) : L.k];
-    }
-
-    // 6. A wavepacket in a double well; the further down the page, the more it tunnels into the far well
-    function d6(W, H, p, t) {
-      var T = PAD, B = H - PAD, x0 = 4, M = W - 10, P = .15 + .85 * p, a = reduceB ? P / 2 : P * Math.pow(Math.sin(t * .9), 2);
-      ctx.strokeStyle = C.muted; ctx.lineWidth = 1.2; ctx.beginPath();
-      for (var y = T; y <= B; y += 2) { var u = (y - T) / (B - T), V = Math.pow((u - .5) * (u - .5) - .0625, 2) / .0039; var x = x0 + cl(V, 0, 1) * M; if (y === T) ctx.moveTo(x, y); else ctx.lineTo(x, y); }
-      ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(x0, T);
-      for (y = T; y <= B; y += 2) {
-        var uu = (y - T) / (B - T), gl = Math.exp(-Math.pow((uu - .25) / .07, 2)), gr = Math.exp(-Math.pow((uu - .75) / .07, 2));
-        ctx.lineTo(x0 + ((1 - a) * gl + a * gr) * M * .85, y);
-      }
-      ctx.lineTo(x0, B); ctx.closePath(); ctx.fillStyle = rgba(C.accent, .2); ctx.fill(); ctx.strokeStyle = C.accent; ctx.lineWidth = 1.5; ctx.stroke();
-      marker(ctx, W, T, B, p);
-      return 'tunnelling ' + Math.round(a * 100) + '%';
-    }
-
-    var DR = [null, d1, d2, d3, d4, d5, d6];
-    function setMode(v) {
-      mode = v; title.textContent = TITLES[v];
-      card.classList.toggle('wide', !TALL[v]); card.dataset.mode = v;
-      measured = false; k = -1; kick();
+      ctx.strokeStyle = C.ink; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(0, yp); ctx.lineTo(W, yp); ctx.stroke();
+      ctx.fillStyle = C.ink; ctx.beginPath(); ctx.arc(W - 1.5, yp, 3, 0, 6.2832); ctx.fill();
+      return { n: f < .08 ? 'n = ' + n : f > .92 && kk + 1 < bnd.length ? 'n = ' + m : 'n = ' + n + ' → ' + m, k: kk };
     }
 
     function frame(now) {
@@ -355,35 +181,20 @@
       if (!W || !H) return;
       if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
-      var p = prog(), kk = secOf(p);
-      nOut.textContent = DR[mode](W, H, p, reduceB ? 0 : now / 1000);
-      if (kk !== k) { k = kk; items.forEach(function (li, i) { li.classList.toggle('on', i === k); li.classList.toggle('past', i < k); }); }
-      cv.setAttribute('aria-valuenow', String(Math.round(p * 100)));
-      cv.setAttribute('aria-valuetext', names[kk]);
+      var p = prog(), r = draw(W, H, p, reduceB ? 0 : now / 1000);
+      if (r.k !== k) { k = r.k; items.forEach(function (li, i) { li.classList.toggle('on', i === k); li.classList.toggle('past', i < k); }); }
+      nOut.textContent = r.n;
       if (!reduceB) raf = requestAnimationFrame(frame);
     }
     function kick() { if (!raf) raf = requestAnimationFrame(frame); }
 
-    var drag = null;
-    function pAt(e) { var r = cv.getBoundingClientRect(); return TALL[mode] ? (e.clientY - r.top - PAD) / (r.height - 2 * PAD) : drag.p0 + (e.clientY - drag.y0) / (r.height * 1.5); }
-    cv.addEventListener('pointerdown', function (e) {
-      drag = { p0: prog(), y0: e.clientY }; cv.setPointerCapture(e.pointerId); card.classList.add('dragging');
-      if (TALL[mode]) goP(pAt(e));
-    });
-    cv.addEventListener('pointermove', function (e) { if (drag) goP(pAt(e)); });
-    cv.addEventListener('pointerup', function () { drag = null; card.classList.remove('dragging'); });
-    cv.addEventListener('keydown', function (e) {
-      var kk = secOf(prog());
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); goTheme(kk + 1); }
-      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); goTheme(prog() - bnd[kk] > .02 ? kk : kk - 1); }
-    });
     items.forEach(function (li, i) { li.querySelector('a').addEventListener('click', function (e) { e.preventDefault(); goTheme(i); }); });
     addEventListener('scroll', kick, { passive: true });
     addEventListener('resize', function () { measured = false; kick(); });
     addEventListener('hashchange', function () { measured = false; setTimeout(kick, 50); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measured = false; kick(); });
     addEventListener('themechange', function () { colors(); kick(); });
-    setMode(mode);
+    kick();
   })();
 
   (function () {

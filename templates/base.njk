@@ -24,7 +24,7 @@
       </svg>
       <span class="brand-text">
         <span class="brand-name">{{ site.title }}</span>
-        <span class="brand-sub">{{ site.university }}</span>
+        <span class="brand-sub">{{ site.subtitle }}</span>
       </span>
     </a>
     <nav class="nav" id="nav" aria-label="Main">
@@ -38,7 +38,8 @@
         </div>
       </div>
       <a href="/people/"{% if section == "people" %} aria-current="page"{% endif %}>People</a>
-      <a href="/news/"{% if section == "news" or section == "publications" %} aria-current="page"{% endif %}>News &amp; publications</a>
+      <a href="/news/"{% if section == "news" %} aria-current="page"{% endif %}>News</a>
+      <a href="/publications/"{% if section == "publications" %} aria-current="page"{% endif %}>Publications</a>
       <a class="cta" href="/join/"{% if section == "join" %} aria-current="page"{% endif %}>Join us</a>
     </nav>
     <button class="theme-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav">

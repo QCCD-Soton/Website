@@ -1,7 +1,7 @@
 ---
 layout: base.njk
 ---
-{#- Quantum themes hang off a qubit wire, one gate per theme in this order; classical themes get the side-panel scroll bar. -#}
+{#- Quantum themes hang off a qubit wire, one gate per theme in this order; classical themes get a particle-in-a-box scroll bar. -#}
 {%- set themes = collections.research | track(track) %}
 {%- set gates = ["h", "cx", "rz", "m"] %}
 {%- set prefix = "rq-" if track == "quantum" else "rc-" %}
@@ -38,6 +38,18 @@ layout: base.njk
     </div>
     {% else %}
     <div class="cgrid">
+      <aside class="cside" id="cbox" aria-label="Page position">
+        <div class="cbox">
+          <span class="eyebrow">Particle in a box</span>
+          <div class="cbox-body">
+            <canvas aria-hidden="true"></canvas>
+            <ol class="cbox-list">
+              {% for theme in themes %}<li><a href="#{{ prefix }}{{ theme.fileSlug }}"><span class="n">{{ loop.index | pad }}</span>{{ theme.data.short_title or theme.data.title }}</a></li>{% endfor %}
+            </ol>
+          </div>
+          <span class="cbox-n">n = 1</span>
+        </div>
+      </aside>
       <div class="sec-body themes" id="cwire">
         {% for theme in themes %}
         <article class="theme" id="{{ prefix }}{{ theme.fileSlug }}">
@@ -45,18 +57,6 @@ layout: base.njk
         </article>
         {% endfor %}
       </div>
-      <aside class="cside" id="cbox" data-mode="{{ site.classical_scrollbar }}" aria-label="Page position">
-        <div class="cbox">
-          <span class="eyebrow"></span>
-          <div class="cbox-body">
-            <canvas role="slider" tabindex="0" aria-label="Scroll through the research themes" aria-valuemin="0" aria-valuemax="100"></canvas>
-            <ol class="cbox-list">
-              {% for theme in themes %}<li><a href="#{{ prefix }}{{ theme.fileSlug }}"><span class="n">{{ loop.index | pad }}</span>{{ theme.data.short_title or theme.data.title }}</a></li>{% endfor %}
-            </ol>
-          </div>
-          <span class="cbox-n"></span>
-        </div>
-      </aside>
     </div>
     {% endif %}
   </div>

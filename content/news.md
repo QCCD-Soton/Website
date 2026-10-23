@@ -1,6 +1,5 @@
 ---
 layout: news.njk
-title: News & publications
+title: News
 heading: Recent news
-publications_intro: Group members are shown in bold.
 ---
