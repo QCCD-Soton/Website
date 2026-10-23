@@ -95,11 +95,17 @@ def openalex_by_doi(dois):
 def merge(work, record):
     """Prefer OpenAlex's details where it has them, keeping ORCID's as a fallback."""
     if record:
-        source = (record.get("primary_location") or {}).get("source") or {}
+        # The journal, even when OpenAlex's primary location is a repository such as PubMed.
+        # Failing that, ORCID's journal title, and only then the repository's name.
+        sources = [(loc.get("source") or {}) for loc in
+                   [record.get("primary_location") or {}] + (record.get("locations") or [])]
+        journal = next((s["display_name"] for s in sources
+                        if s.get("display_name") and s.get("type") in ("journal", "conference")), None)
+        repository = next((s["display_name"] for s in sources if s.get("display_name")), None)
         work.update({
             "title": record.get("display_name") or work["title"],
             "year": record.get("publication_year") or work["year"],
-            "venue": source.get("display_name") or work["venue"],
+            "venue": journal or work["venue"] or repository,
             "authors": [a["author"]["display_name"] for a in record.get("authorships", [])],
             "open_access_url": (record.get("open_access") or {}).get("oa_url"),
             "preprint": record.get("type") == "preprint" or work["preprint"],
