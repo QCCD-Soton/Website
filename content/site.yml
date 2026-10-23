@@ -27,6 +27,7 @@ partners: []
 #    field: Quantum hardware
 
 # Funder and partner logos for the home page strip. Files go in images/.
+# Use a PNG or SVG with a transparent background where you can; JPGs get a white tile.
 logos:
   - name: UKRI Engineering and Physical Sciences Research Council
     logo: logo-ukri-epsrc.png
@@ -34,3 +35,6 @@ logos:
   - name: The Leverhulme Trust
     logo: logo-leverhulme-trust.jpg
     url: https://www.leverhulme.ac.uk/
+  - name: Royal Society of Chemistry
+    logo: logo-rsc.png
+    url: https://www.rsc.org/
