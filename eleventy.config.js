@@ -3,7 +3,7 @@ import yaml from "js-yaml";
 import { HtmlBasePlugin } from "@11ty/eleventy";
 
 // Order that people groups appear on the People page.
-const PEOPLE_GROUPS = ["lead", "postdoc", "phd", "masters", "undergrad", "visitor"];
+const PEOPLE_GROUPS = ["lead", "postdoc", "phd", "masters", "visitor", "undergrad"];
 
 export default function (eleventyConfig) {
   // Adds the GitHub Pages path prefix (e.g. /website/) to every link and image.
