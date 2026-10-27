@@ -38,3 +38,6 @@ logos:
   - name: Royal Society of Chemistry
     logo: logo-rsc.png
     url: https://www.rsc.org/
+  - name: HQC2, Hybrid Quantum Chemistry on Hybrid Quantum Computers
+    logo: logo-hqc2.png
+    url: https://hqc2.github.io/
