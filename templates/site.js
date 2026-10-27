@@ -78,12 +78,21 @@
       if (!wire.offsetParent) return;
       gateY = gThemes.map(function (t) { var g = t.querySelector('.tgate'); return t.offsetTop + g.offsetTop + g.offsetHeight / 2; });
       var h = wire.offsetHeight;
-      gateY.forEach(function (y, i) { wire.style.setProperty('--g' + (i + 1), (y / h * 100).toFixed(3) + '%'); });
+      // each gate's colour runs from that gate down to the next; the first one also colours the wire above it
+      var stops = gThemes.map(function (t, i) {
+        var from = i ? (gateY[i] / h * 100).toFixed(3) + '%' : '0%', to = i < gThemes.length - 1 ? (gateY[i + 1] / h * 100).toFixed(3) + '%' : '100%';
+        return 'var(--sig-' + t.getAttribute('data-gate') + ') ' + from + ' ' + to;
+      });
+      wire.style.setProperty('--fill', 'linear-gradient(180deg, ' + stops.join(', ') + ')');
     }
     function setStage(n) {
       if (n === stage) return;
       var prev = stage; stage = n;
-      wire.setAttribute('data-stage', n);
+      var last = n ? gThemes[n - 1].getAttribute('data-gate') : null;
+      var swaps = gThemes.slice(0, n).filter(function (t) { return t.getAttribute('data-gate') === 'z'; }).length;
+      if (last) { wire.setAttribute('data-gate', last); wire.style.setProperty('--q', 'var(--sig-' + last + ')'); }
+      else { wire.removeAttribute('data-gate'); wire.style.removeProperty('--q'); }
+      wire.toggleAttribute('data-swapped', swaps % 2 === 1);
       gThemes.forEach(function (t, i) { t.classList.toggle('passed', i < n); });
       if (prev >= 0 && n > prev && !reduceW) {
         var t = gThemes[n - 1];
@@ -94,7 +103,7 @@
     function update() {
       ticking = false;
       if (!wire.offsetParent) return;
-      if (reduceW) { setStage(4); return; }
+      if (reduceW) { setStage(gThemes.length); return; }
       // near the bottom of the page the reading line can't reach the end of the wire, so speed the light up over the last stretch
       var r = wire.getBoundingClientRect(), y0 = innerHeight * 0.55 - r.top;
       var rem = Math.max(0, document.documentElement.scrollHeight - innerHeight - scrollY), D = Math.max(0, r.height - (y0 + rem)), R = D + 300;

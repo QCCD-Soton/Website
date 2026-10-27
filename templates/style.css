@@ -10,7 +10,7 @@
   --accent: #0b7285;
   --accent-ink: #075766;
   --accent-wash: #e3f1f3;
-  --sig-h: #b7740c; --sig-cx: #0b7285; --sig-rz: #6d4fc2; --sig-m: #c2364f; --wire: #c3cad6;
+  --sig-h: #b7740c; --sig-z: #0b7285; --sig-rx: #6d4fc2; --sig-ry: #2f8a4e; --sig-s: #3d5fc4; --sig-t: #a14f8f; --sig-m: #c2364f; --wire: #c3cad6;
   --navy: #13284a;
   --hero-line: rgba(19, 40, 74, .38);
   --hero-faint: rgba(19, 40, 74, .12);
@@ -23,14 +23,14 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --paper: #0b1220; --surface: #111a2b; --ink: #e7ecf4; --ink-2: #b4bfd0; --muted: #8592a8;
-    --line: #243149; --line-soft: #1a2538; --accent: #5cc3d1; --accent-ink: #8ad6e0; --accent-wash: #12303a; --sig-h: #f0b04e; --sig-cx: #5cc3d1; --sig-rz: #b49cff; --sig-m: #ff8597; --wire: #34425e;
+    --line: #243149; --line-soft: #1a2538; --accent: #5cc3d1; --accent-ink: #8ad6e0; --accent-wash: #12303a; --sig-h: #f0b04e; --sig-z: #5cc3d1; --sig-rx: #b49cff; --sig-ry: #6fd08f; --sig-s: #8fa8ff; --sig-t: #e59ad3; --sig-m: #ff8597; --wire: #34425e;
     --navy: #c9d6ec; --hero-line: rgba(178, 205, 236, .42); --hero-faint: rgba(178, 205, 236, .12);
     --header-bg: rgba(11, 18, 32, .88); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --paper: #0b1220; --surface: #111a2b; --ink: #e7ecf4; --ink-2: #b4bfd0; --muted: #8592a8;
-  --line: #243149; --line-soft: #1a2538; --accent: #5cc3d1; --accent-ink: #8ad6e0; --accent-wash: #12303a; --sig-h: #f0b04e; --sig-cx: #5cc3d1; --sig-rz: #b49cff; --sig-m: #ff8597; --wire: #34425e;
+  --line: #243149; --line-soft: #1a2538; --accent: #5cc3d1; --accent-ink: #8ad6e0; --accent-wash: #12303a; --sig-h: #f0b04e; --sig-z: #5cc3d1; --sig-rx: #b49cff; --sig-ry: #6fd08f; --sig-s: #8fa8ff; --sig-t: #e59ad3; --sig-m: #ff8597; --wire: #34425e;
   --navy: #c9d6ec; --hero-line: rgba(178, 205, 236, .42); --hero-faint: rgba(178, 205, 236, .12);
   --header-bg: rgba(11, 18, 32, .88); color-scheme: dark;
 }
@@ -220,30 +220,32 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .wired .theme-detail li { break-inside: avoid; }
 .wired .rail { position: absolute; left: 38px; top: 0; bottom: 0; width: 2px; }
 .rail .clip { position: absolute; inset: 0; overflow: hidden; }
-.rail .fill { position: absolute; inset: 0;
-  background: linear-gradient(180deg, var(--sig-h) 0, var(--sig-h) var(--g2, 50%), var(--sig-cx) var(--g2, 50%), var(--sig-cx) var(--g3, 75%), var(--sig-rz) var(--g3, 75%), var(--sig-rz) var(--g4, 90%), var(--sig-m) var(--g4, 90%)); }
+/* site.js paints the wire in each gate's colour from that gate down to the next (--fill) */
+.rail .fill { position: absolute; inset: 0; background: var(--fill, var(--sig-h)); }
 .rail .cover { position: absolute; inset: 0; background: var(--wire); will-change: transform; }
 .rail .photon { position: absolute; left: 1px; top: 0; width: 0; height: 0; z-index: 3; will-change: transform; }
-.photon .spin { position: absolute; left: 0; top: 0; width: 0; height: 0; }
-.photon .q { position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 50%; background: var(--sig-h);
-  box-shadow: 0 0 0 3px var(--paper), 0 0 14px 3px var(--sig-h);
-  transition: transform .45s cubic-bezier(.3,1.3,.5,1), opacity .35s, background .35s, box-shadow .35s, border-radius .35s; }
+.photon .spin { position: absolute; left: 0; top: 0; width: 0; height: 0; transition: rotate .45s cubic-bezier(.3,1.3,.5,1); }
+/* --q is the colour of the last gate passed; site.js sets it with data-gate on the wire */
+.photon .q { position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 50%; background: var(--q, var(--sig-h));
+  box-shadow: 0 0 0 3px var(--paper), 0 0 14px 3px var(--q, var(--sig-h));
+  transition: transform .45s cubic-bezier(.3,1.3,.5,1), scale .45s cubic-bezier(.3,1.3,.5,1), opacity .35s, background .35s, box-shadow .35s, border-radius .35s; }
 .photon .q.b { opacity: 0; }
-.wired[data-stage="1"] .photon .q, .wired[data-stage="2"] .photon .q, .wired[data-stage="3"] .photon .q { opacity: 1; }
-/* after H: left dot hollow, right dot filled. The Z gate swaps them (the dots cross over), and Rz keeps that arrangement */
-.wired[data-stage="1"] .photon .q.a { transform: translateX(-9px); }
-.wired[data-stage="1"] .photon .q.b { transform: translateX(9px); }
-.wired[data-stage="2"] .photon .q.a, .wired[data-stage="3"] .photon .q.a { transform: translateX(9px); }
-.wired[data-stage="2"] .photon .q.b, .wired[data-stage="3"] .photon .q.b { transform: translateX(-9px); }
-.wired[data-stage="2"] .photon .q { background: var(--sig-cx); box-shadow: 0 0 0 3px var(--paper), 0 0 14px 3px var(--sig-cx); }
-.wired[data-stage="3"] .photon .q { background: var(--sig-rz); box-shadow: 0 0 0 3px var(--paper), 0 0 14px 3px var(--sig-rz); }
-.wired[data-stage="3"] .photon .spin { animation: phase 1.8s linear infinite; }
-.wired[data-stage="1"] .photon .q.a { background: var(--paper); box-shadow: inset 0 0 0 2px var(--sig-h), 0 0 0 3px var(--paper), 0 0 12px 2px var(--sig-h); }
-.wired[data-stage="2"] .photon .q.a { background: var(--paper); box-shadow: inset 0 0 0 2px var(--sig-cx), 0 0 0 3px var(--paper), 0 0 12px 2px var(--sig-cx); }
-.wired[data-stage="3"] .photon .q.a { background: var(--paper); box-shadow: inset 0 0 0 2px var(--sig-rz), 0 0 0 3px var(--paper), 0 0 12px 2px var(--sig-rz); }
-.wired[data-stage="4"] .photon .q { transform: none; }
-.wired[data-stage="4"] .photon .q.b { opacity: 0; }
-.wired[data-stage="4"] .photon .q.a { background: var(--sig-m); border-radius: 2px; box-shadow: 0 0 0 3px var(--paper), 0 0 14px 3px var(--sig-m); }
+/* each gate's effect on the qubit. Any gate before the measurement splits it into two dots: left hollow, right filled.
+   Z swaps them (the dots cross over) and every Z after that swaps them back (data-swapped). Rx sets the pair spinning, Ry tips the
+   balance between the two dots, S turns the pair a quarter turn and T an eighth. The measurement collapses it to one square dot */
+.wired[data-gate]:not([data-gate="m"]) .photon .q { opacity: 1; }
+.wired[data-gate]:not([data-gate="m"]) .photon .q.a { transform: translateX(-9px); background: var(--paper); box-shadow: inset 0 0 0 2px var(--q), 0 0 0 3px var(--paper), 0 0 12px 2px var(--q); }
+.wired[data-gate]:not([data-gate="m"]) .photon .q.b { transform: translateX(9px); }
+.wired[data-swapped]:not([data-gate="m"]) .photon .q.a { transform: translateX(9px); }
+.wired[data-swapped]:not([data-gate="m"]) .photon .q.b { transform: translateX(-9px); }
+.wired[data-gate="rx"] .photon .spin { animation: phase 1.8s linear infinite; }
+.wired[data-gate="ry"] .photon .q.a { scale: 1.35; }
+.wired[data-gate="ry"] .photon .q.b { scale: .7; }
+.wired[data-gate="s"] .photon .spin { rotate: 90deg; }
+.wired[data-gate="t"] .photon .spin { rotate: 45deg; }
+.wired[data-gate="m"] .photon .q { transform: none; }
+.wired[data-gate="m"] .photon .q.b { opacity: 0; }
+.wired[data-gate="m"] .photon .q.a { border-radius: 2px; }
 @keyframes phase { to { transform: rotate(360deg); } }
 .tgate { position: absolute; left: -96px; top: 44px; width: 78px; height: 78px; display: grid; place-items: center; z-index: 2;
   background: var(--surface); border: 1.5px solid var(--line); border-radius: 4px; font-family: var(--font-mono); font-weight: 500; font-size: 24px; color: var(--muted);
@@ -252,7 +254,6 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .tgate sub { font-size: .55em; }
 .tgate::after { content: ""; position: absolute; inset: -1.5px; border-radius: 4px; border: 2px solid currentColor; opacity: 0; pointer-events: none; }
 .theme.passed .tgate { color: var(--sig); border-color: var(--sig); }
-.theme.g-h { --sig: var(--sig-h); } .theme.g-cx { --sig: var(--sig-cx); } .theme.g-rz { --sig: var(--sig-rz); } .theme.g-m { --sig: var(--sig-m); }
 .theme.fire .tgate { animation: gatehit .6s ease-out; }
 .theme.fire .tgate::after { animation: ring .75s ease-out; }
 @keyframes gatehit { 0% { transform: scale(1); } 18% { transform: scale(1.1); background: var(--sig); color: var(--surface); } 100% { transform: scale(1); } }
