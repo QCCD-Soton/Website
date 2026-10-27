@@ -4,8 +4,6 @@ weight: 10
 description: "Efficient molecular wavefunction preparation on near-term and early fault-tolerant quantum computers."
 ---
 
-# Quantum algorithms for electronic structure
-
 How can we efficiently prepare accurate molecular wavefunctions on quantum computers? We develop and benchmark quantum algorithms for electronic structure, investigating their accuracy, computational efficiency and potential to achieve chemical predictive power compared with established classical methods.
 
 For **near-term quantum computers**, we investigate the variational quantum eigensolver (VQE), including fixed and adaptive ansätze such as ADAPT-VQE. Our research focuses on constructing expressive and resource-efficient ansätze, developing reliable global optimisation strategies, and reducing circuit and measurement costs. A central question is whether, and under which conditions, near-term quantum algorithms can achieve predictive accuracy competitive with traditional electronic-structure methods.

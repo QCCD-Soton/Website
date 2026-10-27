@@ -4,8 +4,6 @@ weight: 20
 description: "Quantum linear response, multistate methods and the calculation of experimentally observable molecular properties."
 ---
 
-# Molecular properties and spectroscopy
-
 We develop quantum algorithms for calculating molecular properties beyond electronic energies, including excitation spectra, response properties, nuclear derivatives and vibrational frequencies. By extending established quantum-chemical theories to quantum computers, we aim to connect quantum algorithms with experimentally observable molecular properties.
 
 To this end, we have co-developed a comprehensive quantum linear-response framework, alongside state-averaged VQE and transition-density-based quantum Krylov subspace methods. These approaches enable the calculation of a wide range of molecular observables, including electronic absorption and circular dichroism spectra, and provide a foundation for studying molecular properties on quantum computers.
