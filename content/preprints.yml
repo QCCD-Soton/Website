@@ -1,0 +1,64 @@
+# arXiv preprints, shown at the top of the Publications page above the published papers.
+# They're listed newest first by date, whatever order they're written in here.
+#
+# To add one, copy an entry and fill in:
+#   title:   exactly as on arXiv
+#   authors: one per line, as on arXiv; group members are bolded automatically
+#   arxiv:   the arXiv number only, e.g. 2606.15489 (no "arXiv:", no version)
+#   date:    the date it first went on arXiv, YYYY-MM-DD
+#   note:    optional, a few words, e.g. "Accepted in JCTC"
+#
+# Once the paper is published and appears in the fetched publication list,
+# delete its entry here so it isn't listed twice.
+
+- title: "Analytical Nuclear Gradients and Hessians on Quantum Hardware via Orbital-Optimized VQE with Error Mitigation"
+  authors:
+    - Renato Olarte Hernandez
+    - Karl Michael Ziems
+    - Erik Kjellgren
+    - Jacob Kongsted
+    - Sonia Coriani
+    - Stephan P. A. Sauer
+  arxiv: "2608.08758"
+  date: 2026-08-09
+
+- title: "Orbital-optimized spin-adapted multistate contracted VQE for excited states and properties on quantum hardware"
+  authors:
+    - Erik Rosendahl Kjellgren
+    - Karl Michael Ziems
+    - Peter Reinholdt
+    - Stephan P. A. Sauer
+    - Sonia Coriani
+    - Jacob Kongsted
+  arxiv: "2606.15489"
+  date: 2026-06-13
+
+- title: "Resource-efficient energy-based operator selection in fermionic ADAPT-VQE via exact Hamiltonian transformation"
+  authors:
+    - Emanuele Rossi
+    - Erik Rosendahl Kjellgren
+    - Artur F. Izmaylov
+    - Stephan P. A. Sauer
+    - Karl Michael Ziems
+    - Sonia Coriani
+  arxiv: "2606.04786"
+  date: 2026-06-03
+
+- title: "Tackling instabilities of quantum Krylov subspace methods: an analysis of the numerical and statistical errors"
+  authors:
+    - Maria Gabriela Jordão Oliveira
+    - Karl Michael Ziems
+    - Nina Glaser
+  arxiv: "2604.11532"
+  date: 2026-04-13
+
+- title: "Quantum error mitigation using energy sampling and extrapolation enhanced Clifford data regression"
+  authors:
+    - Zhongqi Zhao
+    - Erik Rosendahl Kjellgren
+    - Sonia Coriani
+    - Jacob Kongsted
+    - Stephan P. A. Sauer
+    - Karl Michael Ziems
+  arxiv: "2511.03556"
+  date: 2025-11-05

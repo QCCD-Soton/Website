@@ -29,8 +29,9 @@
   });
   nav.addEventListener('click', function (e) { if (e.target.tagName === 'A') { nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); } });
 
-  // Publications: the latest few are shown, the rest on request; a year button shows every paper from that year
-  var chips = document.querySelectorAll('.pub-tools .chip'), pubs = document.querySelectorAll('.pub');
+  // Publications: the latest few are shown, the rest on request; a year button shows every paper from that year.
+  // Preprints sit in their own list above the year buttons and are always shown.
+  var chips = document.querySelectorAll('.pub-tools .chip'), pubs = document.querySelectorAll('#pubs .pub');
   var pubBtn = document.getElementById('pubToggle'), pubYear = 'all', pubOpen = false;
   function showPubs() {
     pubs.forEach(function (p) {

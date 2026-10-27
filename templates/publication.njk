@@ -6,6 +6,8 @@
     <div class="pub-meta">
       {% if pub.venue %}<span class="journal">{{ pub.venue }}</span>{% endif %}
       {% if pub.preprint %}<span class="tag">Preprint</span>{% endif %}
+      {% if pub.note %}<span class="pub-note">{{ pub.note }}</span>{% endif %}
+      {% if pub.arxiv %}<a class="doi" href="{{ pub.url }}">arXiv:{{ pub.arxiv }}</a>{% endif %}
       {% if pub.doi %}<a class="doi" href="https://doi.org/{{ pub.doi }}">doi:{{ pub.doi }}</a>{% endif %}
     </div>
   </div>
