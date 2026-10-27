@@ -13,6 +13,7 @@ All the text lives in `content/` as Markdown files. Every change merged into `ma
 | `images/` | Photos, figures and logos | Anyone in the group |
 | `templates/` | HTML layouts, `style.css` and `site.js`: how the site looks and moves (the "QCCD Classic" design) | Maintainers |
 | `data/publications.json` | Publication list. **Generated weekly, don't edit by hand** | The update workflow |
+| `content/preprints.yml` | arXiv preprints, added by hand | Anyone in the group |
 | `scripts/fetch_publications.py` | Fetches publications from ORCID and OpenAlex | Maintainers |
 | `.github/workflows/` | Builds and deploys the site, refreshes publications | Maintainers |
 
@@ -67,6 +68,12 @@ Every image goes in `images/`. A content file links to an image by naming it in 
 `.github/workflows/publications.yml` runs every Monday (or from the Actions tab with "Run workflow"). It collects the works of every current member with an `orcid` in their person file, fills in details from OpenAlex, and opens a pull request if anything changed. Check that the new papers belong to the group, then merge. Only papers from `publications_since` in `site.yml` onwards are included.
 
 For this to work, enable **Settings → Actions → General → Allow GitHub Actions to create and approve pull requests**.
+
+### Add a preprint
+
+arXiv preprints are listed by hand in `content/preprints.yml` and shown under **Preprints** at the top of the Publications page, above the published papers. Copy an entry and fill in the `title` and `authors` exactly as on arXiv, the `arxiv` number (e.g. `"2606.15489"`, in quotes), the `date` it went on arXiv (`YYYY-MM-DD`), and optionally a short `note`. Group members are bolded automatically and entries are sorted newest first. The year buttons only filter the published list, so preprints always stay visible.
+
+Once a preprint is published and shows up in the fetched list (after the weekly update is merged), delete its entry from `preprints.yml` so it isn't listed twice. When the file has no entries the Preprints section disappears.
 
 ## Making a change
 

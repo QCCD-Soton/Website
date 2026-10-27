@@ -504,3 +504,6 @@ a.oa { text-decoration: none; }
 .post-img { display: block; margin-bottom: 32px; border-radius: 4px; }
 [hidden] { display: none !important; }
 .pub-toggle { margin-left: 0; }
+.pub-note { font-size: 13.5px; color: var(--ink-2); }
+.preprints { margin-bottom: 64px; }
+.preprints .pubs { border-top: 0; }

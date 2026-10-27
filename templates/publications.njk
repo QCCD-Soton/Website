@@ -12,6 +12,13 @@ layout: base.njk
       </div>
     </div>
     <div class="sec-body">
+      {% if preprints.length %}
+      <section class="preprints" aria-labelledby="preprints-title">
+        <div class="group-label"><h3 id="preprints-title">Preprints</h3><span class="count">{{ preprints.length }}</span></div>
+        <ol class="pubs">{% for pub in preprints %}{% set more = false %}{% include "publication.njk" %}{% endfor %}</ol>
+      </section>
+      <div class="group-label"><h3>Published</h3><span class="count">{{ publications.length }}</span></div>
+      {% endif %}
       {% if publications.length %}
       <div class="pub-tools" role="group" aria-label="Filter by year">
         <button class="chip" data-year="all" aria-pressed="true">All</button>

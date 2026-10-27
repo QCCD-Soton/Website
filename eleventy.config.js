@@ -14,6 +14,31 @@ export default function (eleventyConfig) {
   );
   eleventyConfig.addWatchTarget("content/site.yml");
 
+  // Hand-kept arXiv preprints, shaped like a fetched publication so publication.njk can show them.
+  // Fails the build naming the entry if its title or arXiv number is missing.
+  eleventyConfig.addGlobalData("preprints", () => {
+    const file = "content/preprints.yml";
+    const entries = (fs.existsSync(file) && yaml.load(fs.readFileSync(file, "utf8"))) || [];
+    return entries.map((p, i) => {
+      const id = String(p.arxiv ?? "").trim().replace(/^arxiv:\s*/i, "").replace(/v\d+$/, "");
+      if (!p.title || !id) {
+        throw new Error(`${file}: entry ${i + 1} needs a title and an arxiv number`);
+      }
+      const date = p.date ? new Date(p.date) : null;
+      return {
+        title: p.title,
+        authors: p.authors ?? [],
+        year: date ? date.getFullYear() : "",
+        sortKey: date ? date.getTime() : 0,
+        url: `https://arxiv.org/abs/${id}`,
+        arxiv: id,
+        note: p.note,
+        preprint: true,
+      };
+    }).sort((a, b) => b.sortKey - a.sortKey);
+  });
+  eleventyConfig.addWatchTarget("content/preprints.yml");
+
   eleventyConfig.addPassthroughCopy("images");
   eleventyConfig.addPassthroughCopy({ "templates/style.css": "style.css" });
   eleventyConfig.addPassthroughCopy({ "templates/site.js": "site.js" });
