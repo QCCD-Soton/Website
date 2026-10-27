@@ -283,9 +283,9 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .cbox-list li.on a .n { color: var(--accent-ink); }
 .cbox-n { font-family: var(--font-mono); font-size: 12px; color: var(--muted); border-top: 1px solid var(--line-soft); padding-top: 10px; }
 @media (max-width: 920px) {
-  .cgrid { grid-template-columns: minmax(0, 1fr); }
-  .cgrid > .themes { padding-left: 44px; }
-  .cside { position: fixed; left: 8px; top: 50%; transform: translateY(-50%); z-index: 15; }
+  /* the box keeps its own slim column beside the themes, so it never sits over the heading or text */
+  .cgrid { grid-template-columns: 42px minmax(0, 1fr); gap: 16px; }
+  .cside { top: max(80px, 20vh); }
   .cbox { padding: 6px; gap: 0; }
   .cbox .eyebrow, .cbox-list, .cbox-n { display: none; }
   .cbox-body { grid-template-columns: 30px; height: 60vh; }
