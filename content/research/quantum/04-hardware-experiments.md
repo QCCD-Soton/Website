@@ -4,8 +4,6 @@ weight: 40
 description: "Proof-of-concept molecular energies and properties on real quantum processors."
 ---
 
-# Quantum hardware experiments
-
 The ultimate test of a quantum algorithm is its performance on real quantum hardware. We conduct proof-of-concept experiments to calculate molecular energies and properties, investigate practical hardware limitations, benchmark algorithm performance and identify opportunities for improvement.
 
 Our pioneering hardware demonstrations include the calculation of molecular absorption spectra using quantum linear response, analytical nuclear Hessians through orbital-optimised VQE and response theory, and molecular hyperfine coupling constants. These experiments demonstrate the capabilities of current quantum computers while highlighting the challenges that remain for chemically accurate simulations.

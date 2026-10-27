@@ -212,7 +212,12 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .theme-fig figcaption { font-size: 13px; color: var(--muted); }
 /* quantum page: the themes hang off one qubit wire; the light passes through each gate as you scroll */
 .wired { position: relative; padding-left: 96px; }
-.wired .theme { position: relative; }
+.wired .theme { position: relative; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "head fig" "detail detail"; gap: 32px 40px; }
+/* quantum themes: big title beside the image, then the text in two columns across the full width */
+.wired .theme-head h3 { font-size: clamp(36px, 4.6vw, 60px); line-height: 1.05; font-weight: 300; letter-spacing: -.02em; }
+.wired .theme-detail { display: block; columns: 2; column-gap: 40px; }
+.wired .theme-detail > * { margin-top: 0; margin-bottom: 14px; }
+.wired .theme-detail li { break-inside: avoid; }
 .wired .rail { position: absolute; left: 38px; top: 0; bottom: 0; width: 2px; }
 .rail .clip { position: absolute; inset: 0; overflow: hidden; }
 .rail .fill { position: absolute; inset: 0;
@@ -450,7 +455,8 @@ address { font-style: normal; line-height: 1.7; }
   .orbital figcaption { display: none; }
   .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fact:nth-child(3) { padding-left: 0; border-left: 0; }
-  .theme { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "fig" "detail"; padding-block: 32px; }
+  .theme, .wired .theme { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "fig" "detail"; padding-block: 32px; }
+  .wired .theme-detail { columns: 1; }
   .pi { grid-template-columns: minmax(0, 1fr); padding: 28px 22px; gap: 24px; }
   .people { gap: 14px; }
   .pi .avatar { width: 160px; height: 200px; }
