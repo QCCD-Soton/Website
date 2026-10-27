@@ -98,6 +98,8 @@ h2 { font-size: clamp(30px, 3.6vw, 44px); line-height: 1.1; }
 h3 { font-size: 23px; line-height: 1.25; }
 p { margin: 0; }
 .lede { font-size: 19px; line-height: 1.6; color: var(--ink-2); max-width: 58ch; }
+/* research intros run the full width of their heading */
+.lede.wide { max-width: none; }
 
 /* Hero */
 .hero { position: relative; border-bottom: 1px solid var(--line-soft); overflow: hidden; }
