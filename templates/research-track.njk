@@ -1,9 +1,11 @@
 ---
 layout: base.njk
 ---
-{#- Quantum themes hang off a qubit wire, one gate per theme in this order; classical themes get a particle-in-a-box scroll bar. -#}
+{#- Quantum themes hang off a qubit wire, one gate per theme taken from this list in order, with the measurement always on the last theme.
+    Each gate has its own colour (--sig-<id> in style.css) and its own effect on the qubit (.wired[data-gate="<id>"] in style.css),
+    so the list can grow or be reordered freely. Classical themes get a particle-in-a-box scroll bar. -#}
 {%- set themes = collections.research | track(track) %}
-{%- set gates = ["h", "cx", "rz", "m"] %}
+{%- set gates = ["h", "z", "rx", "s", "ry", "t"] %}
 {%- set prefix = "rq-" if track == "quantum" else "rc-" %}
 <section class="block" id="research-{{ track }}" aria-labelledby="track-title">
   <div class="wrap">
@@ -24,13 +26,12 @@ layout: base.njk
     <div class="sec-body themes wired" id="qwire">
       <div class="rail" aria-hidden="true"><div class="clip"><div class="fill"></div><div class="cover"></div></div><div class="photon"><div class="spin"><i class="q a"></i><i class="q b"></i></div></div></div>
       {% for theme in themes %}
-      {%- set gate = gates[(loop.index0) % 4] %}
-      <article class="theme g-{{ gate }}" id="{{ prefix }}{{ theme.fileSlug }}">
+      {%- set gate = "m" if loop.last else gates[loop.index0 % gates.length] %}
+      <article class="theme" id="{{ prefix }}{{ theme.fileSlug }}" data-gate="{{ gate }}" style="--sig: var(--sig-{{ gate }})">
         <div class="tgate" aria-hidden="true">
-          {%- if gate == "h" %}H
-          {%- elif gate == "cx" %}Z
-          {%- elif gate == "rz" %}<span>R<sub>x</sub></span>
-          {%- else %}<svg viewBox="0 0 44 44"><path d="M8 32 A14 14 0 0 1 36 32" fill="none" stroke="currentColor" stroke-width="2"></path><line x1="22" y1="32" x2="33" y2="13" stroke="currentColor" stroke-width="2"></line></svg>{% endif -%}
+          {%- if gate == "m" %}<svg viewBox="0 0 44 44"><path d="M8 32 A14 14 0 0 1 36 32" fill="none" stroke="currentColor" stroke-width="2"></path><line x1="22" y1="32" x2="33" y2="13" stroke="currentColor" stroke-width="2"></line></svg>
+          {%- elif gate == "rx" or gate == "ry" %}<span>R<sub>{{ gate[1] }}</sub></span>
+          {%- else %}{{ gate | upper }}{% endif -%}
         </div>
         {% include "theme.njk" %}
       </article>
