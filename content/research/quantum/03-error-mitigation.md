@@ -1,7 +1,5 @@
 ---
 title: "Quantum error mitigation"
-weight: 30
-description: "Characterising hardware noise and developing scalable mitigation strategies for quantum chemistry."
 ---
 
 Noise remains a major challenge to accurate quantum-chemical calculations on current quantum hardware. We investigate how noise affects quantum algorithms for molecular simulations and develop error-mitigation strategies to improve the accuracy and reliability of their predictions.

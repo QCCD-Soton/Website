@@ -1,7 +1,5 @@
 ---
 title: "Quantum hardware experiments"
-weight: 40
-description: "Proof-of-concept molecular energies and properties on real quantum processors."
 ---
 
 The ultimate test of a quantum algorithm is its performance on real quantum hardware. We conduct proof-of-concept experiments to calculate molecular energies and properties, investigate practical hardware limitations, benchmark algorithm performance and identify opportunities for improvement.
