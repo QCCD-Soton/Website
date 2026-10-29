@@ -42,6 +42,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("images");
   eleventyConfig.addPassthroughCopy({ "templates/style.css": "style.css" });
   eleventyConfig.addPassthroughCopy({ "templates/site.js": "site.js" });
+  eleventyConfig.addPassthroughCopy({ "templates/pink.css": "pink.css" });
+  eleventyConfig.addPassthroughCopy({ "templates/pink.js": "pink.js" });
 
   // Fails the build with the file's name if a person has no name, which usually means
   // the first line of the file isn't exactly ---, so its details weren't read.
