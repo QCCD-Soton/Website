@@ -73,7 +73,6 @@ Not every place you can type text understands Markdown. There are three kinds:
 
 **Markdown text** is everything below the second `---` in a content file: page intros, person bios, research theme text and news posts. Paragraphs, `**bold**`, `*italic*`, `[links](https://…)`, `<https://…>`, `##` headings, `-` and `1.` lists, and HTML such as `H<sub>2</sub>O` all work. These don't:
 
-- Maths. `$E=mc^2$` shows the dollar signs. Use HTML (`H<sub>2</sub>O`, `x<sup>2</sup>`) or Unicode characters (ψ, ⟨ψ|, ℏ).
 - Footnotes (`[^1]`).
 - Bare web addresses. `https://…` on its own stays plain text, so write `[text](https://…)` or `<https://…>`.
 - `{{` and `{%`. These are read as template code and break the build or disappear.
@@ -81,7 +80,19 @@ Not every place you can type text understands Markdown. There are three kinds:
 - Tables, block quotes (`>`) and `` `code` `` do render, but have no styling, so they look like plain text (tables have no lines). Best avoided.
 - Headings in bios and news posts. They're shown large and look out of place in a card or a short post.
 
-**Inline Markdown** is a role's `text:` in `content/join.md`. Links, bold and italic work. Everything else stays on one line as one paragraph: no lists, headings or line breaks.
+**Maths** works in Markdown text, written in LaTeX between dollar signs. `$E = mc^2$` sits in the sentence; `$$ ... $$` on lines of their own is shown centred on its own line:
+
+```markdown
+The energy is bounded by $E_0 \le \langle\psi|\hat H|\psi\rangle$, where
+
+$$
+\hat H = \sum_{pq} h_{pq}\, a_p^\dagger a_q + \tfrac12 \sum_{pqrs} g_{pqrs}\, a_p^\dagger a_q^\dagger a_s a_r
+$$
+```
+
+It's drawn by [KaTeX](https://katex.org/docs/supported.html) (that page lists every command) when the site is built, so it appears instantly and looks the same in light and dark mode. A price like `$5` stays as text, because maths needs the `$` to touch its first character. If some LaTeX doesn't work, the build fails and names the page and the maths, so it can't go live broken. A wide equation scrolls sideways on a phone rather than squashing. For a quick H<sub>2</sub>O or ℏ in ordinary text, HTML (`H<sub>2</sub>O`) and Unicode still work too. Avoid `{{` and `{%` in maths as anywhere else (write `{ {` with a space).
+
+**Inline Markdown** is a role's `text:` in `content/join.md`. Links, bold, italic and `$maths$` work. Everything else stays on one line as one paragraph: no lists, headings or line breaks.
 
 **Plain text** is every other header field, plus everything in `site.yml` and `preprints.yml`: titles, `heading`, `summary`, `kind`, `role`, `topic`, `tags`, `caption`, `image_alt`, a role's `level`, `title` and `status`, `enquiries`, collaborator names, preprint notes and so on. Markdown and HTML show exactly as typed, so `*word*` appears with the asterisks. The one exception is `address` in `site.yml`, where each line break is kept.
 
