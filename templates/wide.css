@@ -1,8 +1,27 @@
-/* Wide mode: on while <html> has data-wide. Every .wrap (header, sections, footer) is stretched sideways by --wide-s,
-   which wide.js sets so the content fills the window: text, buttons, cards and all, like a 4:3 picture on a widescreen TV. */
-@media (min-width: 1600px) and (min-aspect-ratio: 9/4) {   /* ultrawide-shaped windows only, as in wide.js */
-  [data-wide] .wrap { transform: scaleX(var(--wide-s, 1)); }
-  [data-wide] body { overflow-x: clip; }   /* the stretched gutters would otherwise add a sideways scroll */
+/* Wide mode: on while <html> has data-wide, in an ultrawide-shaped window (as in wide.js). The page width cap goes and the
+   layout spreads out to fill the window: more columns, wider gaps, bigger margins. Type and images keep their usual size. */
+@property --maxw { syntax: '<length>'; inherits: true; initial-value: 1180px; }
+@media (min-width: 1600px) and (min-aspect-ratio: 9/4) {
+  :root[data-wide] { --maxw: calc(100vw - 224px); }   /* .wrap adds 64px of padding, leaving 80px margins either side */
+  /* the links spread evenly along the right half of the header */
+  [data-wide] .nav { flex: 0 1 50%; justify-content: space-between; }
+  [data-wide] .nav a { padding-inline: 16px; }
+  [data-wide] .site-header .wrap { gap: 48px; }
+  [data-wide] .hero > .wrap:first-child { gap: 96px; }
+  [data-wide] .photo-ph, [data-wide] .group-photo .photo { aspect-ratio: 32 / 9; width: 100%; max-height: 56vh; object-fit: cover; }
+  [data-wide] .home-intro { max-width: 90ch; }
+  [data-wide] .funder-row { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; }
+  [data-wide] .lede { max-width: 80ch; }
+  /* cards keep their usual size; a group of three or more spreads across the whole row, smaller groups sit left as usual */
+  [data-wide] .people { grid-template-columns: repeat(auto-fit, minmax(260px, 360px)); gap: 40px; }
+  [data-wide] .people:has(> :nth-child(3)) { justify-content: space-between; }
+  [data-wide] .alumni { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 40px; }
+  /* each research theme on one row: title, then the text in two columns, then the image */
+  [data-wide] .theme { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 560px); grid-template-areas: "head detail fig"; gap: 64px; }
+  [data-wide] .pubs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 64px; }
+  [data-wide] .theme-index ol { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 40px; }
+  [data-wide] .choose { gap: 40px; }
+  [data-wide] .contact-grid { gap: 64px; }
 }
 
 .wide-badge {
@@ -21,8 +40,8 @@
 #kyle-acheson, #luke-wright { transition: transform .25s cubic-bezier(.3, 1.6, .5, 1); -webkit-tap-highlight-color: transparent; }
 #kyle-acheson[style*="--wide-tap"], #luke-wright[style*="--wide-tap"] { transform: scaleX(calc(1 + var(--wide-tap) * .04)); }
 
-/* Switching: the page springs out (or back) with an overshoot. Rejected: it strains sideways and snaps back, unchanged. */
-.wide-anim .wrap { transition: transform 1.1s cubic-bezier(.5, -0.3, .3, 1.4); }
+/* Switching: the width cap springs out (or back) with an overshoot. Rejected: the page strains sideways and snaps back, unchanged. */
+.wide-anim { transition: --maxw 1.1s cubic-bezier(.5, -0.3, .3, 1.4); }
 .wide-reject .wrap { animation: widereject 1.1s ease-out; }
 @keyframes widereject {
   0% { transform: none; } 30% { transform: scaleX(1.06); } 42% { transform: scaleX(.97); }

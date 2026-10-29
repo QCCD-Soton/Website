@@ -65,7 +65,7 @@ A hidden pink theme. Tap the "&" in the home page title five times within a coup
 
 ### Wide mode
 
-A hidden layout for the group's ultrawide owners. Tap Kyle's or Luke's card on the People page five times within a couple of seconds to switch it on or off. It stretches the whole page sideways (text, buttons, cards and all) to fill a wide window, with a springy animation. It only works in an ultrawide-shaped window (at least 1600px wide and 2.25 times as wide as tall, so a maximised 16:9 browser doesn't count); anywhere else it's rejected and nothing changes, and if the window later turns narrower the page simply goes back to normal. It works alongside pink mode and is remembered the same way. It lives in `templates/wide.css` and `templates/wide.js`.
+A hidden layout for the group's ultrawide owners. Tap Kyle's or Luke's card on the People page five times within a couple of seconds to switch it on or off. It drops the page width cap and spreads the layout out to fill the window (more columns, wider gaps, research themes on one row), with a springy animation; text and images keep their usual size. It only works in an ultrawide-shaped window (at least 1600px wide and 2.25 times as wide as tall, so a maximised 16:9 browser doesn't count); anywhere else it's rejected and nothing changes, and if the window later turns narrower the page simply goes back to normal. It works alongside pink mode and is remembered the same way. It lives in `templates/wide.css` and `templates/wide.js`.
 
 ### Images
 
