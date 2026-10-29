@@ -5,7 +5,7 @@ layout: base.njk
 <section class="hero" aria-labelledby="hero-title">
   <div class="wrap">
     <div class="hero-copy">
-      <span class="eyebrow">{{ site.university }} · {{ site.school }}</span>
+      <span class="eyebrow hero-eyebrow"><span>{{ site.university }}</span> · <span>{{ site.school }}</span>{% if site.subtitle %} · <span>{{ site.subtitle }}</span>{% endif %}</span>
       <h1 id="hero-title">{% if title_parts.length == 2 %}<span>{{ title_parts[0] }}</span> <span>&amp; <em>{{ title_parts[1] }}</em></span>{% else %}{{ site.title }}{% endif %}</h1>
     </div>
     <figure class="orbital" style="margin:0">

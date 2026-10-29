@@ -106,6 +106,8 @@ p { margin: 0; }
 .hero > .wrap:first-child { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 40px; /* GAP in site.js */ align-items: center; padding-block: 32px 48px; }
 .hero-copy { display: flex; flex-direction: column; gap: 28px; min-width: 0; }
 /* the title sits on two lines beside the logo: "Quantum Computing" / "& Quantum Chemistry" */
+/* university · school · group: wrap between the parts, never inside one */
+.hero-eyebrow > span { white-space: nowrap; }
 .hero h1 { font-size: clamp(40px, 5.2vw, 68px); }
 .hero h1 > span { display: block; white-space: nowrap; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
