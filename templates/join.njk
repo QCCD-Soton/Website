@@ -14,7 +14,7 @@ layout: base.njk
       <div class="roles">
         {% for r in roles %}
         <div class="role-card"><span class="k">{{ r.level }}</span><h3>{{ r.title }}</h3>
-          <p>{{ r.text }}</p>{% if r.status %}<span class="status">{{ r.status }}</span>{% endif %}</div>
+          <p>{{ r.text | inlineMd | safe }}</p>{% if r.status %}<span class="status">{{ r.status }}</span>{% endif %}</div>
         {% endfor %}
       </div>
       {% endif %}

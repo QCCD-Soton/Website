@@ -57,7 +57,7 @@ On the quantum page each theme sits on a qubit wire behind a gate (H, Z, Rx, the
 
 ### Open positions and contact
 
-`content/join.md` lists open positions under `roles:` and holds the Join us text. The contact details on that page come from `email`, `address` and `find_us` in `site.yml`.
+`content/join.md` lists open positions under `roles:` and holds the Join us text. A role's `text:` can hold Markdown links, written `[Apply here](https://…)`. The contact details on that page come from `email`, `address` and `find_us` in `site.yml`.
 
 ### Pink mode
 
