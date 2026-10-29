@@ -67,6 +67,26 @@ A hidden pink theme. Tap the "&" in the home page title five times within a coup
 
 A hidden layout for the group's ultrawide owners. Tap Kyle's or Luke's card on the People page five times within a couple of seconds to switch it on or off. It stretches the whole page sideways (text, buttons, cards and all) to fill a wide window, with a springy animation. It only works in an ultrawide-shaped window (at least 1600px wide and 2.25 times as wide as tall, so a maximised 16:9 browser doesn't count); anywhere else it's rejected and nothing changes, and if the window later turns narrower the page simply goes back to normal. It works alongside pink mode and is remembered the same way. It lives in `templates/wide.css` and `templates/wide.js`.
 
+### Formatting text
+
+Not every place you can type text understands Markdown. There are three kinds:
+
+**Markdown text** is everything below the second `---` in a content file: page intros, person bios, research theme text and news posts. Paragraphs, `**bold**`, `*italic*`, `[links](https://…)`, `<https://…>`, `##` headings, `-` and `1.` lists, and HTML such as `H<sub>2</sub>O` all work. These don't:
+
+- Maths. `$E=mc^2$` shows the dollar signs. Use HTML (`H<sub>2</sub>O`, `x<sup>2</sup>`) or Unicode characters (ψ, ⟨ψ|, ℏ).
+- Footnotes (`[^1]`).
+- Bare web addresses. `https://…` on its own stays plain text, so write `[text](https://…)` or `<https://…>`.
+- `{{` and `{%`. These are read as template code and break the build or disappear.
+- Images with `![]()`. Use the header fields (`image:`, `photo:`) so a missing file stops the build.
+- Tables, block quotes (`>`) and `` `code` `` do render, but have no styling, so they look like plain text (tables have no lines). Best avoided.
+- Headings in bios and news posts. They're shown large and look out of place in a card or a short post.
+
+**Inline Markdown** is a role's `text:` in `content/join.md`. Links, bold and italic work. Everything else stays on one line as one paragraph: no lists, headings or line breaks.
+
+**Plain text** is every other header field, plus everything in `site.yml` and `preprints.yml`: titles, `heading`, `summary`, `kind`, `role`, `topic`, `tags`, `caption`, `image_alt`, a role's `level`, `title` and `status`, `enquiries`, collaborator names, preprint notes and so on. Markdown and HTML show exactly as typed, so `*word*` appears with the asterisks. The one exception is `address` in `site.yml`, where each line break is kept.
+
+A news post without a `summary` shows its first sentence on the timeline as plain text, so add a `summary` if that sentence has a link or formatting in it.
+
 ### Images
 
 Every image goes in `images/`. A content file links to an image by naming it in the header (`photo:`, `image:`, `group_photo:`, or `logo:` in `site.yml`). If the named file doesn't exist, the build fails and says which one, so it can't go live broken. Use a prefix so the folder stays easy to scan: a person's name for headshots, `team-…` for group photos, `logo-…` for logos, `news-…` for news images.
