@@ -220,7 +220,7 @@
     function fade(c) { return /^#[0-9a-f]{6}$/i.test(c) ? c + '00' : 'rgba(0,0,0,0)'; }
     var C = {};
     function colors() {
-      C.line = tok('--navy'); C.teal = tok('--accent'); C.paper = tok('--paper'); C.muted = tok('--muted');
+      C.line = C.navy = tok('--navy'); C.soft = tok('--hero-line'); C.teal = tok('--accent'); C.paper = tok('--paper');
     }
     // 3D point on the unit sphere (y up, z toward the viewer) to screen offset and depth
     function proj(p) { return [p[0], -p[1] * ct + p[2] * st, p[2] * ct + p[1] * st]; }
@@ -241,6 +241,27 @@
     ];
     function at(o, a) { var c = Math.cos(a), s = Math.sin(a); return proj([o.u[0] * c + o.v[0] * s, o.u[1] * c + o.v[1] * s, o.u[2] * c + o.v[2] * s]); }
 
+    // An electron is a small ball sitting on the sphere's surface. The part of it that pokes out past the
+    // sphere's outline is always seen at full strength; the part over the sphere fades as the electron goes
+    // round the back. So it comes into view gradually as it rounds the edge, instead of popping in.
+    function drawElectron(ctx, X, Y, R, er, o, q) {
+      var r = er * (0.85 + 0.15 * q[2]), x = X + q[0] * R, y = Y + q[1] * R;
+      var g = ctx.createRadialGradient(x - r * 0.35, y - r * 0.35, r * 0.1, x, y, r);
+      var ec = o.color === 'line' ? C.navy : C[o.color]; // electrons stay solid when the lines are softened
+      g.addColorStop(0, '#fff'); g.addColorStop(0.35, ec); g.addColorStop(1, ec);
+      ctx.fillStyle = g;
+      var over = 0.45 + 0.55 * Math.min(1, Math.max(0, q[2] / 0.2));
+      ctx.save(); // part over the sphere
+      ctx.beginPath(); ctx.arc(X, Y, R, 0, Math.PI * 2); ctx.clip();
+      ctx.globalAlpha = over; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+      if (Math.hypot(x - X, y - Y) + r > R) { // part past the outline
+        ctx.save();
+        ctx.beginPath(); ctx.rect(x - r, y - r, 2 * r, 2 * r); ctx.arc(X, Y, R, 0, Math.PI * 2, true); ctx.clip();
+        ctx.globalAlpha = 1; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+    }
     function drawOrbits(ctx, X, Y, R, t, front, lw, er, orbits) {
       orbits.forEach(function (o) {
         ctx.strokeStyle = C[o.color]; ctx.lineWidth = lw; ctx.globalAlpha = front ? 0.9 : 0.3;
@@ -251,15 +272,7 @@
           if ((q[2] >= 0) === front) { pen ? ctx.lineTo(X + q[0] * R, Y + q[1] * R) : ctx.moveTo(X + q[0] * R, Y + q[1] * R); pen = true; } else pen = false;
         }
         ctx.stroke();
-        o.starts.forEach(function (a0) {
-          var q = at(o, a0 + t * o.speed);
-          if ((q[2] >= 0) !== front) return;
-          var r = er * (0.85 + 0.15 * q[2]);
-          ctx.globalAlpha = front ? 1 : 0.45;
-          var g = ctx.createRadialGradient(X + q[0] * R - r * 0.35, Y + q[1] * R - r * 0.35, r * 0.1, X + q[0] * R, Y + q[1] * R, r);
-          g.addColorStop(0, '#fff'); g.addColorStop(0.35, C[o.color]); g.addColorStop(1, C[o.color]);
-          ctx.fillStyle = g; ctx.beginPath(); ctx.arc(X + q[0] * R, Y + q[1] * R, r, 0, Math.PI * 2); ctx.fill();
-        });
+        if (front) o.starts.forEach(function (a0) { drawElectron(ctx, X, Y, R, er, o, at(o, a0 + t * o.speed)); });
       });
       ctx.globalAlpha = 1;
     }
@@ -321,16 +334,20 @@
     // circuit around the sphere: four qubits in on the left, four measurements on the right
     var WIRES = [-0.6, -0.2, 0.2, 0.6], KETS = ['0', '0', '1', '1'];
     function drawCircuit(ctx, W, H, t, orbits, axis) {
-      var R = Math.min(H / 2.5, W / 3.9), X = W / 2 + R * 0.08, Y = H / 2, lw = Math.max(1, R / 70);
+      // the sphere spans the canvas height less the bleed. The whole circuit (kets to measurement boxes) is
+      // centred in the space between the title and the page edge, which starts GAP (the hero grid's 40px gap)
+      // to the left of this canvas
+      var BLEED = 16, GAP = 40, R = Math.min((H - 2 * BLEED) / 2, W / 3.4), X = (W - GAP) / 2 + R * 0.05, Y = H / 2, lw = Math.max(1, R / 70);
       // left wires start as far from the sphere's axis as the measurement boxes begin on the right
       var gx = X + R * 1.42, gs = R * 0.24, x0 = X - (gx - gs / 2 - X);
+      // the large logo uses the old benzene drawing's soft line colour so it sits back from the page
+      C.line = C.soft;
       ctx.lineCap = 'round'; ctx.lineWidth = lw * 1.5; ctx.strokeStyle = C.line;
       ctx.font = (R * 0.15) + 'px ' + tok('--font-mono'); ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       WIRES.forEach(function (h, i) {
         var y = Y + h * R, edge = Math.sqrt(1 - h * h) * R;
-        ctx.globalAlpha = 0.75;
         ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(X - edge, y); ctx.moveTo(X + edge, y); ctx.lineTo(gx - gs / 2, y); ctx.stroke();
-        ctx.globalAlpha = 1; ctx.fillStyle = C.line;
+        ctx.fillStyle = C.line;
         ctx.fillText('|' + KETS[i] + '⟩', x0 - R * 0.06, y);
       });
       sphere(ctx, X, Y, R, t, lw * 1.4, R * 0.075, orbits, true, axis);
@@ -342,6 +359,7 @@
         ctx.beginPath(); ctx.arc(gx, y + gs * 0.18, gs * 0.3, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(gx, y + gs * 0.18); ctx.lineTo(gx + gs * 0.2, y - gs * 0.22); ctx.stroke();
       });
+      C.line = C.navy;
     }
     // header mark: the sphere alone, with one teal and one navy electron
     var MARK = [orbit([0.445, 0.895, 0.014], 'teal', 0.7, [0]), orbit([-0.55, 0.8, 0.45], 'line', -0.55, [2.6])];
@@ -359,7 +377,8 @@
         ctx.setTransform(d, 0, 0, d, 0, 0);
       }
       size();
-      return { size: size, draw: function (t) { ctx.clearRect(0, 0, box.width, box.height); paint(ctx, box.width, box.height, t); } };
+      // a hidden canvas (the large logo on phones) has no size and is skipped
+      return { size: size, draw: function (t) { if (!box.width) return; ctx.clearRect(0, 0, box.width, box.height); paint(ctx, box.width, box.height, t); } };
     }
     var heroOrbits = heroCv ? ORBITS.slice(0, +heroCv.dataset.electrons || 2) : [];
     var views = [canvas(heroCv, function (ctx, W, H, t) { drawCircuit(ctx, W, H, t, heroOrbits, heroCv.dataset.axis); }), canvas(markCv, drawMark)].filter(Boolean);
