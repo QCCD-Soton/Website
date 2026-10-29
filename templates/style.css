@@ -506,6 +506,9 @@ img { max-width: 100%; height: auto; }
 a.pub-title { text-decoration: none; }
 a.pub-title:hover { color: var(--accent-ink); }
 .person .bio > * + * { margin-top: .6em; }
+/* maths drawn by KaTeX: sized to sit with the body serif; a wide equation scrolls sideways on a phone */
+.katex { font-size: 1.1em; }
+.katex-display { margin: 0; padding: .25em 0; overflow-x: auto; overflow-y: hidden; }
 .person .links a, .legal a { color: inherit; }
 .post .sec-head > div { max-width: 68ch; }
 .post .sec-body { max-width: 68ch; font-size: 17px; color: var(--ink-2); }

@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import yaml from "js-yaml";
 import { HtmlBasePlugin } from "@11ty/eleventy";
+import katex from "@vscode/markdown-it-katex";
 
 // Order that people groups appear on the People page.
 const PEOPLE_GROUPS = ["lead", "postdoc", "phd", "masters", "visitor", "undergrad"];
@@ -46,6 +47,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "templates/pink.js": "pink.js" });
   eleventyConfig.addPassthroughCopy({ "templates/wide.css": "wide.css" });
   eleventyConfig.addPassthroughCopy({ "templates/wide.js": "wide.js" });
+  eleventyConfig.addPassthroughCopy({ "node_modules/katex/dist/katex.min.css": "katex/katex.min.css" });
+  eleventyConfig.addPassthroughCopy({ "node_modules/katex/dist/fonts": "katex/fonts" });
 
   // Fails the build with the file's name if a person has no name, which usually means
   // the first line of the file isn't exactly ---, so its details weren't read.
@@ -124,10 +127,23 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("hue", (name = "") =>
     184 + ([...name].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % 64)
   );
+  // $...$ and $$...$$ in Markdown become maths, drawn by KaTeX when the site is built,
+  // so no JavaScript runs in the browser. Broken LaTeX fails the build rather than going live.
   // Renders a short header field (like a role's text in join.md) as inline Markdown,
-  // so [links](https://…) and *emphasis* work there as they do in the page body.
+  // so [links](https://…), *emphasis* and $maths$ work there as they do in the page body.
   let md;
-  eleventyConfig.amendLibrary("md", (lib) => { md = lib; });
+  eleventyConfig.amendLibrary("md", (lib) => {
+    md = lib.use(katex.default ?? katex);
+  });
+  // KaTeX leaves a katex-error element where LaTeX doesn't parse; stop the build there instead.
+  eleventyConfig.addTransform("mathErrors", function (html) {
+    const bad = typeof html === "string" && html.match(/class="(?:katex-block )?katex-error" title="([^"]*)">([^<]*)/);
+    if (bad) {
+      const text = (s) => s.replace(/&(amp|lt|gt|quot|#039);/g, (_, e) => ({ amp: "&", lt: "<", gt: ">", quot: '"', "#039": "'" })[e]);
+      throw new Error(`${this.page.inputPath}: the maths $${text(bad[1])}$ doesn't work. ${text(bad[2]).replace(/^.*?parse error: /, "")}`);
+    }
+    return html;
+  });
   eleventyConfig.addFilter("inlineMd", (text = "") => md.renderInline(String(text)));
 
   eleventyConfig.addFilter("pad", (n) => String(n).padStart(2, "0"));
