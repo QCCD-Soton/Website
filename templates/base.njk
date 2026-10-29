@@ -16,12 +16,7 @@
 <header class="site-header">
   <div class="wrap">
     <a class="brand" href="/" aria-label="{{ site.title }} home">
-      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <circle cx="16" cy="16" r="13.5" stroke="currentColor" stroke-width="1.2" opacity=".35"></circle>
-        <ellipse cx="16" cy="16" rx="13.5" ry="5" stroke="currentColor" stroke-width="1.2" transform="rotate(-30 16 16)"></ellipse>
-        <ellipse cx="16" cy="16" rx="13.5" ry="5" stroke="currentColor" stroke-width="1.2" transform="rotate(30 16 16)" opacity=".55"></ellipse>
-        <circle cx="16" cy="16" r="2.6" fill="var(--accent)"></circle>
-      </svg>
+      <canvas class="brand-mark" id="brand-logo" aria-hidden="true"></canvas>
       <span class="brand-text">
         <span class="brand-name">{{ site.title }}</span>
         <span class="brand-sub">{{ site.subtitle }}</span>
