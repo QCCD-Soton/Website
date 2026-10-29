@@ -41,3 +41,6 @@ logos:
   - name: HQC2, Hybrid Quantum Chemistry on Hybrid Quantum Computers
     logo: logo-hqc2.png
     url: https://hqc2.github.io/
+  - name: AstraZeneca
+    logo: logo-astrazeneca.png
+    url: https://www.astrazeneca.com/
