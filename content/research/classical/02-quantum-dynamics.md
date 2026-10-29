@@ -2,8 +2,6 @@
 title: "Quantum dynamics"
 ---
 
-# Quantum dynamics
-
 How do electrons and nuclei evolve during chemical reactions and interactions with light? We investigate molecular dynamics across timescales ranging from attoseconds to picoseconds, with particular interest in nonadiabatic processes, electronic coherence and coupled electron–nuclear motion.
 
 Our research employs quantum and semiclassical approaches to simulate nuclear wavepacket dynamics, electronic transitions and light–matter interactions. We aim to understand how electronic and nuclear degrees of freedom influence each other and govern processes such as photoionisation, energy redistribution and ultrafast photochemical reactions.

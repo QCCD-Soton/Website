@@ -2,8 +2,6 @@
 title: "Theory–experiment collaborations"
 ---
 
-# Theory–experiment collaborations
-
 Connecting theoretical predictions with experimental observations is a central part of our research. We collaborate with experimental groups to develop and interpret spectroscopic measurements, combining electronic-structure calculations, quantum dynamics and computational spectroscopy to uncover the molecular mechanisms underlying experimental signals.
 
 Our ongoing work includes a collaboration with [Professor Russell Minns](https://www.southampton.ac.uk/people/5x8sbm/professor-russell-minns) at the University of Southampton, connecting theory with ultrafast photoelectron and X-ray spectroscopy to investigate excited-state dynamics and photochemical processes, including our current interest in shake-down XPS. Previous collaborations have included attosecond X-ray absorption spectroscopy, Coulomb explosion imaging, strong-field photoelectron spectroscopy and laser-induced electron diffraction.
