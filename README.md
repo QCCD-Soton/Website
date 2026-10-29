@@ -28,7 +28,7 @@ The `*.11tydata.json` files in `content/people/`, `content/research/` and `conte
 3. Write a short bio below the second `---`. It shows on the back of their card.
 4. Put a portrait headshot (4:5, e.g. 800×1000) in `images/` named `firstname-lastname.jpg` and set `photo: firstname-lastname.jpg`. Until then a coloured silhouette stands in.
 
-When someone leaves, change their `group` to `alumni` and their `role` to a one-liner such as `PhD 2025 → Postdoc`. They move to the alumni list and their new papers stop being fetched.
+When someone leaves, change their `group` to `alumni` and their `role` to a one-liner such as `PhD 2025 → Postdoc`. They move to the "Former members" list at the end of the page and their new papers stop being fetched.
 
 Academic collaborators and industry partners are listed in `site.yml`.
 

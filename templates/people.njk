@@ -73,13 +73,6 @@ layout: base.njk
       {% endif %}
       {% endfor %}
 
-      {% if alumni.length %}
-      <div class="group-label"><h3>Alumni</h3><span class="count">{{ alumni.length }}</span></div>
-      <div class="alumni">
-        {% for p in alumni %}<div class="alum"><span>{{ p.data.name }}</span><span>{{ p.data.role }}</span></div>{% endfor %}
-      </div>
-      {% endif %}
-
       {% if site.collaborators.length %}
       <div class="group-label collab-label"><h3>Academic collaborators</h3><span class="count">{{ site.collaborators.length }}</span></div>
       <div class="alumni">
@@ -91,6 +84,13 @@ layout: base.njk
       <div class="group-label collab-label"><h3>Industry partners</h3><span class="count">{{ site.partners.length }}</span></div>
       <div class="alumni">
         {% for c in site.partners %}<div class="alum"><span>{% if c.url %}<a href="{{ c.url }}">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}</span><span>{{ c.field }}</span></div>{% endfor %}
+      </div>
+      {% endif %}
+
+      {% if alumni.length %}
+      <div class="group-label"><h3>Former members</h3><span class="count">{{ alumni.length }}</span></div>
+      <div class="alumni">
+        {% for p in alumni %}<div class="alum"><span>{{ p.data.name }}</span><span>{{ p.data.role }}</span></div>{% endfor %}
       </div>
       {% endif %}
     </div>
