@@ -51,7 +51,7 @@ The date in the filename sets the date shown and the order. The News page shows 
 
 ### Edit a research theme
 
-Research has two sides, each with its own page: quantum computing (`content/research-quantum.md`) and classical quantum chemistry (`content/research-classical.md`). Their themes are the files in `content/research/quantum/` and `content/research/classical/`, shown in filename order, so `01-…` comes first. Each theme has a `title`, a one-line `summary`, `tags`, an optional `image`, `image_alt` and `caption`, and the text.
+Research has two sides, each with its own page: quantum computing (`content/research-quantum.md`) and classical quantum chemistry (`content/research-classical.md`). Their themes are the files in `content/research/quantum/` and `content/research/classical/`, shown in filename order, so `01-…` comes first. Each theme has a `title`, a one-line `summary`, `tags`, an optional `image`, `image_alt` and `caption`, and the text. A theme without an `image` has no figure, and its title runs the full width.
 
 On the quantum page each theme sits on a qubit wire behind a gate (H, Z, Rx, then a measurement, in that order). On the classical page a particle in a box beside the themes doubles as the scroll bar, gaining a node at each theme.
 

@@ -204,16 +204,12 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
   padding-block: 48px; border-bottom: 1px solid var(--line);
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "head fig" "detail detail"; gap: 32px 40px;
 }
+/* no image: the title takes the full width */
+.theme:not(:has(.theme-fig)) { grid-template-areas: "head head" "detail detail"; }
 .theme-head { grid-area: head; display: flex; flex-direction: column; gap: 8px; }
 .theme-head h3 { font-size: clamp(36px, 4.6vw, 60px); line-height: 1.05; font-weight: 300; letter-spacing: -.02em; }
 .theme-short { font-size: 18px; color: var(--accent-ink); max-width: 60ch; }
 .theme-fig { grid-area: fig; margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.fig-ph {
-  position: relative; aspect-ratio: 4 / 3; max-width: 100%; border: 1px solid var(--line); border-radius: 4px; display: grid; place-items: center;
-  background: radial-gradient(90% 80% at 30% 20%, var(--accent-wash), transparent 70%), var(--surface);
-}
-.fig-ph .fig-art { width: 38%; height: auto; color: var(--accent); }
-.fig-tag { position: absolute; left: 12px; top: 10px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .theme-fig figcaption { font-size: 13px; color: var(--muted); }
 /* quantum page: the themes hang off one qubit wire; the light passes through each gate as you scroll */
 .wired { position: relative; padding-left: 96px; }
