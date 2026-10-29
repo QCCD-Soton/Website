@@ -63,6 +63,10 @@ On the quantum page each theme sits on a qubit wire behind a gate (H, Z, Rx, the
 
 A hidden pink theme. Tap the "&" in the home page title five times within a couple of seconds, or type the Konami code (↑ ↑ ↓ ↓ ← → ← → B A), to switch it on or off. The choice is remembered like the light/dark one. It lives in `templates/pink.css` (colours, which mirror the tokens at the top of `style.css`) and `templates/pink.js` (the unlock).
 
+### Wide mode
+
+A hidden layout for the group's ultrawide owners. Tap Kyle's or Luke's card on the People page five times within a couple of seconds to switch it on or off. It stretches the whole page sideways (text, buttons, cards and all) to fill a wide window, with a springy animation. Windows narrower than about 1300px are rejected and nothing changes. It works alongside pink mode and is remembered the same way. It lives in `templates/wide.css` and `templates/wide.js`.
+
 ### Images
 
 Every image goes in `images/`. A content file links to an image by naming it in the header (`photo:`, `image:`, `group_photo:`, or `logo:` in `site.yml`). If the named file doesn't exist, the build fails and says which one, so it can't go live broken. Use a prefix so the folder stays easy to scan: a person's name for headshots, `team-…` for group photos, `logo-…` for logos, `news-…` for news images.
