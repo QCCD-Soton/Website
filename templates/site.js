@@ -73,7 +73,32 @@
     var reduceW = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var gThemes = Array.prototype.slice.call(wire.querySelectorAll('.theme'));
     var photon = wire.querySelector('.photon'), cover = wire.querySelector('.cover');
-    var gateY = [], stage = -1, ticking = false;
+    var gateY = [], stage = -1, ticking = false, geo = null, runs = [];
+    // where Chrome supports scroll timelines, the light rides an animation the browser runs alongside the scroll itself,
+    // so it stays smooth even when the page is busy or the laptop is in power-saving mode; elsewhere update() moves it
+    var scrollLinked = !reduceW && typeof ScrollTimeline === 'function' && !!photon.animate;
+    // near the bottom of the page the reading line can't reach the end of the wire, so speed the light up over the last stretch
+    function lightAt(s) {
+      var y0 = geo.H * 0.55 + s - geo.top, rem = Math.max(0, geo.maxS - s);
+      return Math.min(geo.h, Math.max(0, y0 + geo.D * Math.max(0, 1 - rem / (geo.D + 300))));
+    }
+    function track() {
+      runs.forEach(function (a) { a.cancel(); }); runs = [];
+      if (!scrollLinked || geo.maxS <= 0) return;
+      // lightAt is straight between these scroll positions, so a keyframe at each one traces it exactly
+      var R = geo.D + 300, k = geo.D / R, c = geo.top - geo.H * 0.55;
+      var pts = [0, geo.maxS, geo.maxS - R, c, c + geo.h,
+        (c - geo.D + k * geo.maxS) / (1 + k), (c + geo.h - geo.D + k * geo.maxS) / (1 + k)];
+      pts = pts.map(function (s) { return Math.min(geo.maxS, Math.max(0, s)); }).sort(function (a, b) { return a - b; });
+      var frames = pts.filter(function (s, i) { return !i || s !== pts[i - 1]; }).map(function (s) {
+        return { transform: 'translate3d(0,' + lightAt(s) + 'px,0)', offset: s / geo.maxS };
+      });
+      var timeline = new ScrollTimeline({ source: document.documentElement });
+      [photon, cover].forEach(function (el) {
+        el.style.transform = '';
+        runs.push(el.animate(frames, { timeline: timeline, fill: 'both', easing: 'linear' }));
+      });
+    }
     function measure() {
       if (!wire.offsetParent) return;
       gateY = gThemes.map(function (t) { var g = t.querySelector('.tgate'); return t.offsetTop + g.offsetTop + g.offsetHeight / 2; });
@@ -84,6 +109,10 @@
         return 'var(--sig-' + t.getAttribute('data-gate') + ') ' + from + ' ' + to;
       });
       wire.style.setProperty('--fill', 'linear-gradient(180deg, ' + stops.join(', ') + ')');
+      var r = wire.getBoundingClientRect(), maxS = document.documentElement.scrollHeight - innerHeight;
+      geo = { top: r.top + scrollY, h: r.height, H: innerHeight, maxS: maxS };
+      geo.D = Math.max(0, geo.h - (geo.H * 0.55 + maxS - geo.top));
+      track();
     }
     function setStage(n) {
       if (n === stage) return;
@@ -104,18 +133,19 @@
       ticking = false;
       if (!wire.offsetParent) return;
       if (reduceW) { setStage(gThemes.length); return; }
-      // near the bottom of the page the reading line can't reach the end of the wire, so speed the light up over the last stretch
-      var r = wire.getBoundingClientRect(), y0 = innerHeight * 0.55 - r.top;
-      var rem = Math.max(0, document.documentElement.scrollHeight - innerHeight - scrollY), D = Math.max(0, r.height - (y0 + rem)), R = D + 300;
-      var y = Math.min(r.height, Math.max(0, y0 + D * Math.max(0, 1 - rem / R)));
-      photon.style.transform = 'translate3d(0,' + y + 'px,0)';
-      cover.style.transform = 'translate3d(0,' + y + 'px,0)';
+      if (!geo) return;
+      var y = lightAt(scrollY);
+      if (!scrollLinked) {
+        photon.style.transform = 'translate3d(0,' + y + 'px,0)';
+        cover.style.transform = 'translate3d(0,' + y + 'px,0)';
+      }
       var n = 0; while (n < gateY.length && gateY[n] <= y) n++;
       setStage(n);
     }
     function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
     addEventListener('scroll', onScroll, { passive: true });
     addEventListener('resize', function () { measure(); onScroll(); });
+    if (window.ResizeObserver) new ResizeObserver(function () { measure(); onScroll(); }).observe(document.body);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); onScroll(); });
     measure(); onScroll();
   })();
