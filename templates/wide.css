@@ -1,6 +1,6 @@
 /* Wide mode: on while <html> has data-wide. Every .wrap (header, sections, footer) is stretched sideways by --wide-s,
    which wide.js sets so the content fills the window: text, buttons, cards and all, like a 4:3 picture on a widescreen TV. */
-@media (min-width: 1300px) {   /* MIN in wide.js; narrower windows keep the normal layout */
+@media (min-width: 1600px) and (min-aspect-ratio: 9/4) {   /* ultrawide-shaped windows only, as in wide.js */
   [data-wide] .wrap { transform: scaleX(var(--wide-s, 1)); }
   [data-wide] body { overflow-x: clip; }   /* the stretched gutters would otherwise add a sideways scroll */
 }
