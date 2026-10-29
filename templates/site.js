@@ -238,72 +238,170 @@
   })();
 
   (function () {
-    // Hero motif: benzene pi orbital lobes over a hexagonal lattice, fine-line contour drawing
-    var cv = document.getElementById('orbital'); if (!cv) return;
-    var ctx = cv.getContext('2d');
+    // Group logo: a Bloch sphere with electrons orbiting its surface. The hero adds the circuit
+    // (four qubits in on the left, four measurements on the right); the header shows the sphere alone.
+    // Colours follow the old benzene drawing: navy lines, teal and navy electrons.
+    var heroCv = document.getElementById('orbital'), markCv = document.getElementById('brand-logo');
+    if (!heroCv && !markCv) return;
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var t0 = performance.now(), phase = 0;
+    var TILT = 0.3, ct = Math.cos(TILT), st = Math.sin(TILT);
     function tok(n) { return getComputedStyle(root).getPropertyValue(n).trim(); }
-    function size() {
-      var r = cv.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
-      cv.width = Math.max(1, Math.round(r.width * d)); cv.height = Math.max(1, Math.round(r.height * d));
-      ctx.setTransform(d, 0, 0, d, 0, 0);
-      return r;
+    // fully transparent version of a hex colour, so gradients fade without going grey
+    function fade(c) { return /^#[0-9a-f]{6}$/i.test(c) ? c + '00' : 'rgba(0,0,0,0)'; }
+    var C = {};
+    function colors() {
+      C.line = tok('--navy'); C.teal = tok('--accent'); C.paper = tok('--paper'); C.muted = tok('--muted');
     }
-    var box = size();
-    function draw() {
-      var W = box.width, H = box.height, cx = W / 2, cy = H / 2, R = Math.min(W, H) * 0.2;
-      var line = tok('--hero-line'), faint = tok('--hero-faint'), accent = tok('--accent');
-      ctx.clearRect(0, 0, W, H);
-      // background lattice
-      ctx.strokeStyle = faint; ctx.lineWidth = 0.6;
-      var s = R * 0.62, hh = s * Math.sqrt(3);
-      for (var gy = -6; gy <= 6; gy++) for (var gx = -6; gx <= 6; gx++) {
-        var px = cx + gx * s * 1.5, py = cy + gy * hh + (gx & 1 ? hh / 2 : 0);
-        if (Math.hypot(px - cx, py - cy) > Math.min(W, H) * 0.49) continue;
+    // 3D point on the unit sphere (y up, z toward the viewer) to screen offset and depth
+    function proj(p) { return [p[0], -p[1] * ct + p[2] * st, p[2] * ct + p[1] * st]; }
+    function norm(v) { var l = Math.hypot(v[0], v[1], v[2]); return [v[0] / l, v[1] / l, v[2] / l]; }
+    function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
+    // a great circle with normal n, carrying electrons at the given phase offsets
+    function orbit(n, color, speed, starts) {
+      n = norm(n);
+      var u = norm(cross(n, Math.abs(n[1]) < 0.9 ? [0, 1, 0] : [1, 0, 0])), v = cross(n, u);
+      return { u: u, v: v, color: color, speed: speed, starts: starts };
+    }
+    // one electron per orbit, alternating teal and navy; the hero canvas's data-electrons picks how many
+    var ORBITS = [
+      orbit([0.445, 0.895, 0.014], 'teal', 0.55, [0]),
+      orbit([-0.55, 0.8, 0.45], 'line', -0.42, [2.2]),
+      orbit([0.9, 0.35, -0.5], 'teal', 0.34, [4.1]),
+      orbit([1, -0.15, 0.25], 'line', -0.3, [1.1])
+    ];
+    function at(o, a) { var c = Math.cos(a), s = Math.sin(a); return proj([o.u[0] * c + o.v[0] * s, o.u[1] * c + o.v[1] * s, o.u[2] * c + o.v[2] * s]); }
+
+    function drawOrbits(ctx, X, Y, R, t, front, lw, er, orbits) {
+      orbits.forEach(function (o) {
+        ctx.strokeStyle = C[o.color]; ctx.lineWidth = lw; ctx.globalAlpha = front ? 0.9 : 0.3;
         ctx.beginPath();
-        for (var k = 0; k < 6; k++) { var a = k * Math.PI / 3; var x = px + s * Math.cos(a), y = py + s * Math.sin(a); k ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
-        ctx.closePath(); ctx.stroke();
-      }
-      // outer ring
-      ctx.strokeStyle = faint; ctx.lineWidth = 0.8;
-      ctx.beginPath(); ctx.arc(cx, cy, Math.min(W, H) * 0.48, 0, Math.PI * 2); ctx.stroke();
-      // orbital lobes: nested contours, alternating sign by atom
-      var atoms = [];
-      for (var i = 0; i < 6; i++) { var an = i * Math.PI / 3 + Math.PI / 6 + phase * 0.15; atoms.push([cx + R * Math.cos(an), cy + R * Math.sin(an), an]); }
-      for (i = 0; i < 6; i++) {
-        var A = atoms[i], sign = i % 2 ? 1 : -1;
-        for (var c = 1; c <= 5; c++) {
-          var sc = c / 5, breathe = 1 + 0.04 * Math.sin(phase + i + c * 0.4);
-          var lx = R * 0.55 * sc * breathe, ly = R * 0.32 * sc * breathe;
-          ctx.save(); ctx.translate(A[0], A[1]); ctx.rotate(A[2]);
-          ctx.strokeStyle = sign > 0 ? accent : line;
-          ctx.globalAlpha = sign > 0 ? 0.25 + 0.13 * c : 0.35 + 0.12 * c;
-          ctx.lineWidth = 0.8;
-          ctx.beginPath(); ctx.ellipse(lx * 0.95 + R * 0.12, 0, lx, ly, 0, 0, Math.PI * 2); ctx.stroke();
-          ctx.restore();
+        var pen = false;
+        for (var i = 0; i <= 96; i++) {
+          var q = at(o, i / 96 * Math.PI * 2);
+          if ((q[2] >= 0) === front) { pen ? ctx.lineTo(X + q[0] * R, Y + q[1] * R) : ctx.moveTo(X + q[0] * R, Y + q[1] * R); pen = true; } else pen = false;
         }
-      }
+        ctx.stroke();
+        o.starts.forEach(function (a0) {
+          var q = at(o, a0 + t * o.speed);
+          if ((q[2] >= 0) !== front) return;
+          var r = er * (0.85 + 0.15 * q[2]);
+          ctx.globalAlpha = front ? 1 : 0.45;
+          var g = ctx.createRadialGradient(X + q[0] * R - r * 0.35, Y + q[1] * R - r * 0.35, r * 0.1, X + q[0] * R, Y + q[1] * R, r);
+          g.addColorStop(0, '#fff'); g.addColorStop(0.35, C[o.color]); g.addColorStop(1, C[o.color]);
+          ctx.fillStyle = g; ctx.beginPath(); ctx.arc(X + q[0] * R, Y + q[1] * R, r, 0, Math.PI * 2); ctx.fill();
+        });
+      });
       ctx.globalAlpha = 1;
-      // bonds and atoms
-      ctx.strokeStyle = line; ctx.lineWidth = 1.1;
-      ctx.beginPath();
-      for (i = 0; i <= 6; i++) { var P = atoms[i % 6]; i ? ctx.lineTo(P[0], P[1]) : ctx.moveTo(P[0], P[1]); }
-      ctx.stroke();
-      ctx.setLineDash([2, 4]);
-      ctx.beginPath(); ctx.arc(cx, cy, R * 0.62, 0, Math.PI * 2); ctx.stroke();
-      ctx.setLineDash([]);
-      for (i = 0; i < 6; i++) {
-        ctx.fillStyle = tok('--paper'); ctx.strokeStyle = line;
-        ctx.beginPath(); ctx.arc(atoms[i][0], atoms[i][1], 3.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      }
-      ctx.fillStyle = accent; ctx.beginPath(); ctx.arc(cx, cy, 2.2, 0, Math.PI * 2); ctx.fill();
     }
-    function loop(now) { phase = (now - t0) / 2600; draw(); if (!reduce) requestAnimationFrame(loop); }
-    draw();
-    if (!reduce) requestAnimationFrame(loop);
-    window.addEventListener('resize', function () { box = size(); draw(); });
-    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
-    addEventListener('themechange', draw);
+    function drawSphere(ctx, X, Y, R, lw) {
+      ctx.save();
+      ctx.beginPath(); ctx.arc(X, Y, R, 0, Math.PI * 2); ctx.clip();
+      var lg = ctx.createLinearGradient(X - R, Y, X + R, Y);
+      lg.addColorStop(0, C.teal); lg.addColorStop(1, C.line);
+      ctx.globalAlpha = 0.07; ctx.fillStyle = lg; ctx.fillRect(X - R, Y - R, 2 * R, 2 * R);
+      var hl = ctx.createRadialGradient(X - R * 0.3, Y - R * 0.35, 0, X - R * 0.3, Y - R * 0.35, R * 1.1);
+      hl.addColorStop(0, C.paper); hl.addColorStop(1, fade(C.paper));
+      ctx.globalAlpha = 0.55; ctx.fillStyle = hl; ctx.fillRect(X - R, Y - R, 2 * R, 2 * R);
+      ctx.restore();
+      ctx.globalAlpha = 1; ctx.strokeStyle = C.line; ctx.lineWidth = lw;
+      ctx.beginPath(); ctx.arc(X, Y, R, 0, Math.PI * 2); ctx.stroke();
+    }
+    function drawGrid(ctx, X, Y, R, lw) {
+      ctx.strokeStyle = C.line; ctx.lineWidth = lw * 0.5; ctx.globalAlpha = 0.22;
+      [-0.55, 0, 0.55].forEach(function (h) { // latitudes
+        var r = Math.sqrt(1 - h * h);
+        ctx.beginPath(); ctx.ellipse(X, Y - h * ct * R, r * R, r * st * R, 0, 0, Math.PI * 2); ctx.stroke();
+      });
+      [Math.PI / 3].forEach(function (a) { // a meridian
+        ctx.beginPath();
+        for (var i = 0; i <= 64; i++) { var b = i / 64 * Math.PI * 2, q = proj([Math.cos(b) * Math.cos(a), Math.sin(b), Math.cos(b) * Math.sin(a)]); i ? ctx.lineTo(X + q[0] * R, Y + q[1] * R) : ctx.moveTo(X + q[0] * R, Y + q[1] * R); }
+        ctx.stroke();
+      });
+      ctx.globalAlpha = 1;
+    }
+    // axes: 'top' is the z axis running past the sphere with an arrowhead at the top only;
+    // 'inside' keeps it within the sphere with arrowheads at both ends; 'none' draws no axis
+    function arrow(ctx, x0, y0, x1, y1, ah) {
+      var a = Math.atan2(y1 - y0, x1 - x0), c = Math.cos(a), s = Math.sin(a);
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x1 - ah * c + ah * 0.45 * s, y1 - ah * s - ah * 0.45 * c); ctx.lineTo(x1 - ah * c - ah * 0.45 * s, y1 - ah * s + ah * 0.45 * c); ctx.closePath(); ctx.fill();
+    }
+    function drawAxis(ctx, X, Y, R, lw, mode) {
+      if (mode === 'none') return;
+      var ah = Math.max(3, R * 0.07);
+      ctx.strokeStyle = C.line; ctx.fillStyle = C.line; ctx.lineWidth = lw * 0.8; ctx.lineCap = 'butt';
+      if (mode === 'top' || !mode) {
+        var top = Y - R * 1.18, bot = Y + R * 1.12;
+        ctx.beginPath(); ctx.moveTo(X, top + ah); ctx.lineTo(X, bot); ctx.stroke();
+        arrow(ctx, X, top + ah, X, top, ah);
+        return;
+      }
+      var rim = R - lw * 0.6;
+      // up and down arrows whose tips touch the sphere's outline
+      ctx.beginPath(); ctx.moveTo(X, Y - rim + ah); ctx.lineTo(X, Y + rim - ah); ctx.stroke();
+      arrow(ctx, X, Y, X, Y - rim, ah); arrow(ctx, X, Y, X, Y + rim, ah);
+    }
+    function sphere(ctx, X, Y, R, t, lw, er, orbits, grid, axis) {
+      drawOrbits(ctx, X, Y, R, t, false, lw, er, orbits);
+      drawSphere(ctx, X, Y, R, lw);
+      if (grid) drawGrid(ctx, X, Y, R, lw);
+      drawAxis(ctx, X, Y, R, lw, axis);
+      drawOrbits(ctx, X, Y, R, t, true, lw, er, orbits);
+    }
+
+    // circuit around the sphere: four qubits in on the left, four measurements on the right
+    var WIRES = [-0.6, -0.2, 0.2, 0.6], KETS = ['0', '0', '1', '1'];
+    function drawCircuit(ctx, W, H, t, orbits, axis) {
+      var R = Math.min(H / 2.5, W / 3.9), X = W / 2 + R * 0.08, Y = H / 2, lw = Math.max(1, R / 70);
+      // left wires start as far from the sphere's axis as the measurement boxes begin on the right
+      var gx = X + R * 1.42, gs = R * 0.24, x0 = X - (gx - gs / 2 - X);
+      ctx.lineCap = 'round'; ctx.lineWidth = lw * 1.5; ctx.strokeStyle = C.line;
+      ctx.font = (R * 0.15) + 'px ' + tok('--font-mono'); ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      WIRES.forEach(function (h, i) {
+        var y = Y + h * R, edge = Math.sqrt(1 - h * h) * R;
+        ctx.globalAlpha = 0.75;
+        ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(X - edge, y); ctx.moveTo(X + edge, y); ctx.lineTo(gx - gs / 2, y); ctx.stroke();
+        ctx.globalAlpha = 1; ctx.fillStyle = C.line;
+        ctx.fillText('|' + KETS[i] + '⟩', x0 - R * 0.06, y);
+      });
+      sphere(ctx, X, Y, R, t, lw * 1.4, R * 0.075, orbits, true, axis);
+      WIRES.forEach(function (h) {
+        var y = Y + h * R;
+        ctx.fillStyle = C.paper; ctx.strokeStyle = C.line; ctx.lineWidth = lw * 1.4;
+        ctx.beginPath(); ctx.roundRect(gx - gs / 2, y - gs / 2, gs, gs, gs * 0.12); ctx.fill(); ctx.stroke();
+        ctx.lineWidth = lw * 1.2;
+        ctx.beginPath(); ctx.arc(gx, y + gs * 0.18, gs * 0.3, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(gx, y + gs * 0.18); ctx.lineTo(gx + gs * 0.2, y - gs * 0.22); ctx.stroke();
+      });
+    }
+    // header mark: the sphere alone, with one teal and one navy electron
+    var MARK = [orbit([0.445, 0.895, 0.014], 'teal', 0.7, [0]), orbit([-0.55, 0.8, 0.45], 'line', -0.55, [2.6])];
+    function drawMark(ctx, W, H, t) {
+      var R = Math.min(W, H) * 0.4;
+      sphere(ctx, W / 2, H / 2, R, t, Math.max(1, R / 12), R * 0.17, MARK, false, 'none');
+    }
+
+    function canvas(cv, paint) {
+      if (!cv) return null;
+      var ctx = cv.getContext('2d'), box;
+      function size() {
+        box = cv.getBoundingClientRect(); var d = Math.min(window.devicePixelRatio || 1, 2);
+        cv.width = Math.max(1, Math.round(box.width * d)); cv.height = Math.max(1, Math.round(box.height * d));
+        ctx.setTransform(d, 0, 0, d, 0, 0);
+      }
+      size();
+      return { size: size, draw: function (t) { ctx.clearRect(0, 0, box.width, box.height); paint(ctx, box.width, box.height, t); } };
+    }
+    var heroOrbits = heroCv ? ORBITS.slice(0, +heroCv.dataset.electrons || 2) : [];
+    var views = [canvas(heroCv, function (ctx, W, H, t) { drawCircuit(ctx, W, H, t, heroOrbits, heroCv.dataset.axis); }), canvas(markCv, drawMark)].filter(Boolean);
+    var t0 = performance.now(), still = 1.2;
+    function frame(now) { var t = reduce ? still : (now - t0) / 1000; views.forEach(function (v) { v.draw(t); }); }
+    function loop(now) { frame(now); requestAnimationFrame(loop); }
+    colors();
+    reduce ? frame(0) : requestAnimationFrame(loop);
+    window.addEventListener('resize', function () { views.forEach(function (v) { v.size(); }); if (reduce) frame(0); });
+    function recolor() { colors(); if (reduce) frame(0); }
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', recolor);
+    addEventListener('themechange', recolor);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (reduce) frame(0); });
   })();
 })();
