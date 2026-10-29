@@ -1,10 +1,10 @@
 ---
 name: Alexander Bryant
-role: MChem?
-group: undergrad              # lead | postdoc | phd | masters | undergrad | visitor | alumni
-topic:                  # a few words on their project, e.g. Excited-state VQE
+role: MChem
+group: masters              # lead | postdoc | phd | masters | undergrad | visitor | alumni
+topic: Thiophenol modelling and analysis                 # a few words on their project, e.g. Excited-state VQE
 photo:
 orcid:
-email:
+email: ab20g23@soton.ac.uk
 ---
 
