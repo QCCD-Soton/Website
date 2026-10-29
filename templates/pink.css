@@ -1,0 +1,46 @@
+/* Pink mode: a hidden theme, on while <html> has data-pink. Only the tokens change, plus a few small touches. */
+:root[data-pink] {
+  --paper: #fdf4f8; --surface: #ffffff; --ink: #3a1029; --ink-2: #5e2d4a; --muted: #94657f;
+  --line: #f1d3e2; --line-soft: #f8e5ee; --accent: #d6336c; --accent-ink: #a61e4d; --accent-wash: #fde2ec;
+  --sig-h: #e8590c; --sig-z: #d6336c; --sig-rx: #9c36b5; --sig-ry: #c2255c; --sig-s: #7048e8; --sig-t: #e64980; --sig-m: #a61e4d; --wire: #ecc2d6;
+  --navy: #6b1340; --hero-line: rgba(107, 19, 64, .38); --hero-faint: rgba(107, 19, 64, .12);
+  --header-bg: rgba(253, 244, 248, .9);
+  --pink-hue: 330; --pink-dot: rgba(214, 51, 108, .07);
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-pink]:not([data-theme="light"]) {
+    --paper: #1a0b14; --surface: #241220; --ink: #fbe9f2; --ink-2: #e6bfd3; --muted: #b58aa2;
+    --line: #44233a; --line-soft: #2f1729; --accent: #f783ac; --accent-ink: #faa2c1; --accent-wash: #3d1830;
+    --sig-h: #ffc078; --sig-z: #f783ac; --sig-rx: #da77f2; --sig-ry: #ff8fab; --sig-s: #b197fc; --sig-t: #fcc2d7; --sig-m: #ff6b9a; --wire: #5a3350;
+    --navy: #fcc2d7; --hero-line: rgba(252, 194, 215, .42); --hero-faint: rgba(252, 194, 215, .12);
+    --header-bg: rgba(26, 11, 20, .88); --pink-dot: rgba(247, 131, 172, .06); color-scheme: dark;
+  }
+}
+:root[data-pink][data-theme="dark"] {
+  --paper: #1a0b14; --surface: #241220; --ink: #fbe9f2; --ink-2: #e6bfd3; --muted: #b58aa2;
+  --line: #44233a; --line-soft: #2f1729; --accent: #f783ac; --accent-ink: #faa2c1; --accent-wash: #3d1830;
+  --sig-h: #ffc078; --sig-z: #f783ac; --sig-rx: #da77f2; --sig-ry: #ff8fab; --sig-s: #b197fc; --sig-t: #fcc2d7; --sig-m: #ff6b9a; --wire: #5a3350;
+  --navy: #fcc2d7; --hero-line: rgba(252, 194, 215, .42); --hero-faint: rgba(252, 194, 215, .12);
+  --header-bg: rgba(26, 11, 20, .88); --pink-dot: rgba(247, 131, 172, .06); color-scheme: dark;
+}
+[data-pink] body { background: radial-gradient(var(--pink-dot) 1px, transparent 1.5px) 0 0 / 22px 22px, var(--paper); }
+[data-pink] ::selection { background: var(--accent); color: var(--surface); }
+/* Every avatar and headshot placeholder takes a rose hue */
+[data-pink] .avatar { --h: 332 !important; }
+.pink-badge {
+  display: inline-flex; align-items: center; gap: 4px; margin-left: 6px; padding: 1px 7px; border-radius: 999px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent-ink); background: var(--accent-wash); border: 1px solid var(--line); vertical-align: 1px;
+}
+.pink-toast {
+  position: fixed; z-index: 40; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 12px);
+  max-width: calc(100% - 32px); padding: 10px 16px; border-radius: 999px; background: var(--navy); color: var(--surface);
+  font-size: 14px; box-shadow: 0 10px 30px rgba(107, 19, 64, .25); opacity: 0; transition: opacity .4s, transform .4s; pointer-events: none;
+}
+.pink-toast.show { opacity: 1; transform: translate(-50%, 0); }
+.pink-spark { position: fixed; z-index: 50; pointer-events: none; width: 8px; height: 8px; margin: -4px 0 0 -4px; color: var(--accent);
+  animation: pinkspark .7s ease-out forwards; }
+@keyframes pinkspark { to { transform: translate(var(--dx), var(--dy)) scale(.3) rotate(90deg); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .pink-toast { transition: none; } .pink-spark { display: none; } }
+.pink-amp { cursor: default; display: inline-block; transition: transform .15s; -webkit-tap-highlight-color: transparent; user-select: none; }
+.pink-amp.tap { transform: scale(1.08) rotate(-4deg); }
