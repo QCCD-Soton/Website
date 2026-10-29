@@ -124,6 +124,12 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("hue", (name = "") =>
     184 + ([...name].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % 64)
   );
+  // Renders a short header field (like a role's text in join.md) as inline Markdown,
+  // so [links](https://…) and *emphasis* work there as they do in the page body.
+  let md;
+  eleventyConfig.amendLibrary("md", (lib) => { md = lib; });
+  eleventyConfig.addFilter("inlineMd", (text = "") => md.renderInline(String(text)));
+
   eleventyConfig.addFilter("pad", (n) => String(n).padStart(2, "0"));
   eleventyConfig.addFilter("year", () => new Date().getFullYear());
 
