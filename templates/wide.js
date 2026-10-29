@@ -1,8 +1,10 @@
 // Wide mode: a hidden layout for the group's ultrawide monitor owners. Tap Kyle's or Luke's card on the People page five times quickly to switch it on or off.
-// It stretches the whole page sideways to fill the window, so it needs a window wider than the normal layout; narrower ones are rejected.
+// It stretches the whole page sideways to fill the window, so it only accepts an ultrawide-shaped window; a maximised 16:9 one is rejected.
 (function () {
   var root = document.documentElement, KEY = 'qccd-wide', WIDE_BOYS = ['kyle-acheson', 'luke-wright'];
-  var MAXW = 1180, MIN = 1300;   // the layout's content width (--maxw in style.css), and the narrowest window wide mode accepts
+  var MAXW = 1180;   // the layout's content width (--maxw in style.css)
+  // Ultrawide: at least 1600px wide and 2.25 times as wide as tall (a maximised 21:9 browser is about 2.6, a 16:9 one about 2). Matches wide.css.
+  var ultrawide = matchMedia('(min-width: 1600px) and (min-aspect-ratio: 9/4)');
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // How far to stretch: the content goes from its usual width to the window, less the usual 32px gutters
@@ -27,7 +29,7 @@
     setTimeout(function () { root.classList.remove(cls); }, 1300);
   }
   function setWide(on) {
-    if (on && innerWidth < MIN) { play('wide-reject'); toast('Wide mode rejected: this window isn’t wide enough. Ultrawides only.'); return; }
+    if (on && !ultrawide.matches) { play('wide-reject'); toast('Wide mode rejected: this window isn’t wide enough. Ultrawides only.'); return; }
     play('wide-anim');
     if (on) root.setAttribute('data-wide', ''); else root.removeAttribute('data-wide');
     try { if (on) localStorage.setItem(KEY, '1'); else localStorage.removeItem(KEY); } catch (e) {}
