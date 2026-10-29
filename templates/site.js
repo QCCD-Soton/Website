@@ -178,6 +178,11 @@
       s0 = Math.max(0, top - innerHeight * .4);
       s1 = Math.max(s0 + 1, Math.min(maxS, top + h - innerHeight * .6));
       bnd = themes.map(function (t) { return cl((t.getBoundingClientRect().top + scrollY - innerHeight * .4 - s0) / (s1 - s0), 0, 1); });
+      // with only a few themes the column ends soon after the last one, and a box sized to the window would be pushed up under
+      // the header at the bottom of the page, so cap it to the room left between the sticky top and the column's end
+      var card = side.firstElementChild, body = card.querySelector('.cbox-body');
+      var room = side.parentNode.getBoundingClientRect().bottom + scrollY - maxS - parseFloat(getComputedStyle(side).top);
+      body.style.setProperty('--fit', Math.max(120, Math.floor(room - (card.offsetHeight - body.offsetHeight))) + 'px');
       var H = cv.clientHeight;
       items.forEach(function (li, i) { li.style.top = (PAD + bnd[i] * (H - 2 * PAD)) + 'px'; });
       colors(); measured = true;
