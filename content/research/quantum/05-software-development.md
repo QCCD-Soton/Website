@@ -1,7 +1,5 @@
 ---
 title: "Quantum software development"
-weight: 50
-description: "SlowQuant: open-source software for classical unitary wavefunction methods and quantum chemistry on quantum computers."
 ---
 
 We make our algorithms accessible to the wider research community through the co-development of **SlowQuant**, an open-source software package for classical unitary wavefunction methods and quantum computational chemistry.

@@ -1,7 +1,5 @@
 ---
 title: "Quantum algorithms for electronic structure"
-weight: 10
-description: "Efficient molecular wavefunction preparation on near-term and early fault-tolerant quantum computers."
 ---
 
 How can we efficiently prepare accurate molecular wavefunctions on quantum computers? We develop and benchmark quantum algorithms for electronic structure, investigating their accuracy, computational efficiency and potential to achieve chemical predictive power compared with established classical methods.

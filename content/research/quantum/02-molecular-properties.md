@@ -1,7 +1,5 @@
 ---
 title: "Molecular properties and spectroscopy"
-weight: 20
-description: "Quantum linear response, multistate methods and the calculation of experimentally observable molecular properties."
 ---
 
 We develop quantum algorithms for calculating molecular properties beyond electronic energies, including excitation spectra, response properties, nuclear derivatives and vibrational frequencies. By extending established quantum-chemical theories to quantum computers, we aim to connect quantum algorithms with experimentally observable molecular properties.
