@@ -6,7 +6,7 @@ layout: base.njk
   <div class="wrap">
     <div class="hero-copy">
       <span class="eyebrow">{{ site.university }} · {{ site.school }}</span>
-      <h1 id="hero-title">{% if title_parts.length == 2 %}{{ title_parts[0] }} &amp; <em>{{ title_parts[1] }}</em>{% else %}{{ site.title }}{% endif %}</h1>
+      <h1 id="hero-title">{% if title_parts.length == 2 %}<span>{{ title_parts[0] }}</span> <span>&amp; <em>{{ title_parts[1] }}</em></span>{% else %}{{ site.title }}{% endif %}</h1>
     </div>
     <figure class="orbital" style="margin:0">
       <canvas id="orbital" data-electrons="2" data-axis="none" role="img" aria-label="Group logo: electrons orbiting a Bloch sphere, with four qubits running in and out to four measurements"></canvas>
