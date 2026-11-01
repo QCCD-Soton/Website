@@ -8,6 +8,6 @@ Our pioneering hardware demonstrations include the calculation of molecular abso
 
 ### Selected publications
 
-- [Understanding and mitigating noise in molecular quantum linear response for spectroscopic properties on quantum computers](https://doi.org/10.1039/D4SC05839A) — *Chemical Science* (2025).
+- [Understanding and mitigating noise in molecular quantum linear response for spectroscopic properties on quantum computers](https://doi.org/10.1039/d4sc05839a) — *Chemical Science* (2025).
 - [Hyperfine Coupling Constants on Quantum Computers: Performance, Errors, and Future Prospects](https://doi.org/10.1021/acs.jctc.5c00893) — *Journal of Chemical Theory and Computation* (2025).
 - [Analytical Nuclear Gradients and Hessians on Quantum Hardware via Orbital-Optimized VQE with Error Mitigation](https://arxiv.org/abs/2608.08758) — arXiv preprint (2026).

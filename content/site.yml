@@ -15,7 +15,7 @@ find_us:               # e.g. Building 27, ten minutes from Southampton Airport 
 
 # Publications are fetched for every current member with an ORCID iD,
 # from this year onwards.
-publications_since: 2024
+publications_since: 2015
 
 # Listed at the bottom of the People page. Each is hidden while its list is empty.
 collaborators: []

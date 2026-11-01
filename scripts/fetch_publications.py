@@ -110,6 +110,9 @@ def merge(work, record):
             "open_access_url": (record.get("open_access") or {}).get("oa_url"),
             "preprint": record.get("type") == "preprint" or work["preprint"],
         })
+    # Some records end the title with a full stop; titles on the page don't have one.
+    if work["title"]:
+        work["title"] = re.sub(r"(?<!\.)\.\s*$", "", work["title"].strip())
     work.setdefault("authors", [])
     work.setdefault("open_access_url", None)
     if work["doi"]:
