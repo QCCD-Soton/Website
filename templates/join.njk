@@ -5,7 +5,7 @@ layout: base.njk
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <h2 id="join-title">{{ heading or title }}</h2>
+        <h1 id="join-title">{{ heading or title }}</h1>
         <div class="lede prose">{{ content | safe }}</div>
       </div>
     </div>
@@ -14,7 +14,7 @@ layout: base.njk
       <div class="roles">
         {% for r in roles %}
         <div class="role-card"><span class="k">{{ r.level }}</span><h3>{{ r.title }}</h3>
-          <p>{{ r.text }}</p>{% if r.status %}<span class="status">{{ r.status }}</span>{% endif %}</div>
+          <p>{{ r.text | inlineMd | safe }}</p>{% if r.status %}<span class="status">{{ r.status }}</span>{% endif %}</div>
         {% endfor %}
       </div>
       {% endif %}

@@ -10,6 +10,18 @@
 #
 # Once the paper is published and appears in the fetched publication list,
 # delete its entry here so it isn't listed twice.
+- title: "Implementing QESEM's High-Accuracy Error Mitigation on a Quantum Computer: a Water Potential Energy Surface Study"
+  authors:
+    - Renato Olarte Hernandez
+    - Emanuele Rossi
+    - Sonia Coriani
+    - Karl Michael Ziems
+    - Erik Kjellgren
+    - Jacob Kongsted
+    - Tali Shnaider
+    - Stephan P. A. Sauer
+  arxiv: "2609.07284"
+  date: 2026-09-07
 
 - title: "Analytical Nuclear Gradients and Hessians on Quantum Hardware via Orbital-Optimized VQE with Error Mitigation"
   authors:
