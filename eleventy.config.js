@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import yaml from "js-yaml";
+import path from "node:path";
 import { HtmlBasePlugin } from "@11ty/eleventy";
+import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import katex from "@vscode/markdown-it-katex";
 
 // Order that people groups appear on the People page.
@@ -9,6 +11,32 @@ const PEOPLE_GROUPS = ["lead", "postdoc", "phd", "masters", "visitor", "undergra
 export default function (eleventyConfig) {
   // Adds the GitHub Pages path prefix (e.g. /website/) to every link and image.
   eleventyConfig.addPlugin(HtmlBasePlugin);
+
+  // Every <img> on the site is resized when the site is built: smaller copies (400, 800 and 1600px
+  // wide, never bigger than the original) in WebP and the original format go to /img/, and the
+  // browser picks the one that fits. Photos can be added at full size; the originals stay in images/.
+  // An <img> can set its own widths with eleventy:widths="200,400".
+  eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
+    widths: [400, 800, 1600],
+    formats: ["webp", "auto"],
+    urlPath: "/img/",
+    outputDir: "_site/img/",
+    htmlOptions: {
+      imgAttributes: { loading: "lazy", decoding: "async", sizes: "(min-width: 1244px) 1180px, 100vw" },
+    },
+  });
+  // The image plugin reads a /images/... path from the content folder, but images/ sits beside it,
+  // so point it at the real file. Runs before the image plugin (higher priority runs first).
+  eleventyConfig.htmlTransformer.addPosthtmlPlugin("html", (context) => (tree) => {
+    tree.match({ tag: "img" }, (node) => {
+      const src = node.attrs?.src;
+      if (src?.startsWith("/images/")) {
+        node.attrs.src = path.relative(path.dirname(context.page.inputPath), src.slice(1)).split(path.sep).join("/");
+      }
+      return node;
+    });
+    return tree;
+  }, { priority: 1 });
 
   eleventyConfig.addGlobalData("site", () =>
     yaml.load(fs.readFileSync("content/site.yml", "utf8"))

@@ -5,7 +5,7 @@
 </header>
 {%- if theme.data.image %}
 <figure class="theme-fig">
-  <img class="fig" src="{{ theme.data.image | img }}" alt="{{ theme.data.image_alt }}">
+  <img class="fig" src="{{ theme.data.image | img }}" alt="{{ theme.data.image_alt }}" sizes="(min-width: 1040px) 560px, 100vw">
   {% if theme.data.caption %}<figcaption>{{ theme.data.caption }}</figcaption>{% endif %}
 </figure>
 {%- endif %}
