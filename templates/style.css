@@ -41,7 +41,10 @@ body {
   margin: 0; background: var(--paper); color: var(--ink);
   font-family: var(--font-body); font-size: 16px; line-height: 1.6;
   -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  /* on a short page the footer still sits at the bottom of the window */
+  min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
 }
+main { flex: 1 0 auto; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
@@ -442,9 +445,18 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .contact-grid address, .contact-grid p { font-style: normal; opacity: .85; margin: 0; }
 
 /* Footer */
-footer { padding-block: 28px; border-top: 1px solid var(--line-soft); }
+footer { padding-block: 48px 28px; border-top: 1px solid var(--line-soft); font-size: 14px; color: var(--ink-2); }
 address { font-style: normal; line-height: 1.7; }
-.legal { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; font-size: 13px; color: var(--muted); }
+.foot-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); gap: 32px 40px; margin-bottom: 36px; }
+.foot-col { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+.foot-col .eyebrow { margin-bottom: 4px; }
+.foot-col a { text-decoration: none; overflow-wrap: anywhere; }
+.foot-col a:hover { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
+.foot-name { font-family: var(--font-display); font-size: 18px; color: var(--ink); }
+.foot-sub { margin-top: -4px; margin-bottom: 8px; }
+@media (max-width: 720px) { .foot-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .foot-grid > :first-child { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .foot-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; } nav.foot-col { flex-direction: row; flex-wrap: wrap; gap: 6px 18px; } nav.foot-col .eyebrow { flex-basis: 100%; } }
+.legal { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; font-size: 13px; color: var(--ink-2); padding-top: 20px; border-top: 1px solid var(--line-soft); }
 
 /* Responsive */
 @media (max-width: 1040px) {
