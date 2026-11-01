@@ -37,6 +37,7 @@
   <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 {%- set section = page.url.split("/")[1] %}
 <header class="site-header">
   <div class="wrap">
@@ -71,7 +72,7 @@
   </div>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
   {{ content | safe }}
 </main>
 

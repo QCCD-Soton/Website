@@ -48,6 +48,10 @@ main { flex: 1 0 auto; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+/* "Skip to content": hidden above the page until a keyboard user presses Tab, then it drops into the top-left corner */
+.skip { position: absolute; left: 16px; top: 0; z-index: 100; transform: translateY(-120%); padding: 10px 16px; background: var(--ink); color: var(--paper); font-size: 14px; font-weight: 500; text-decoration: none; border-radius: 0 0 4px 4px; }
+.skip:focus { transform: none; }
+main:focus { outline: none; }
 .wrap {
   max-width: calc(var(--maxw) + 64px); margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
