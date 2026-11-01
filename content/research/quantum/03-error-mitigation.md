@@ -8,6 +8,6 @@ Our research includes improving Clifford data regression and developing ansatz-b
 
 ### Selected publications
 
-- [Understanding and mitigating noise in molecular quantum linear response for spectroscopic properties on quantum computers](https://doi.org/10.1039/D4SC05839A) — *Chemical Science* (2025).
+- [Understanding and mitigating noise in molecular quantum linear response for spectroscopic properties on quantum computers](https://doi.org/10.1039/d4sc05839a) — *Chemical Science* (2025).
 - [Quantum error mitigation using energy sampling and extrapolation enhanced Clifford data regression](https://arxiv.org/abs/2511.03556) — arXiv preprint (2025).
 - [Cost-Effective Scalable Quantum Error Mitigation for Tiled Ansätze](https://doi.org/10.1021/acs.jctc.6c00603) — *Journal of Chemical Theory and Computation* (2026).
