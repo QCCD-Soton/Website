@@ -8,7 +8,7 @@ roles:
   - level: Doctoral
     title: Electronic structure theory for quantum dynamics on classic and quantum computers
     text: Explore how molecules behave after photoexcitation by developing new electronic structure methods for excited-state dynamics on classical and quantum computers. This project combines theoretical chemistry, scientific programming, and quantum computing to advance molecular simulations. Join an international research environment offering opportunities for algorithm development, experimental collaborations, and quantum hardware experiments. [Apply here](https://www.southampton.ac.uk/study/postgraduate-research/projects/electronic-structure-theory-for-quantum-dynamics-on-classic)
-    status: Closes 31 May  2027 (or earlier if a suitable candidate is found)
+    status: Closes 31 May 2027 (or earlier if a suitable candidate is found)
 # - level: Postdoctoral
 #   title: Research Fellow in quantum algorithms
 #   text: Two-year fixed term.
