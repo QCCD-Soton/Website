@@ -5,7 +5,7 @@ layout: base.njk
 <section class="hero" aria-labelledby="hero-title">
   <div class="wrap">
     <div class="hero-copy">
-      <span class="eyebrow">{{ site.university }} · {{ site.school }}</span>
+      <span class="eyebrow hero-eyebrow"><span>{{ site.university }}</span> · <span>{{ site.school }}</span>{% if site.subtitle %} · <span>{{ site.subtitle }}</span>{% endif %}</span>
       <h1 id="hero-title">{% if title_parts.length == 2 %}<span>{{ title_parts[0] }}</span> <span>&amp; <em>{{ title_parts[1] }}</em></span>{% else %}{{ site.title }}{% endif %}</h1>
     </div>
     <figure class="orbital" style="margin:0">
@@ -15,7 +15,7 @@ layout: base.njk
   <div class="wrap">
     <figure class="group-photo">
       {% if group_photo %}
-      <img class="photo" src="{{ group_photo | img }}" alt="{{ group_photo_alt or 'The group' }}">
+      <img class="photo" src="{{ group_photo | img }}" loading="eager" alt="{{ group_photo_alt or 'The group' }}">
       {% else %}
       <div class="photo-ph" role="img" aria-label="Group photo placeholder">
         <span class="photo-tag">Group photo</span>
@@ -31,7 +31,7 @@ layout: base.njk
     <div class="funders" aria-labelledby="funders-title">
       <span class="eyebrow" id="funders-title">Funded by and working with</span>
       <ul class="funder-row">
-        {% for l in site.logos %}<li><a href="{{ l.url }}"><img src="{{ l.logo | img }}" alt="{{ l.name }}"></a></li>{% endfor %}
+        {% for l in site.logos %}<li><a href="{{ l.url }}" rel="noopener noreferrer"><img src="{{ l.logo | img }}" alt="{{ l.name }}" eleventy:widths="200,400" sizes="200px"></a></li>{% endfor %}
       </ul>
     </div>
   </div>

@@ -4,7 +4,7 @@
   --surface: #ffffff;
   --ink: #0e1a2b;
   --ink-2: #3c4a5e;
-  --muted: #6b778a;
+  --muted: #5f6b7e;
   --line: #d9dee6;
   --line-soft: #e8ebf0;
   --accent: #0b7285;
@@ -41,10 +41,17 @@ body {
   margin: 0; background: var(--paper); color: var(--ink);
   font-family: var(--font-body); font-size: 16px; line-height: 1.6;
   -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  /* on a short page the footer still sits at the bottom of the window */
+  min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
 }
+main { flex: 1 0 auto; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+/* "Skip to content": hidden above the page until a keyboard user presses Tab, then it drops into the top-left corner */
+.skip { position: absolute; left: 16px; top: 0; z-index: 100; transform: translateY(-120%); padding: 10px 16px; background: var(--ink); color: var(--paper); font-size: 14px; font-weight: 500; text-decoration: none; border-radius: 0 0 4px 4px; }
+.skip:focus { transform: none; }
+main:focus { outline: none; }
 .wrap {
   max-width: calc(var(--maxw) + 64px); margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
@@ -95,17 +102,20 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-wrap: bala
 h1 { font-size: clamp(40px, 6.2vw, 76px); line-height: 1.02; font-weight: 300; letter-spacing: -.02em; }
 h1 em { font-style: italic; color: var(--accent-ink); }
 h2 { font-size: clamp(30px, 3.6vw, 44px); line-height: 1.1; }
+.sec-head h1 { font-size: clamp(30px, 3.6vw, 44px); line-height: 1.1; font-weight: 400; letter-spacing: -.01em; }   /* page titles: h1 for screen readers and search, sized like a section heading */
 h3 { font-size: 23px; line-height: 1.25; }
 p { margin: 0; }
-.lede { font-size: 19px; line-height: 1.6; color: var(--ink-2); max-width: 58ch; }
-/* research intros run the full width of their heading */
-.lede.wide { max-width: none; }
+/* page intros run the full width, justified from tablet size up (phones keep a ragged edge, where justifying leaves gaps) */
+.lede { font-size: 19px; line-height: 1.6; color: var(--ink-2); }
+@media (min-width: 720px) { .lede { text-align: justify; hyphens: auto; } }
 
 /* Hero */
 .hero { position: relative; border-bottom: 1px solid var(--line-soft); overflow: hidden; }
 .hero > .wrap:first-child { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 40px; /* GAP in site.js */ align-items: center; padding-block: 32px 48px; }
 .hero-copy { display: flex; flex-direction: column; gap: 28px; min-width: 0; }
 /* the title sits on two lines beside the logo: "Quantum Computing" / "& Quantum Chemistry" */
+/* university · school · group: wrap between the parts, never inside one */
+.hero-eyebrow > span { white-space: nowrap; }
 .hero h1 { font-size: clamp(40px, 5.2vw, 68px); }
 .hero h1 > span { display: block; white-space: nowrap; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -142,7 +152,7 @@ p { margin: 0; }
 }
 .photo-tag { position: absolute; left: 16px; top: 14px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .group-photo figcaption { font-size: 13px; color: var(--muted); }
-.home-intro { padding-top: 40px; max-width: 64ch; }
+.home-intro { padding-top: 40px; }
 .funders { display: flex; flex-direction: column; gap: 18px; padding-block: 56px 72px; }
 .funder-row { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
 .funder-row li {
@@ -199,21 +209,17 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 
 /* Research */
 .themes { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-/* each theme: big title beside the image, then the text in two columns across the full width */
+/* each theme: title beside the image, then the text in two columns across the full width, ending with the Selected publications */
 .theme {
   padding-block: 48px; border-bottom: 1px solid var(--line);
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "head fig" "detail detail"; gap: 32px 40px;
 }
+/* no image: the title takes the full width */
+.theme:not(:has(.theme-fig)) { grid-template-areas: "head head" "detail detail"; }
 .theme-head { grid-area: head; display: flex; flex-direction: column; gap: 8px; }
-.theme-head h3 { font-size: clamp(36px, 4.6vw, 60px); line-height: 1.05; font-weight: 300; letter-spacing: -.02em; }
+.theme-head h3 { font-size: clamp(26px, 2.6vw, 32px); line-height: 1.15; }   /* below the page title (h1, 44px) */
 .theme-short { font-size: 18px; color: var(--accent-ink); max-width: 60ch; }
 .theme-fig { grid-area: fig; margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.fig-ph {
-  position: relative; aspect-ratio: 4 / 3; max-width: 100%; border: 1px solid var(--line); border-radius: 4px; display: grid; place-items: center;
-  background: radial-gradient(90% 80% at 30% 20%, var(--accent-wash), transparent 70%), var(--surface);
-}
-.fig-ph .fig-art { width: 38%; height: auto; color: var(--accent); }
-.fig-tag { position: absolute; left: 12px; top: 10px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .theme-fig figcaption { font-size: 13px; color: var(--muted); }
 /* quantum page: the themes hang off one qubit wire; the light passes through each gate as you scroll */
 .wired { position: relative; padding-left: 96px; }
@@ -275,6 +281,9 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 /* as tall as the window allows: header offset, the card's own chrome and a bottom margin all come off the viewport height */
 .cbox-body { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 14px; height: max(240px, calc(100vh - 240px)); max-height: min(900px, var(--fit, 900px)); }
 .cbox canvas { display: block; width: 52px; height: 100%; border-radius: 2px; }
+/* the row is pinned to the body's height: the canvas's bitmap size feeds an auto row, and at zooms like 110% rounding the
+   bitmap up each frame would make it grow without end */
+.cbox-body { grid-template-rows: minmax(0, 1fr); }
 .cbox-list { position: relative; list-style: none; margin: 0; padding: 0; }
 .cbox-list li { position: absolute; left: 0; right: 0; transform: translateY(-2px); }
 .cbox-list a { display: flex; gap: 8px; align-items: baseline; text-decoration: none; font-family: var(--font-display); font-size: 15px; line-height: 1.25; color: var(--muted); transition: color .3s; }
@@ -295,6 +304,8 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .theme-detail { grid-area: detail; columns: 2; column-gap: 40px; min-width: 0; }
 .theme-detail > * { margin-top: 0; margin-bottom: 14px; }
 .theme-detail li { break-inside: avoid; }
+/* keep "Selected publications" with its list, at the end of the text */
+.theme-detail h3 { break-after: avoid; }
 .theme p { color: var(--ink-2); font-size: 15.5px; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag {
@@ -441,9 +452,18 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .contact-grid address, .contact-grid p { font-style: normal; opacity: .85; margin: 0; }
 
 /* Footer */
-footer { padding-block: 28px; border-top: 1px solid var(--line-soft); }
+footer { padding-block: 48px 28px; border-top: 1px solid var(--line-soft); font-size: 14px; color: var(--ink-2); }
 address { font-style: normal; line-height: 1.7; }
-.legal { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; font-size: 13px; color: var(--muted); }
+.foot-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); gap: 32px 40px; margin-bottom: 36px; }
+.foot-col { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+.foot-col .eyebrow { margin-bottom: 4px; }
+.foot-col a { text-decoration: none; overflow-wrap: anywhere; }
+.foot-col a:hover { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
+.foot-name { font-family: var(--font-display); font-size: 18px; color: var(--ink); }
+.foot-sub { margin-top: -4px; margin-bottom: 8px; }
+@media (max-width: 720px) { .foot-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .foot-grid > :first-child { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .foot-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; } nav.foot-col { flex-direction: row; flex-wrap: wrap; gap: 6px 18px; } nav.foot-col .eyebrow { flex-basis: 100%; } }
+.legal { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; font-size: 13px; color: var(--ink-2); padding-top: 20px; border-top: 1px solid var(--line-soft); }
 
 /* Responsive */
 @media (max-width: 1040px) {
@@ -493,6 +513,9 @@ address { font-style: normal; line-height: 1.7; }
 
 /* Site additions: real images in place of the design's placeholders, and text written in Markdown */
 img { max-width: 100%; height: auto; }
+/* the build wraps each image in a picture element (WebP plus a fallback); keep it out of the layout */
+picture { display: contents; }
+.avatar picture { display: block; width: 100%; height: 100%; }
 .group-photo .photo { display: block; width: 100%; aspect-ratio: 21 / 9; object-fit: cover; border-radius: 4px; border: 1px solid var(--line); }
 .theme-fig .fig { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; border: 1px solid var(--line); }
 .avatar.has-photo { background: var(--line-soft); overflow: hidden; }
@@ -508,6 +531,9 @@ img { max-width: 100%; height: auto; }
 a.pub-title { text-decoration: none; }
 a.pub-title:hover { color: var(--accent-ink); }
 .person .bio > * + * { margin-top: .6em; }
+/* maths drawn by KaTeX: sized to sit with the body serif; a wide equation scrolls sideways on a phone */
+.katex { font-size: 1.1em; }
+.katex-display { margin: 0; padding: .25em 0; overflow-x: auto; overflow-y: hidden; }
 .person .links a, .legal a { color: inherit; }
 .post .sec-head > div { max-width: 68ch; }
 .post .sec-body { max-width: 68ch; font-size: 17px; color: var(--ink-2); }

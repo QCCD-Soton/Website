@@ -3,17 +3,41 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if title and title != "Home" %}{{ title }} · {% endif %}{{ site.title }}</title>
-  <meta name="description" content="{{ site.tagline }}">
+  {%- set pageTitle %}{% if title and title != "Home" %}{{ title }} · {% endif %}{{ site.title }}{% endset %}
+  {%- set description = { description: description, summary: summary } | describe(page.rawInput, site.tagline) %}
+  {%- set shareImage = image or site.share_image %}
+  <title>{{ pageTitle }}</title>
+  <meta name="description" content="{{ description }}">
+  {%- if site.url and page.url %}
+  <link rel="canonical" href="{{ page.url | htmlBaseUrl(site.url) }}">
+  <meta property="og:type" content="{{ 'article' if layout == 'post.njk' else 'website' }}">
+  <meta property="og:site_name" content="{{ site.title }}">
+  <meta property="og:title" content="{{ title if title and title != 'Home' else site.title }}">
+  <meta property="og:description" content="{{ description }}">
+  <meta property="og:url" content="{{ page.url | htmlBaseUrl(site.url) }}">
+  <meta property="og:locale" content="en_GB">
+  {%- if shareImage %}
+  <meta property="og:image" content="{{ shareImage | img | htmlBaseUrl(site.url) }}">
+  <meta property="og:image:alt" content="{{ (image_alt if image else site.share_image_alt) or site.title }}">
+  {%- endif %}
+  <meta name="twitter:card" content="{{ 'summary_large_image' if shareImage else 'summary' }}">
+  {%- endif %}
   <script>try { var t = localStorage.getItem('qccd-theme'); if (t) document.documentElement.setAttribute('data-theme', t); if (localStorage.getItem('qccd-pink')) document.documentElement.setAttribute('data-pink', ''); if (localStorage.getItem('qccd-wide')) document.documentElement.setAttribute('data-wide', ''); } catch (e) {}</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="preload" href="/fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/instrument-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts/fonts.css">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/pink.css">
   <link rel="stylesheet" href="/wide.css">
+  {%- if 'class="katex' in content %}
+  <link rel="stylesheet" href="/katex/katex.min.css">
+  {%- endif %}
+  <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/images/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 {%- set section = page.url.split("/")[1] %}
 <header class="site-header">
   <div class="wrap">
@@ -48,15 +72,37 @@
   </div>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
   {{ content | safe }}
 </main>
 
 <footer>
   <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <a class="foot-name" href="/">{{ site.title }}</a>
+        {% if site.subtitle %}<span class="foot-sub">{{ site.subtitle }}</span>{% endif %}
+        <address>{{ site.address | trim | replace("\n", "<br>") | safe }}</address>
+      </div>
+      <nav class="foot-col" aria-label="Footer">
+        <span class="eyebrow">Pages</span>
+        {%- for track in collections.tracks %}
+        <a href="{{ track.url }}">{{ track.data.title }}</a>
+        {%- endfor %}
+        <a href="/people/">People</a>
+        <a href="/news/">News</a>
+        <a href="/publications/">Publications</a>
+        <a href="/join/">Join us</a>
+      </nav>
+      <div class="foot-col">
+        <span class="eyebrow">Contact</span>
+        {% if site.email %}<a href="mailto:{{ site.email }}">{{ site.email }}</a>{% endif %}
+        {% if site.school_url %}<a href="{{ site.school_url }}">{{ site.school }}</a>{% endif %}
+        {% if site.university_url %}<a href="{{ site.university_url }}">{{ site.university }}</a>{% endif %}
+      </div>
+    </div>
     <div class="legal">
       <span>© {{ "now" | year }} {{ site.title }}, {{ site.university }}</span>
-      {% if site.email %}<a href="mailto:{{ site.email }}">{{ site.email }}</a>{% endif %}
     </div>
   </div>
 </footer>
