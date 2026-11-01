@@ -11,6 +11,7 @@ All the text lives in `content/` as Markdown files. Every change merged into `ma
 | `content/` | All page text, one Markdown file per page, person, research theme or news item | Anyone in the group |
 | `content/site.yml` | Site title, contact email, address, collaborators, funder logos | Maintainers |
 | `images/` | Photos, figures and logos | Anyone in the group |
+| `fonts/` | The site's three fonts and their licences, served from here rather than Google Fonts | Maintainers |
 | `templates/` | HTML layouts, `style.css` and `site.js`: how the site looks and moves (the "QCCD Classic" design) | Maintainers |
 | `data/publications.json` | Publication list. **Generated weekly, don't edit by hand** | The update workflow |
 | `content/preprints.yml` | arXiv preprints, added by hand | Anyone in the group |
