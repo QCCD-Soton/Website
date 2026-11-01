@@ -44,6 +44,8 @@ def front_matter_value(text, key):
 def current_orcids():
     orcids = []
     for path in sorted(PEOPLE_DIR.glob("*.md")):
+        if path.name.startswith("example-"):
+            continue  # the template to copy, not a person
         text = path.read_text(encoding="utf-8")
         orcid = front_matter_value(text, "orcid")
         if orcid and front_matter_value(text, "group") != "alumni":

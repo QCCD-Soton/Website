@@ -42,6 +42,8 @@ export default function (eleventyConfig) {
     yaml.load(fs.readFileSync("content/site.yml", "utf8"))
   );
   eleventyConfig.addWatchTarget("content/site.yml");
+  // content/people/example-student.md is a template to copy, not a person, so it is never built.
+  eleventyConfig.ignores.add("content/people/example-*.md");
 
   // Hand-kept arXiv preprints, shaped like a fetched publication so publication.njk can show them.
   // Fails the build naming the entry if its title or arXiv number is missing.
