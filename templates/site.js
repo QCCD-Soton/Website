@@ -53,8 +53,12 @@
   if (pubBtn) pubBtn.addEventListener('click', function () { pubOpen = !pubOpen; showPubs(); });
 
   // Flip cards: tap or Enter/Space toggles; hover flips on devices with a pointer
+  // Links on the back can't be reached with Tab until the card is turned over, so focus never lands on a link you can't see.
   document.querySelectorAll('.card').forEach(function (c) {
-    function toggle() { var on = !c.classList.contains('flipped'); c.classList.toggle('flipped', on); c.setAttribute('aria-pressed', String(on)); }
+    var backLinks = c.querySelectorAll('.face.back a');
+    function setBackFocus(on) { backLinks.forEach(function (a) { if (on) a.removeAttribute('tabindex'); else a.setAttribute('tabindex', '-1'); }); }
+    setBackFocus(false);
+    function toggle() { var on = !c.classList.contains('flipped'); c.classList.toggle('flipped', on); c.setAttribute('aria-pressed', String(on)); setBackFocus(on); }
     c.addEventListener('click', function (e) { if (e.target.closest('a')) return; toggle(); });
     c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
   });
