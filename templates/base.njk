@@ -6,9 +6,9 @@
   <title>{% if title and title != "Home" %}{{ title }} · {% endif %}{{ site.title }}</title>
   <meta name="description" content="{{ site.tagline }}">
   <script>try { var t = localStorage.getItem('qccd-theme'); if (t) document.documentElement.setAttribute('data-theme', t); if (localStorage.getItem('qccd-pink')) document.documentElement.setAttribute('data-pink', ''); if (localStorage.getItem('qccd-wide')) document.documentElement.setAttribute('data-wide', ''); } catch (e) {}</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="preload" href="/fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/instrument-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts/fonts.css">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/pink.css">
   <link rel="stylesheet" href="/wide.css">

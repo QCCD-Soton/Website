@@ -41,6 +41,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget("content/preprints.yml");
 
   eleventyConfig.addPassthroughCopy("images");
+  eleventyConfig.addPassthroughCopy("fonts");
   eleventyConfig.addPassthroughCopy({ "templates/style.css": "style.css" });
   eleventyConfig.addPassthroughCopy({ "templates/site.js": "site.js" });
   eleventyConfig.addPassthroughCopy({ "templates/pink.css": "pink.css" });
