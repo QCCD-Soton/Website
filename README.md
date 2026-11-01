@@ -18,7 +18,7 @@ All the text lives in `content/` as Markdown files. Every change merged into `ma
 | `scripts/fetch_publications.py` | Fetches publications from ORCID and OpenAlex | Maintainers |
 | `.github/workflows/` | Builds and deploys the site, refreshes publications | Maintainers |
 
-The `*.11tydata.json` files in `content/people/`, `content/research/` and `content/news/` tell Eleventy how to treat each folder. You don't need to touch them.
+The `*.11tydata` files in `content/people/`, `content/research/` and `content/news/` tell Eleventy how to treat each folder. You don't need to touch them.
 
 ## Common tasks
 
@@ -49,6 +49,8 @@ One or two paragraphs.
 ```
 
 The date in the filename sets the date shown and the order. The News page shows the latest four, with a button for older ones.
+
+An item gets its own page, linked from its title on the News page, only when it has text below the header or an `image`. An item with just a `title` and `summary` shows on the News page with no link, so there's no near-empty page to click through to.
 
 ### Edit a research theme
 
