@@ -105,6 +105,8 @@ Search engines and link previews (Teams, Slack, LinkedIn) show a short descripti
 
 Every image goes in `images/`. A content file links to an image by naming it in the header (`photo:`, `image:`, `group_photo:`, or `logo:` in `site.yml`). If the named file doesn't exist, the build fails and says which one, so it can't go live broken. Use a prefix so the folder stays easy to scan: a person's name for headshots, `team-…` for group photos, `logo-…` for logos, `news-…` for news images.
 
+Add photos at full size: there's no need to shrink them first. When the site is built, every image is resized to 400, 800 and 1600px wide (never bigger than the original) and also saved as WebP, and each visitor's browser downloads the smallest copy that looks sharp on their screen. Images further down a page only load as the visitor scrolls to them. The originals stay untouched in `images/`. The first build after adding a photo takes a few seconds longer.
+
 ## Publications
 
 `.github/workflows/publications.yml` runs every Monday (or from the Actions tab with "Run workflow"). It collects the works of every current member with an `orcid` in their person file, fills in details from OpenAlex, and opens a pull request if anything changed. Check that the new papers belong to the group, then merge. Only papers from `publications_since` in `site.yml` onwards are included.

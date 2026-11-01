@@ -9,7 +9,7 @@ layout: base.njk
         <h1>{{ title }}</h1>
       </div>
     </div>
-    {% if image %}<img class="post-img" src="{{ image | img }}" alt="{{ image_alt }}">{% endif %}
+    {% if image %}<img class="post-img" src="{{ image | img }}" alt="{{ image_alt }}" loading="eager">{% endif %}
     <div class="sec-body prose">{{ content | safe }}</div>
     <p class="pub-foot"><a href="/news/">← All news</a></p>
   </article>
