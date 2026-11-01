@@ -146,6 +146,12 @@ export default function (eleventyConfig) {
   });
   eleventyConfig.addFilter("inlineMd", (text = "") => md.renderInline(String(text)));
 
+  // Splits a research theme's text at its first ### heading (usually "Selected publications"),
+  // so the text and the list can sit side by side. Returns [text, rest]; rest is "" when there is no heading.
+  eleventyConfig.addFilter("splitAtSubheading", (html = "") => {
+    const i = String(html).indexOf("<h3");
+    return i < 0 ? [html, ""] : [html.slice(0, i), html.slice(i)];
+  });
   eleventyConfig.addFilter("pad", (n) => String(n).padStart(2, "0"));
   eleventyConfig.addFilter("year", () => new Date().getFullYear());
 
