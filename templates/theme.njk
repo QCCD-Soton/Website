@@ -1,4 +1,4 @@
-{#- One research theme: name, one-line summary, figure (only if it has an image), then the full text. Expects `theme`. -#}
+{#- One research theme: name, one-line summary, figure (only if it has an image), then the text, with its Selected publications beside it. Expects `theme`. -#}
 <header class="theme-head">
   <h3>{{ theme.data.title }}</h3>
   {% if theme.data.summary %}<p class="theme-short">{{ theme.data.summary }}</p>{% endif %}
@@ -9,7 +9,12 @@
   {% if theme.data.caption %}<figcaption>{{ theme.data.caption }}</figcaption>{% endif %}
 </figure>
 {%- endif %}
-<div class="theme-detail">
-  {{ theme.content | safe }}
-  {% if theme.data.tags.length %}<div class="tags">{% for t in theme.data.tags %}<span class="tag">{{ t }}</span>{% endfor %}</div>{% endif %}
+{#- The text reads in one column; anything from its first ### heading on (the Selected publications) sits beside it on wide screens. -#}
+{%- set parts = theme.content | splitAtSubheading %}
+<div class="theme-detail{% if parts[1] | trim %} has-aside{% endif %}">
+  <div class="theme-text">
+    {{ parts[0] | safe }}
+    {% if theme.data.tags.length %}<div class="tags">{% for t in theme.data.tags %}<span class="tag">{{ t }}</span>{% endfor %}</div>{% endif %}
+  </div>
+  {% if parts[1] | trim %}<div class="theme-aside">{{ parts[1] | safe }}</div>{% endif %}
 </div>
