@@ -162,6 +162,16 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("firstSentence", (text = "") =>
     text.trim().split(/(?<=\.)\s/)[0]
   );
+  // A page's description for search results and link previews: its `description`, else the first sentence
+  // of its text (Markdown and HTML stripped), else its `summary`, else the site's tagline. At most about 160 characters.
+  eleventyConfig.addFilter("describe", (data = {}, raw = "", fallback = "") => {
+    const text = String(raw).replace(/^---[\s\S]*?\n---/, "").replace(/\$[^$]*\$/g, "")
+      .replace(/<[^>]+>/g, "").replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/[*_#>`]/g, "").replace(/\s+/g, " ").trim();
+    let d = String(data.description || text.split(/(?<=\.)\s/)[0] || data.summary || fallback).trim();
+    if (d.length > 160) d = d.slice(0, 157).replace(/\s+\S*$/, "") + "…";
+    return d;
+  });
+
   eleventyConfig.addFilter("groupByYear", (pubs = []) => {
     const years = {};
     for (const p of pubs) (years[p.year] ??= []).push(p);
