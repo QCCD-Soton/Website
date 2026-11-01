@@ -11,6 +11,7 @@ Run from the repository root:  python scripts/fetch_publications.py
 import json
 import re
 import sys
+import unicodedata
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -94,6 +95,14 @@ def openalex_by_doi(dois):
     return found
 
 
+def latin(name):
+    """True for a name written in the Latin alphabet (accents allowed), so "Journal of Physical
+    Chemistry A" or "Zeitschrift für Physik" but not a Japanese or Chinese title. OpenAlex sometimes
+    files a paper under the wrong source, and that source's name is often in another script."""
+    letters = [c for c in name or "" if c.isalpha()]
+    return bool(letters) and all(unicodedata.name(c, "").startswith("LATIN") for c in letters)
+
+
 def merge(work, record):
     """Prefer OpenAlex's details where it has them, keeping ORCID's as a fallback."""
     if record:
@@ -101,13 +110,14 @@ def merge(work, record):
         # Failing that, ORCID's journal title, and only then the repository's name.
         sources = [(loc.get("source") or {}) for loc in
                    [record.get("primary_location") or {}] + (record.get("locations") or [])]
+        # Only names in the Latin alphabet, so a mis-filed source can't put a foreign-language title on the page.
         journal = next((s["display_name"] for s in sources
-                        if s.get("display_name") and s.get("type") in ("journal", "conference")), None)
-        repository = next((s["display_name"] for s in sources if s.get("display_name")), None)
+                        if latin(s.get("display_name")) and s.get("type") in ("journal", "conference")), None)
+        repository = next((s["display_name"] for s in sources if latin(s.get("display_name"))), None)
         work.update({
             "title": record.get("display_name") or work["title"],
             "year": record.get("publication_year") or work["year"],
-            "venue": journal or work["venue"] or repository,
+            "venue": journal or (work["venue"] if latin(work["venue"]) else None) or repository,
             "authors": [a["author"]["display_name"] for a in record.get("authorships", [])],
             "open_access_url": (record.get("open_access") or {}).get("oa_url"),
             "preprint": record.get("type") == "preprint" or work["preprint"],
