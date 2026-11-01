@@ -6,7 +6,7 @@ layout: base.njk
     <div class="sec-head">
       <div>
         <span class="eyebrow"><time datetime="{{ page.date.toISOString() }}">{{ page.date | date }}</time>{% if kind %} · {{ kind }}{% endif %}</span>
-        <h2>{{ title }}</h2>
+        <h1>{{ title }}</h1>
       </div>
     </div>
     {% if image %}<img class="post-img" src="{{ image | img }}" alt="{{ image_alt }}">{% endif %}
