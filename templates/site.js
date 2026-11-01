@@ -164,6 +164,7 @@
     var items = Array.prototype.slice.call(side.querySelectorAll('.cbox-list li'));
     var reduceB = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var raf = 0, C = {}, s0 = 0, s1 = 1, bnd = [0, .25, .5, .75], k = -1, measured = false, PAD = 12;
+    var card = side.firstElementChild, body = card.querySelector('.cbox-body'), colEnd = 0, fitEnd = 0, lastFit = '';
 
     function rgba(hex, a) {
       var h = hex.replace('#', ''); if (h.length === 3) h = h.replace(/./g, '$&$&');
@@ -182,9 +183,23 @@
       s0 = Math.max(0, top - innerHeight * .4);
       s1 = Math.max(s0 + 1, Math.min(maxS, top + h - innerHeight * .6));
       bnd = themes.map(function (t) { return cl((t.getBoundingClientRect().top + scrollY - innerHeight * .4 - s0) / (s1 - s0), 0, 1); });
-      var H = cv.clientHeight;
-      items.forEach(function (li, i) { li.style.top = (PAD + bnd[i] * (H - 2 * PAD)) + 'px'; });
+      // the theme names sit as a share of the box's height, so they follow it as it grows and shrinks
+      items.forEach(function (li, i) { li.style.top = 'calc(' + PAD + 'px + ' + (bnd[i] * 100) + '% - ' + (bnd[i] * 2 * PAD) + 'px)'; });
+      // with only a few themes the column ends soon after the last one. Rather than let the box be pushed up under the header,
+      // it shrinks as the column's end comes up, down to the room that is left at the very bottom of the page
+      colEnd = side.parentNode.getBoundingClientRect().bottom + scrollY - parseFloat(getComputedStyle(side).top) - (card.offsetHeight - body.offsetHeight);
+      // but never so small that the theme names overlap
+      var need = 120;
+      items.forEach(function (li, i) {
+        var gap = i + 1 < bnd.length ? bnd[i + 1] - bnd[i] : 0;
+        if (li.offsetHeight && gap > 0) need = Math.max(need, li.offsetHeight / gap + 2 * PAD);
+      });
+      fitEnd = Math.max(Math.ceil(need), Math.floor(colEnd - maxS));
       colors(); measured = true;
+    }
+    function fit() {
+      var v = Math.max(fitEnd, Math.floor(colEnd - scrollY)) + 'px';
+      if (v !== lastFit) { lastFit = v; body.style.setProperty('--fit', v); }
     }
     function prog() { return cl((scrollY - s0) / (s1 - s0), 0, 1); }
     function secOf(p) { var i = 0; while (i + 1 < bnd.length && bnd[i + 1] <= p + 1e-4) i++; return i; }
@@ -221,6 +236,7 @@
       raf = 0;
       if (!page.offsetParent) return;
       if (!measured) measure();
+      fit();
       var dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight;
       if (!W || !H) return;
       if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
