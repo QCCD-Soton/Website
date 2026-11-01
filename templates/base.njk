@@ -3,8 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if title and title != "Home" %}{{ title }} · {% endif %}{{ site.title }}</title>
-  <meta name="description" content="{{ site.tagline }}">
+  {%- set pageTitle %}{% if title and title != "Home" %}{{ title }} · {% endif %}{{ site.title }}{% endset %}
+  {%- set description = { description: description, summary: summary } | describe(page.rawInput, site.tagline) %}
+  {%- set shareImage = image or site.share_image %}
+  <title>{{ pageTitle }}</title>
+  <meta name="description" content="{{ description }}">
+  {%- if site.url %}
+  <link rel="canonical" href="{{ page.url | htmlBaseUrl(site.url) }}">
+  <meta property="og:type" content="{{ 'article' if layout == 'post.njk' else 'website' }}">
+  <meta property="og:site_name" content="{{ site.title }}">
+  <meta property="og:title" content="{{ title if title and title != 'Home' else site.title }}">
+  <meta property="og:description" content="{{ description }}">
+  <meta property="og:url" content="{{ page.url | htmlBaseUrl(site.url) }}">
+  <meta property="og:locale" content="en_GB">
+  {%- if shareImage %}
+  <meta property="og:image" content="{{ shareImage | img | htmlBaseUrl(site.url) }}">
+  <meta property="og:image:alt" content="{{ (image_alt if image else site.share_image_alt) or site.title }}">
+  {%- endif %}
+  <meta name="twitter:card" content="{{ 'summary_large_image' if shareImage else 'summary' }}">
+  {%- endif %}
   <script>try { var t = localStorage.getItem('qccd-theme'); if (t) document.documentElement.setAttribute('data-theme', t); if (localStorage.getItem('qccd-pink')) document.documentElement.setAttribute('data-pink', ''); if (localStorage.getItem('qccd-wide')) document.documentElement.setAttribute('data-wide', ''); } catch (e) {}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

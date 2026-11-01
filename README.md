@@ -98,6 +98,8 @@ It's drawn by [KaTeX](https://katex.org/docs/supported.html) (that page lists ev
 
 A news post without a `summary` shows its first sentence on the timeline as plain text, so add a `summary` if that sentence has a link or formatting in it.
 
+Search engines and link previews (Teams, Slack, LinkedIn) show a short description of each page: its `description:` if it has one, otherwise the first sentence of its text, its `summary`, or the site's tagline. A news post with an `image` uses it as the preview picture; other pages use `share_image` from `site.yml` once one is set.
+
 ### Images
 
 Every image goes in `images/`. A content file links to an image by naming it in the header (`photo:`, `image:`, `group_photo:`, or `logo:` in `site.yml`). If the named file doesn't exist, the build fails and says which one, so it can't go live broken. Use a prefix so the folder stays easy to scan: a person's name for headshots, `team-…` for group photos, `logo-…` for logos, `news-…` for news images.
@@ -131,6 +133,6 @@ To refresh publications locally: `python scripts/fetch_publications.py` (Python 
 
 ## Hosting
 
-The site deploys to GitHub Pages at `https://qccd-soton.github.io/website/`. Turn this on once under **Settings → Pages → Source: GitHub Actions**. The workflow adds the `/website/` prefix to links automatically, and drops it if a custom domain is set.
+The site deploys to GitHub Pages at `https://qccd-soton.github.io/website/`. Turn this on once under **Settings → Pages → Source: GitHub Actions**. The workflow adds the `/website/` prefix to links automatically, and drops it if a custom domain is set. If you do move to a custom domain, also change `url` in `site.yml`, which link previews and search engines use.
 
 To use Cloudflare Pages instead, connect this repository in Cloudflare with build command `npx @11ty/eleventy` and output directory `_site`, and delete `deploy.yml`. The publications workflow works unchanged.
