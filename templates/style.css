@@ -205,7 +205,7 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 
 /* Research */
 .themes { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-/* each theme: title beside the image, then the text in one readable column with the Selected publications beside it */
+/* each theme: title beside the image, then the text in two columns across the full width, ending with the Selected publications */
 .theme {
   padding-block: 48px; border-bottom: 1px solid var(--line);
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "head fig" "detail detail"; gap: 32px 40px;
@@ -297,13 +297,11 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
   .cbox-body { grid-template-columns: 30px; height: 60vh; }
   .cbox canvas { width: 30px; }
 }
-.theme-detail { grid-area: detail; min-width: 0; display: grid; grid-template-columns: minmax(0, 68ch); gap: 0 48px; align-items: start; }
-.theme-detail.has-aside { grid-template-columns: minmax(0, 68ch) minmax(240px, 1fr); }
-/* where the theme is too narrow for both (phones, tablets, the Classical page beside its box), the publications go under the text */
-.theme { container-type: inline-size; }
-@container (max-width: 760px) { .theme-detail.has-aside { grid-template-columns: minmax(0, 1fr); } .theme-aside { margin-top: 10px; } }
-.theme-text > *, .theme-aside > * { margin-top: 0; margin-bottom: 14px; }
-.theme-aside h3 { font-size: 20px; }
+.theme-detail { grid-area: detail; columns: 2; column-gap: 40px; min-width: 0; }
+.theme-detail > * { margin-top: 0; margin-bottom: 14px; }
+.theme-detail li { break-inside: avoid; }
+/* keep "Selected publications" with its list, at the end of the text */
+.theme-detail h3 { break-after: avoid; }
 .theme p { color: var(--ink-2); font-size: 15.5px; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag {
@@ -478,6 +476,7 @@ address { font-style: normal; line-height: 1.7; }
   .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fact:nth-child(3) { padding-left: 0; border-left: 0; }
   .theme { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "fig" "detail"; padding-block: 32px; }
+  .theme-detail { columns: 1; }
   .pi { grid-template-columns: minmax(0, 1fr); padding: 28px 22px; gap: 24px; }
   .people { gap: 14px; }
   .pi .avatar { width: 160px; height: 200px; }
