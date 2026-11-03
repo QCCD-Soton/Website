@@ -17,7 +17,7 @@
     "open_access_url": "https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.5c01353?ref=article_openPDF"
   },
   {
-    "title": "Cost-Effective Scalable Quantum Error Mitigation for Tiled Ansätze.",
+    "title": "Cost-Effective Scalable Quantum Error Mitigation for Tiled Ansätze",
     "year": 2026,
     "doi": "10.1021/acs.jctc.6c00603",
     "venue": "Journal of Chemical Theory and Computation",
@@ -210,7 +210,7 @@
     "open_access_url": "https://arxiv.org/pdf/2312.12386"
   },
   {
-    "title": "Electric Field Gradient Calculations for Ice VIII and IX Using Polarizable Embedding: A Comparative Study on Classical Computers and Quantum Simulators.",
+    "title": "Electric Field Gradient Calculations for Ice VIII and IX Using Polarizable Embedding: A Comparative Study on Classical Computers and Quantum Simulators",
     "year": 2024,
     "doi": "10.1021/acs.jpca.4c02697",
     "venue": "Journal of Physical Chemistry A",
@@ -265,5 +265,222 @@
       "Jens Biegert"
     ],
     "open_access_url": "http://dx.doi.org/10.21203/rs.3.rs-3429001/v1"
+  },
+  {
+    "title": "The contribution of Compton ionization to ultrafast x-ray scattering",
+    "year": 2023,
+    "doi": "10.1063/5.0156363",
+    "venue": "The Journal of Chemical Physics",
+    "url": "https://doi.org/10.1063/5.0156363",
+    "preprint": false,
+    "authors": [
+      "Karl Michael Ziems",
+      "Mats Simmermacher",
+      "Stefanie Gräfe",
+      "Adam Kirrander"
+    ],
+    "open_access_url": "https://pubs.aip.org/aip/jcp/article-pdf/doi/10.1063/5.0156363/18080871/044108_1_5.0156363.pdf"
+  },
+  {
+    "title": "Attosecond ionization dynamics of modulated, few-cycle XUV pulses",
+    "year": 2023,
+    "doi": "10.1088/1361-6455/acc4fa",
+    "venue": "Journal of Physics B Atomic Molecular and Optical Physics",
+    "url": "https://doi.org/10.1088/1361-6455/acc4fa",
+    "preprint": false,
+    "authors": [
+      "Karl Michael Ziems",
+      "M. Wollenhaupt",
+      "Stefanie Gräfe",
+      "Alexander Schubert"
+    ],
+    "open_access_url": "https://doi.org/10.1088/1361-6455/acc4fa"
+  },
+  {
+    "title": "Ultrafast non-adiabatic relaxation dynamics of furan theoretically addressed for tr-AttoXAFS",
+    "year": 2022,
+    "doi": null,
+    "venue": "Optics InfoBase Conference Papers",
+    "url": "http://www.scopus.com/inward/record.url?eid=2-s2.0-85139093765&partnerID=MN8TOARS",
+    "preprint": false,
+    "authors": [],
+    "open_access_url": null
+  },
+  {
+    "title": "Post-Ionization Interaction of OCS in Phase-Locked Two-Color Laser Fields",
+    "year": 2022,
+    "doi": null,
+    "venue": "Optics InfoBase Conference Papers",
+    "url": "http://www.scopus.com/inward/record.url?eid=2-s2.0-85139094073&partnerID=MN8TOARS",
+    "preprint": false,
+    "authors": [],
+    "open_access_url": null
+  },
+  {
+    "title": "Post-Ionization Dynamics of the Polar Molecule OCS in Asymmetric Laser Fields",
+    "year": 2022,
+    "doi": "10.3389/fchem.2022.859750",
+    "venue": "Frontiers in Chemistry",
+    "url": "https://doi.org/10.3389/fchem.2022.859750",
+    "preprint": false,
+    "authors": [
+      "Tomoyuki Endo",
+      "Karl Michael Ziems",
+      "Martin Richter",
+      "Friedrich Georg Fröbel",
+      "Akiyoshi Hishikawa",
+      "Stefanie Gräfe",
+      "François Légaré",
+      "Heide Ibrahim"
+    ],
+    "open_access_url": "https://www.frontiersin.org/articles/10.3389/fchem.2022.859750/pdf"
+  },
+  {
+    "title": "Nuclear–Electron Correlation Effects and Their Photoelectron Imprint in Molecular XUV Ionisation",
+    "year": 2022,
+    "doi": "10.3389/fchem.2022.942633",
+    "venue": "Frontiers in Chemistry",
+    "url": "https://doi.org/10.3389/fchem.2022.942633",
+    "preprint": false,
+    "authors": [
+      "Karl Michael Ziems",
+      "Jakob Nicolai Bruhnke",
+      "Volker Engel",
+      "Stefanie Gräfe"
+    ],
+    "open_access_url": "https://www.frontiersin.org/articles/10.3389/fchem.2022.942633/pdf"
+  },
+  {
+    "title": "Novel [FeFe]-Hydrogenase Mimics: Unexpected Course of the Reaction of Ferrocenyl α-Thienyl Thioketone with Fe3(CO)12",
+    "year": 2022,
+    "doi": "10.3390/ma15082867",
+    "venue": "Materials",
+    "url": "https://doi.org/10.3390/ma15082867",
+    "preprint": false,
+    "authors": [
+      "Ahmad Q. Daraosheh",
+      "Hassan Abul‐Futouh",
+      "Natsuki Murakami",
+      "Karl Michael Ziems",
+      "Helmar Görls",
+      "Stephan Kupfer",
+      "Stefanie Gräfe",
+      "Akihiko Ishii",
+      "Małgorzata Celeda",
+      "Grzegorz Mlostoń",
+      "Wolfgang Weigand"
+    ],
+    "open_access_url": "https://www.mdpi.com/1996-1944/15/8/2867/pdf?version=1649910627"
+  },
+  {
+    "title": "Non-Adiabatic Electronic and Vibrational Ring-Opening Dynamics resolved with Attosecond Core-Level Spectroscopy",
+    "year": 2022,
+    "doi": "10.48550/arxiv.2209.04330",
+    "venue": "arXiv",
+    "url": "https://doi.org/10.48550/arxiv.2209.04330",
+    "preprint": false,
+    "authors": [],
+    "open_access_url": null
+  },
+  {
+    "title": "Laser-induced electron diffraction in the over-the-barrier-ionization regime",
+    "year": 2022,
+    "doi": "10.1103/physreva.106.043105",
+    "venue": "Physical Review A",
+    "url": "https://doi.org/10.1103/physreva.106.043105",
+    "preprint": false,
+    "authors": [
+      "Blanca Belsa",
+      "Karl Michael Ziems",
+      "Aurelien Sanchez",
+      "Katharina Chirvi",
+      "X. Liu",
+      "Stefanie Gräfe",
+      "Jens Biegert"
+    ],
+    "open_access_url": "https://arxiv.org/pdf/2209.04831"
+  },
+  {
+    "title": "Laser-induced electron diffraction in the over-the-barrier ionization (OBI) regime",
+    "year": 2022,
+    "doi": "10.48550/arxiv.2209.04831",
+    "venue": "arXiv",
+    "url": "https://doi.org/10.48550/arxiv.2209.04831",
+    "preprint": false,
+    "authors": [],
+    "open_access_url": null
+  },
+  {
+    "title": "Following vibronic coherence in Furan with AttoXAFS",
+    "year": 2022,
+    "doi": null,
+    "venue": "Optics InfoBase Conference Papers",
+    "url": "http://www.scopus.com/inward/record.url?eid=2-s2.0-85139116098&partnerID=MN8TOARS",
+    "preprint": false,
+    "authors": [],
+    "open_access_url": null
+  },
+  {
+    "title": "The impact of electron–electron correlation in ultrafast attosecond single ionization dynamics",
+    "year": 2020,
+    "doi": "10.1088/1361-6455/ab8c21",
+    "venue": "Journal of Physics B Atomic Molecular and Optical Physics",
+    "url": "https://doi.org/10.1088/1361-6455/ab8c21",
+    "preprint": false,
+    "authors": [
+      "F G Fröbel",
+      "K M Ziems",
+      "U Peschel",
+      "S Gräfe",
+      "Alexander Schubert"
+    ],
+    "open_access_url": "https://iopscience.iop.org/article/10.1088/1361-6455/ab8c21/pdf"
+  },
+  {
+    "title": "Unraveling the Light‐Activated Reaction Mechanism in a Catalytically Competent Key Intermediate of a Multifunctional Molecular Catalyst for Artificial Photosynthesis",
+    "year": 2019,
+    "doi": "10.1002/ange.201907247",
+    "venue": "Angewandte Chemie",
+    "url": "https://doi.org/10.1002/ange.201907247",
+    "preprint": false,
+    "authors": [
+      "Linda Zedler",
+      "Alexander K. Mengele",
+      "Karl Michael Ziems",
+      "Ying Zhang",
+      "Maria Wächtler",
+      "Stefanie Gräfe",
+      "Torbjörn Pascher",
+      "Sven Rau",
+      "Stephan Kupfer",
+      "Benjamin Dietzek"
+    ],
+    "open_access_url": "https://doi.org/10.1002/ange.201907247"
+  },
+  {
+    "title": "Photophysics and Photochemistry of a BODIPY‐Based Photosensitizer",
+    "year": 2019,
+    "doi": "10.1007/978-3-658-26188-7",
+    "venue": "BestMasters",
+    "url": "https://doi.org/10.1007/978-3-658-26188-7",
+    "preprint": false,
+    "authors": [
+      "Karl Michael Ziems"
+    ],
+    "open_access_url": null
+  },
+  {
+    "title": "Photo-Induced Charge Separation vs. Degradation of a BODIPY-Based Photosensitizer Assessed by TDDFT and RASPT2",
+    "year": 2018,
+    "doi": "10.3390/catal8110520",
+    "venue": "Catalysts",
+    "url": "https://doi.org/10.3390/catal8110520",
+    "preprint": false,
+    "authors": [
+      "Karl Michael Ziems",
+      "Stefanie Gräfe",
+      "Stephan Kupfer"
+    ],
+    "open_access_url": "https://www.mdpi.com/2073-4344/8/11/520/pdf?version=1541418436"
   }
 ]

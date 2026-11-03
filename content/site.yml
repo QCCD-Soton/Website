@@ -5,6 +5,11 @@ school: School of Chemistry
 university: University of Southampton
 subtitle: Ziems group   # small line under the site title in the header
 tagline: Quantum computers, built to answer chemical questions.
+# The site's address, used for link previews (on Teams, Slack, LinkedIn…) and search engines.
+# Just the host: the /website/ part is added when the site is built. Change it if the site moves to its own domain.
+url: https://qccd-soton.github.io
+share_image:            # picture shown when a page is shared, e.g. the group photo; news posts use their own image
+share_image_alt:
 email: K.M.Ziems@soton.ac.uk
 address: |
   School of Chemistry
@@ -12,10 +17,12 @@ address: |
   Highfield Campus
   Southampton SO17 1BJ, UK
 find_us:               # e.g. Building 27, ten minutes from Southampton Airport Parkway
+university_url: https://www.southampton.ac.uk/   # linked in the footer
+school_url:            # optional, e.g. the School of Chemistry's page; linked in the footer when set
 
 # Publications are fetched for every current member with an ORCID iD,
 # from this year onwards.
-publications_since: 2024
+publications_since: 2015
 
 # Listed at the bottom of the People page. Each is hidden while its list is empty.
 collaborators: []
@@ -44,3 +51,6 @@ logos:
   - name: AstraZeneca
     logo: logo-astrazeneca.png
     url: https://www.astrazeneca.com/
+  - name: Fujitsu
+    logo: logo-fujitsu.png
+    url: https://www.fujitsu.com/

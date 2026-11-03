@@ -11,19 +11,20 @@ All the text lives in `content/` as Markdown files. Every change merged into `ma
 | `content/` | All page text, one Markdown file per page, person, research theme or news item | Anyone in the group |
 | `content/site.yml` | Site title, contact email, address, collaborators, funder logos | Maintainers |
 | `images/` | Photos, figures and logos | Anyone in the group |
+| `fonts/` | The site's three fonts and their licences, served from here rather than Google Fonts | Maintainers |
 | `templates/` | HTML layouts, `style.css` and `site.js`: how the site looks and moves (the "QCCD Classic" design) | Maintainers |
 | `data/publications.json` | Publication list. **Generated weekly, don't edit by hand** | The update workflow |
 | `content/preprints.yml` | arXiv preprints, added by hand | Anyone in the group |
 | `scripts/fetch_publications.py` | Fetches publications from ORCID and OpenAlex | Maintainers |
 | `.github/workflows/` | Builds and deploys the site, refreshes publications | Maintainers |
 
-The `*.11tydata.json` files in `content/people/`, `content/research/` and `content/news/` tell Eleventy how to treat each folder. You don't need to touch them.
+The `*.11tydata` files in `content/people/`, `content/research/` and `content/news/` tell Eleventy how to treat each folder. You don't need to touch them.
 
 ## Common tasks
 
 ### Add a person
 
-1. Copy `content/people/example-student.md` to `content/people/firstname-lastname.md`.
+1. Copy `content/people/example-student.md` to `content/people/firstname-lastname.md`. The example explains each field and is never shown on the site, as is any file whose name starts with `example-`.
 2. Fill in the header: `name`, `role`, `group` (one of `lead`, `postdoc`, `phd`, `masters`, `undergrad`, `visitor`, `alumni`), `topic` (a few words on their project), `orcid` and `email`.
 3. Write a short bio below the second `---`. It shows on the back of their card.
 4. Put a portrait headshot (4:5, e.g. 800×1000) in `images/` named `firstname-lastname.jpg` and set `photo: firstname-lastname.jpg`. Until then a coloured silhouette stands in.
@@ -48,6 +49,8 @@ One or two paragraphs.
 ```
 
 The date in the filename sets the date shown and the order. The News page shows the latest four, with a button for older ones.
+
+An item gets its own page, linked from its title on the News page, only when it has text below the header or an `image`. An item with just a `title` and `summary` shows on the News page with no link, so there's no near-empty page to click through to.
 
 ### Edit a research theme
 
@@ -98,9 +101,13 @@ It's drawn by [KaTeX](https://katex.org/docs/supported.html) (that page lists ev
 
 A news post without a `summary` shows its first sentence on the timeline as plain text, so add a `summary` if that sentence has a link or formatting in it.
 
+Search engines and link previews (Teams, Slack, LinkedIn) show a short description of each page: its `description:` if it has one, otherwise the first sentence of its text, its `summary`, or the site's tagline. A news post with an `image` uses it as the preview picture; other pages use `share_image` from `site.yml` once one is set.
+
 ### Images
 
 Every image goes in `images/`. A content file links to an image by naming it in the header (`photo:`, `image:`, `group_photo:`, or `logo:` in `site.yml`). If the named file doesn't exist, the build fails and says which one, so it can't go live broken. Use a prefix so the folder stays easy to scan: a person's name for headshots, `team-…` for group photos, `logo-…` for logos, `news-…` for news images.
+
+Add photos at full size: there's no need to shrink them first. When the site is built, every image is resized to 400, 800 and 1600px wide (never bigger than the original) and also saved as WebP, and each visitor's browser downloads the smallest copy that looks sharp on their screen. Images further down a page only load as the visitor scrolls to them. The originals stay untouched in `images/`. The first build after adding a photo takes a few seconds longer.
 
 ## Publications
 
@@ -131,6 +138,6 @@ To refresh publications locally: `python scripts/fetch_publications.py` (Python 
 
 ## Hosting
 
-The site deploys to GitHub Pages at `https://qccd-soton.github.io/website/`. Turn this on once under **Settings → Pages → Source: GitHub Actions**. The workflow adds the `/website/` prefix to links automatically, and drops it if a custom domain is set.
+The site deploys to GitHub Pages at `https://qccd-soton.github.io/website/`. Turn this on once under **Settings → Pages → Source: GitHub Actions**. The workflow adds the `/website/` prefix to links automatically, and drops it if a custom domain is set. If you do move to a custom domain, also change `url` in `site.yml`, which link previews and search engines use.
 
 To use Cloudflare Pages instead, connect this repository in Cloudflare with build command `npx @11ty/eleventy` and output directory `_site`, and delete `deploy.yml`. The publications workflow works unchanged.
