@@ -159,8 +159,10 @@ p { margin: 0; }
   height: 64px; display: grid; place-items: center; border: 1px dashed var(--line); border-radius: 4px;
   font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
 }
-@media (max-width: 900px) { .funder-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 480px) { .funder-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } .photo-ph { aspect-ratio: 4 / 3; } .hero-logo { width: 52px; height: 52px; } }
+/* wrap to more rows before the tiles shrink much below their desktop width (about 187px), rather than squeezing six or three into a row */
+@media (max-width: 1099px) { .funder-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 599px) { .funder-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .photo-ph { aspect-ratio: 4 / 3; } .hero-logo { width: 52px; height: 52px; } }
 .hero { border-bottom: 0; }
 .nav-drop { position: relative; }
 .drop-trigger { display: inline-flex; align-items: center; gap: 6px; }
@@ -525,7 +527,8 @@ picture { display: contents; }
 /* logos sit on white tiles so they read the same in dark mode */
 .funder-row li { height: 96px; border-style: solid; padding: 10px 14px; background: #fff; }
 .funder-row li a { display: grid; place-items: center; width: 100%; height: 100%; }
-.funder-row img { max-height: 74px; max-width: 100%; width: auto; object-fit: contain; }
+/* width and height both auto so the two max limits scale a logo down in proportion and never stretch it */
+.funder-row img { max-height: 74px; max-width: 100%; width: auto; height: auto; object-fit: contain; }
 .prose > * + * { margin-top: 1em; }
 .prose a, .theme-detail a, .contact-grid a, .tl-body a { color: var(--accent-ink); text-underline-offset: 3px; }
 .tl-body h3 a { color: inherit; text-decoration: none; }
