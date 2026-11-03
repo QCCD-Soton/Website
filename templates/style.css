@@ -295,10 +295,12 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 @media (max-width: 920px) {
   /* the box keeps its own slim column beside the themes, so it never sits over the heading or text */
   .cgrid { grid-template-columns: 42px minmax(0, 1fr); gap: 16px; }
-  .cside { top: max(80px, 20vh); }
+  /* it sticks just under the header and reaches down to near the bottom of the screen. Until it gets there it reaches from
+     wherever it is, so it grows as you scroll (--hdr and --grow come from site.js) */
+  .cside { top: calc(env(safe-area-inset-top, 0px) + var(--hdr, 66px) + 12px); }
   .cbox { padding: 6px; gap: 0; }
   .cbox .eyebrow, .cbox-list, .cbox-n { display: none; }
-  .cbox-body { grid-template-columns: 30px; height: 60vh; max-height: var(--fit, none); }
+  .cbox-body { grid-template-columns: 30px; height: var(--grow, calc(100vh - 120px)); max-height: var(--fit, none); }
   .cbox canvas { width: 30px; }
 }
 .theme-detail { grid-area: detail; columns: 2; column-gap: 40px; min-width: 0; }

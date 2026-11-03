@@ -165,6 +165,7 @@
     var reduceB = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var raf = 0, C = {}, s0 = 0, s1 = 1, bnd = [0, .25, .5, .75], k = -1, measured = false, PAD = 12;
     var card = side.firstElementChild, body = card.querySelector('.cbox-body'), colEnd = 0, fitEnd = 0, lastFit = '';
+    var header = document.querySelector('.site-header'), narrow = matchMedia('(max-width: 920px)'), colTop = 0, stick = 0, chrome = 0, lastGrow = '';
 
     function rgba(hex, a) {
       var h = hex.replace('#', ''); if (h.length === 3) h = h.replace(/./g, '$&$&');
@@ -178,6 +179,7 @@
     function cl(v, a, b) { return Math.max(a, Math.min(b, v)); }
     function measure() {
       if (!page.offsetParent) return;
+      if (header) side.style.setProperty('--hdr', header.offsetHeight + 'px');
       var top = box.getBoundingClientRect().top + scrollY, h = box.offsetHeight;
       var maxS = document.documentElement.scrollHeight - innerHeight;
       s0 = Math.max(0, top - innerHeight * .4);
@@ -187,9 +189,12 @@
       items.forEach(function (li, i) { li.style.top = 'calc(' + PAD + 'px + ' + (bnd[i] * 100) + '% - ' + (bnd[i] * 2 * PAD) + 'px)'; });
       // with only a few themes the column ends soon after the last one. Rather than let the box be pushed up under the header,
       // it shrinks as the column's end comes up, down to the room that is left at the very bottom of the page
-      colEnd = side.parentNode.getBoundingClientRect().bottom + scrollY - parseFloat(getComputedStyle(side).top) - (card.offsetHeight - body.offsetHeight);
-      // but never so small that the theme names overlap
-      var need = 120;
+      stick = parseFloat(getComputedStyle(side).top); chrome = card.offsetHeight - body.offsetHeight;
+      colTop = side.parentNode.getBoundingClientRect().top + scrollY;
+      colEnd = side.parentNode.getBoundingClientRect().bottom + scrollY - stick - chrome;
+      // but never so small that the theme names overlap. On a phone the names are hidden, so it can go smaller and stay
+      // below the header right to the end of the page
+      var need = narrow.matches ? 48 : 120;
       items.forEach(function (li, i) {
         var gap = i + 1 < bnd.length ? bnd[i + 1] - bnd[i] : 0;
         if (li.offsetHeight && gap > 0) need = Math.max(need, li.offsetHeight / gap + 2 * PAD);
@@ -200,6 +205,9 @@
     function fit() {
       var v = Math.max(fitEnd, Math.floor(colEnd - scrollY)) + 'px';
       if (v !== lastFit) { lastFit = v; body.style.setProperty('--fit', v); }
+      // on a phone the box reaches from its top, or the header once it sticks, to 16px above the bottom of the screen
+      var g = Math.max(160, Math.floor(innerHeight - 16 - chrome - Math.max(stick, colTop - scrollY))) + 'px';
+      if (g !== lastGrow) { lastGrow = g; body.style.setProperty('--grow', g); }
     }
     function prog() { return cl((scrollY - s0) / (s1 - s0), 0, 1); }
     function secOf(p) { var i = 0; while (i + 1 < bnd.length && bnd[i + 1] <= p + 1e-4) i++; return i; }
