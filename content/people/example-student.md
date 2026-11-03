@@ -9,6 +9,8 @@ topic: Excited-state VQE      # a few words on their project
 photo: jane-doe.jpg           # a 4:5 portrait headshot in images/; leave empty for a silhouette
 orcid: 0000-0000-0000-0000    # their ORCID iD, so their papers are fetched for Publications
 email: j.doe@soton.ac.uk
+github: janedoe                # optional: GitHub username or profile address
+linkedin: jane-doe            # optional: LinkedIn handle (from linkedin.com/in/…) or profile address
 ---
 
 A short bio of two or three sentences goes here. It shows on the back of their card on the People page. Leave this empty rather than writing a placeholder.

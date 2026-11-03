@@ -25,7 +25,7 @@ The `*.11tydata` files in `content/people/`, `content/research/` and `content/ne
 ### Add a person
 
 1. Copy `content/people/example-student.md` to `content/people/firstname-lastname.md`. The example explains each field and is never shown on the site, as is any file whose name starts with `example-`.
-2. Fill in the header: `name`, `role`, `group` (one of `lead`, `postdoc`, `phd`, `masters`, `undergrad`, `visitor`, `alumni`), `topic` (a few words on their project), `orcid` and `email`.
+2. Fill in the header: `name`, `role`, `group` (one of `lead`, `postdoc`, `phd`, `masters`, `undergrad`, `visitor`, `alumni`), `topic` (a few words on their project), `orcid` and `email`. Optionally add `github` and `linkedin`, as a username or a full profile address; a GitHub or LinkedIn link then appears on the back of their card.
 3. Write a short bio below the second `---`. It shows on the back of their card.
 4. Put a portrait headshot (4:5, e.g. 800×1000) in `images/` named `firstname-lastname.jpg` and set `photo: firstname-lastname.jpg`. Until then a coloured silhouette stands in.
 
