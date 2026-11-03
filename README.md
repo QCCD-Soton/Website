@@ -83,7 +83,7 @@ Not every place you can type text understands Markdown. There are three kinds:
 - Tables, block quotes (`>`) and `` `code` `` do render, but have no styling, so they look like plain text (tables have no lines). Best avoided.
 - Headings in bios and news posts. They're shown large and look out of place in a card or a short post.
 
-**Maths** works in Markdown text, written in LaTeX between dollar signs. `$E = mc^2$` sits in the sentence; `$$ ... $$` on lines of their own is shown centred on its own line:
+Markdown text can also hold maths, written in LaTeX between dollar signs. `$E = mc^2$` sits in the sentence; `$$ ... $$` on lines of their own is shown centred on its own line:
 
 ```markdown
 The energy is bounded by $E_0 \le \langle\psi|\hat H|\psi\rangle$, where
