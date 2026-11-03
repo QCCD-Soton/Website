@@ -35,6 +35,8 @@ layout: base.njk
                 <a href="/join/#contact">Contact</a>
                 <a href="/join/">Supervision enquiries</a>
                 {% if person.data.orcid %}<a href="https://orcid.org/{{ person.data.orcid }}">ORCID</a>{% endif %}
+                {% if person.data.github %}<a href="{{ person.data.github | githubUrl }}">GitHub</a>{% endif %}
+                {% if person.data.linkedin %}<a href="{{ person.data.linkedin | linkedinUrl }}">LinkedIn</a>{% endif %}
                 {% for name, url in person.data.links %}<a href="{{ url }}">{{ name | capitalize }}</a>{% endfor %}
               </div>
             </div>
@@ -62,6 +64,8 @@ layout: base.njk
               <span class="links">
                 {%- set sep = joiner(" · ") %}
                 {%- if person.data.orcid %}{{ sep() }}<a href="https://orcid.org/{{ person.data.orcid }}">ORCID</a>{% endif %}
+                {%- if person.data.github %}{{ sep() }}<a href="{{ person.data.github | githubUrl }}">GitHub</a>{% endif %}
+                {%- if person.data.linkedin %}{{ sep() }}<a href="{{ person.data.linkedin | linkedinUrl }}">LinkedIn</a>{% endif %}
                 {%- for name, url in person.data.links %}{{ sep() }}<a href="{{ url }}">{{ name | capitalize }}</a>{% endfor %}
                 {%- if person.data.email %}{{ sep() }}<a href="mailto:{{ person.data.email }}">Email</a>{% endif %}
               </span>
