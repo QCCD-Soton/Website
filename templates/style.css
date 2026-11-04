@@ -379,6 +379,23 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .card.flipped .face.back .more, .card:hover .face.back .more { pointer-events: auto; }
 .card.expanded .face.back { position: static; overflow: visible; }
 .card.expanded .bio { overflow: visible; -webkit-mask-image: none; mask-image: none; }
+/* People sheet: on narrow screens a tapped card opens in front of the page (built by site.js) */
+.sheet-open { overflow: hidden; }
+.sheet-wrap { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)); perspective: 1400px; }
+.sheet-backdrop { position: absolute; inset: 0; background: color-mix(in srgb, var(--paper) 45%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.sheet { position: relative; width: min(100%, 440px); max-height: 100%; display: flex; transform-style: preserve-3d; }
+.sheet .flip { width: 100%; max-height: 100%; height: auto; transform-origin: center; transform-style: preserve-3d; transition: none; }
+.sheet .face { box-shadow: 0 24px 60px -20px rgba(11, 18, 32, .45); }
+.sheet .face.front { position: absolute; inset: 0; overflow: hidden; }
+.sheet .face.back { position: relative; inset: auto; overflow: auto; max-height: calc(100dvh - 32px); padding: 24px 24px 22px; visibility: visible; }
+.sheet .face.back .name { font-size: 24px; padding-right: 40px; }
+.sheet .bio { font-size: 15.5px; overflow: visible; flex: none; }
+.sheet .links { font-size: 14px; padding-top: 18px; }
+.sheet.settled .flip { transform: none !important; }
+.sheet.settled .face.front { display: none; }
+.sheet.settled .face.back { transform: none; }
+.sheet-close { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border: 0; border-radius: 50%; background: transparent; color: var(--ink-2); font-size: 28px; line-height: 1; cursor: pointer; }
+.sheet-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .person .avatar { width: calc(100% + 40px); max-width: none; margin: -20px -20px 14px; border-radius: 5px 5px 0 0; }
 .person .name { font-weight: 600; font-size: 16px; }
 .person .role { font-size: 13.5px; color: var(--muted); }

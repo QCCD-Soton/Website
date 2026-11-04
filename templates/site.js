@@ -52,6 +52,87 @@
   });
   if (pubBtn) pubBtn.addEventListener('click', function () { pubOpen = !pubOpen; showPubs(); });
 
+  // People sheet (narrow screens): the tapped card turns over and grows into a readable view in front of a blurred page
+  var narrow = window.matchMedia('(max-width: 820px)');
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function openSheet(card) {
+    var wrap = document.createElement('div');
+    wrap.className = 'sheet-wrap';
+    var backdrop = document.createElement('div');
+    backdrop.className = 'sheet-backdrop';
+    var sheet = document.createElement('div');
+    sheet.className = 'sheet person';
+    sheet.setAttribute('role', 'dialog');
+    sheet.setAttribute('aria-modal', 'true');
+    sheet.setAttribute('aria-label', card.querySelector('.face.back .name').textContent);
+    var flip = document.createElement('div');
+    flip.className = 'flip';
+    var front = card.querySelector('.face.front').cloneNode(true);
+    var back = card.querySelector('.face.back').cloneNode(true);
+    back.querySelectorAll('[tabindex]').forEach(function (el) { el.removeAttribute('tabindex'); });
+    back.querySelectorAll('.more').forEach(function (el) { el.remove(); });
+    back.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
+    var bio = back.querySelector('.bio'); if (bio) bio.classList.remove('clamped');
+    var close = document.createElement('button');
+    close.type = 'button'; close.className = 'sheet-close'; close.setAttribute('aria-label', 'Close'); close.textContent = '\u00d7';
+    back.insertBefore(close, back.firstChild);
+    flip.appendChild(front); flip.appendChild(back); sheet.appendChild(flip);
+    wrap.appendChild(backdrop); wrap.appendChild(sheet);
+    document.body.appendChild(wrap);
+
+    var others = Array.prototype.filter.call(document.body.children, function (el) { return el !== wrap; });
+    others.forEach(function (el) { el.inert = true; });
+    document.documentElement.classList.add('sheet-open');
+
+    // Grow from where the card sits to the middle of the screen, turning over on the way
+    function fromCard() {
+      var a = card.getBoundingClientRect(), b = sheet.getBoundingClientRect();
+      var dx = (a.left + a.width / 2) - (b.left + b.width / 2), dy = (a.top + a.height / 2) - (b.top + b.height / 2);
+      return 'translate(' + dx + 'px,' + dy + 'px) scale(' + (a.width / b.width) + ',' + (a.height / b.height) + ')';
+    }
+    var timing = { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' };
+    function settle() { sheet.classList.add('settled'); close.focus({ preventScroll: true }); }
+    flip.style.transform = 'rotateY(180deg)';
+    card.style.visibility = 'hidden';
+    if (still.matches) { wrap.classList.add('shown'); settle(); }
+    else {
+      wrap.classList.add('shown');
+      backdrop.animate([{ opacity: 0 }, { opacity: 1 }], timing);
+      flip.animate([{ transform: fromCard() + ' rotateY(0deg)' }, { transform: 'translate(0px,0px) scale(1,1) rotateY(180deg)' }], timing).onfinish = settle;
+    }
+
+    var closing = false;
+    function shut() {
+      if (closing) return; closing = true;
+      document.removeEventListener('keydown', onKey);
+      function done() {
+        others.forEach(function (el) { el.inert = false; });
+        document.documentElement.classList.remove('sheet-open');
+        card.style.visibility = '';
+        wrap.remove();
+        card.focus({ preventScroll: true });
+      }
+      if (still.matches) return done();
+      var to = fromCard() + ' rotateY(0deg)';
+      sheet.classList.remove('settled');
+      backdrop.animate([{ opacity: 1 }, { opacity: 0 }], { duration: timing.duration, easing: timing.easing, fill: 'forwards' });
+      flip.animate([{ transform: 'translate(0px,0px) scale(1,1) rotateY(180deg)' }, { transform: to }], { duration: timing.duration, easing: timing.easing, fill: 'forwards' }).onfinish = done;
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') shut();
+      else if (e.key === 'Tab') {
+        var f = back.querySelectorAll('a, button');
+        if (!f.length) return;
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    }
+    document.addEventListener('keydown', onKey);
+    backdrop.addEventListener('click', shut);
+    wrap.addEventListener('click', function (e) { if (e.target === wrap) shut(); });
+    close.addEventListener('click', shut);
+  }
+
   // Flip cards: tap or Enter/Space toggles; hover flips on devices with a pointer
   // Links on the back can't be reached with Tab until the card is turned over, so focus never lands on a link you can't see.
   document.querySelectorAll('.card').forEach(function (c) {
@@ -72,8 +153,10 @@
       c.classList.toggle('flipped', on); c.setAttribute('aria-pressed', String(on)); setBackFocus(on);
       if (!on) setExpanded(false);
     }
-    c.addEventListener('click', function (e) { if (e.target.closest('a, .more')) return; toggle(); });
-    c.addEventListener('keydown', function (e) { if (e.target !== c) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    // On a narrow screen a person's card opens as a sheet over the page instead of turning over in place
+    function activate() { if (narrow.matches && c.classList.contains('person')) openSheet(c); else toggle(); }
+    c.addEventListener('click', function (e) { if (e.target.closest('a, .more')) return; activate(); });
+    c.addEventListener('keydown', function (e) { if (e.target !== c) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
     if (more && bio) {
       // Offer "Read more" only when the bio doesn't fit on the card
       var measure = function () {
