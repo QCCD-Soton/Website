@@ -12,5 +12,7 @@ github: https://github.com/eheywood
 
 Current PhD research includes global optimisation methods for Variational Quantum Eigensolvers (VQE), benchmarking their performance across different molecules, ansätze and local optimisation algorithms. We aim to improve the robustness and reliability of locating the global minima in the non-linear energy landscapes that these ansätze produce.
 
-I hold an MSc in Theoretical and Computational Chemistry from the University of Oxford and a BSc in Computer Science from the University of Southampton.
+Education:
+- MSc in Theoretical and Computational Chemistry from the University of Oxford
+- BSc in Computer Science from the University of Southampton
 
