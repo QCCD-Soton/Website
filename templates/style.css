@@ -368,8 +368,17 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .person .face { display: flex; flex-direction: column; gap: 4px; padding: 20px; }
 .person .back .name { font-family: var(--font-display); font-size: 19px; font-weight: 400; }
 .person .bio { font-size: 14px; color: var(--ink-2); line-height: 1.55; margin-top: 6px; }
-.person .int { font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-ink); margin-top: 8px; }
+.person .int { font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-ink); margin-top: 2px; }
 .person .links { font-size: 12.5px; color: var(--accent-ink); margin-top: auto; padding-top: 10px; }
+/* A long bio is cut to fit the card, which keeps every card the size of its front; "Read more" lets the card grow */
+.person .flip { position: relative; }
+.person .face.back { position: absolute; inset: 0; overflow: hidden; }
+.person .bio { flex: 0 1 auto; min-height: 0; overflow: hidden; }
+.person .bio.clamped { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent); }
+.person .more { align-self: flex-start; margin-top: 6px; padding: 0; border: 0; background: none; font: inherit; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .04em; color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.card.flipped .face.back .more, .card:hover .face.back .more { pointer-events: auto; }
+.card.expanded .face.back { position: static; overflow: visible; }
+.card.expanded .bio { overflow: visible; -webkit-mask-image: none; mask-image: none; }
 .person .avatar { width: calc(100% + 40px); max-width: none; margin: -20px -20px 14px; border-radius: 5px 5px 0 0; }
 .person .name { font-weight: 600; font-size: 16px; }
 .person .role { font-size: 13.5px; color: var(--muted); }

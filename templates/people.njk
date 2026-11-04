@@ -59,8 +59,9 @@ layout: base.njk
             </div>
             <div class="face back">
               <span class="name">{{ person.data.name }}</span>
-              <div class="bio">{{ person.content | safe }}</div>
               {% if person.data.topic %}<span class="int">{{ person.data.topic }}</span>{% endif %}
+              <div class="bio" id="bio-{{ person.fileSlug }}">{{ person.content | safe }}</div>
+              <button type="button" class="more" aria-expanded="false" aria-controls="bio-{{ person.fileSlug }}" hidden>Read more</button>
               <span class="links">
                 {%- set sep = joiner(" · ") %}
                 {%- if person.data.orcid %}{{ sep() }}<a href="https://orcid.org/{{ person.data.orcid }}">ORCID</a>{% endif %}

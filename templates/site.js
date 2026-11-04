@@ -56,11 +56,41 @@
   // Links on the back can't be reached with Tab until the card is turned over, so focus never lands on a link you can't see.
   document.querySelectorAll('.card').forEach(function (c) {
     var backLinks = c.querySelectorAll('.face.back a');
-    function setBackFocus(on) { backLinks.forEach(function (a) { if (on) a.removeAttribute('tabindex'); else a.setAttribute('tabindex', '-1'); }); }
+    var bio = c.querySelector('.face.back .bio'), more = c.querySelector('.face.back .more');
+    function setBackFocus(on) {
+      backLinks.forEach(function (a) { if (on) a.removeAttribute('tabindex'); else a.setAttribute('tabindex', '-1'); });
+      if (more) { if (on) more.removeAttribute('tabindex'); else more.setAttribute('tabindex', '-1'); }
+    }
     setBackFocus(false);
-    function toggle() { var on = !c.classList.contains('flipped'); c.classList.toggle('flipped', on); c.setAttribute('aria-pressed', String(on)); setBackFocus(on); }
-    c.addEventListener('click', function (e) { if (e.target.closest('a')) return; toggle(); });
-    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    function setExpanded(on) {
+      c.classList.toggle('expanded', on);
+      if (more) { more.setAttribute('aria-expanded', String(on)); more.textContent = on ? 'Show less' : 'Read more'; }
+      if (bio && more) bio.classList.toggle('clamped', !on && !more.hidden);
+    }
+    function toggle() {
+      var on = !c.classList.contains('flipped');
+      c.classList.toggle('flipped', on); c.setAttribute('aria-pressed', String(on)); setBackFocus(on);
+      if (!on) setExpanded(false);
+    }
+    c.addEventListener('click', function (e) { if (e.target.closest('a, .more')) return; toggle(); });
+    c.addEventListener('keydown', function (e) { if (e.target !== c) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    if (more && bio) {
+      // Offer "Read more" only when the bio doesn't fit on the card
+      var measure = function () {
+        if (c.classList.contains('expanded')) return;
+        var cut = bio.scrollHeight > bio.clientHeight + 1;
+        more.hidden = !cut; bio.classList.toggle('clamped', cut);
+      };
+      measure();
+      window.addEventListener('resize', measure);
+      if (document.fonts) document.fonts.ready.then(measure);
+      more.addEventListener('click', function () {
+        var on = !c.classList.contains('expanded');
+        if (on && !c.classList.contains('flipped')) toggle();
+        setExpanded(on);
+        if (!on) { measure(); c.scrollIntoView({ block: 'nearest' }); }
+      });
+    }
   });
 
   // News timeline: latest four shown, older items on request
