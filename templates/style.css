@@ -368,8 +368,34 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .person .face { display: flex; flex-direction: column; gap: 4px; padding: 20px; }
 .person .back .name { font-family: var(--font-display); font-size: 19px; font-weight: 400; }
 .person .bio { font-size: 14px; color: var(--ink-2); line-height: 1.55; margin-top: 6px; }
-.person .int { font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-ink); margin-top: 8px; }
+.person .int { font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-ink); margin-top: 2px; }
 .person .links { font-size: 12.5px; color: var(--accent-ink); margin-top: auto; padding-top: 10px; }
+/* A long bio is cut to fit the card, which keeps every card the size of its front; "Read more" lets the card grow */
+.person .flip { position: relative; }
+.person .face.back { position: absolute; inset: 0; overflow: hidden; }
+.person .bio { flex: 0 1 auto; min-height: 0; overflow: hidden; }
+.person .bio.clamped { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent); }
+.person .more { align-self: flex-start; margin-top: 6px; padding: 0; border: 0; background: none; font: inherit; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .04em; color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.card.flipped .face.back .more, .card:hover .face.back .more { pointer-events: auto; }
+.card.expanded .face.back { position: static; overflow: visible; }
+.card.expanded .bio { overflow: visible; -webkit-mask-image: none; mask-image: none; }
+/* People sheet: on narrow screens a tapped card opens in front of the page (built by site.js) */
+.sheet-open { overflow: hidden; scrollbar-gutter: stable; }
+.sheet-wrap { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)); perspective: 1400px; }
+.sheet-backdrop { position: absolute; inset: 0; background: color-mix(in srgb, var(--paper) 45%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.sheet { position: relative; width: min(100%, 440px); max-height: 100%; display: flex; transform-style: preserve-3d; }
+.sheet .flip { width: 100%; max-height: 100%; height: auto; transform-origin: center; transform-style: preserve-3d; transition: none; }
+.sheet .face.back { box-shadow: 0 24px 60px -20px rgba(11, 18, 32, .45); }
+.sheet .face.front { position: absolute; left: 50%; top: 50%; inset: 50% auto auto 50%; overflow: hidden; }
+.sheet .face.back { position: relative; inset: auto; overflow: auto; max-height: calc(100dvh - 32px); padding: 24px 24px 22px; visibility: visible; }
+.sheet .face.back .name { font-size: 24px; padding-right: 40px; }
+.sheet .bio { font-size: 15.5px; overflow: visible; flex: none; }
+.sheet .links { font-size: 14px; padding-top: 18px; }
+.sheet.settled .flip { transform: none !important; }
+.sheet.settled .face.front { display: none; }
+.sheet.settled .face.back { transform: none; }
+.sheet-close { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border: 0; border-radius: 50%; background: transparent; color: var(--ink-2); font-size: 28px; line-height: 1; cursor: pointer; }
+.sheet-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .person .avatar { width: calc(100% + 40px); max-width: none; margin: -20px -20px 14px; border-radius: 5px 5px 0 0; }
 .person .name { font-weight: 600; font-size: 16px; }
 .person .role { font-size: 13.5px; color: var(--muted); }
