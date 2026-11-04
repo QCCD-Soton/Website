@@ -84,22 +84,33 @@
     others.forEach(function (el) { el.inert = true; });
     document.documentElement.classList.add('sheet-open');
 
-    // Grow from where the card sits to the middle of the screen, turning over on the way
-    function fromCard() {
-      var a = card.getBoundingClientRect(), b = sheet.getBoundingClientRect();
+    // Grow from where the card sits to the middle of the screen, turning over on the way.
+    // The front copy is laid out at the card's own size and the back at the sheet's, and each is scaled so the two
+    // always cover the same box: the front ends at exactly the card's size, so the hand-back to the real card is seamless.
+    var a = card.getBoundingClientRect(), b = sheet.getBoundingClientRect();
+    front.style.width = a.width + 'px'; front.style.height = a.height + 'px';
+    front.style.marginLeft = (-a.width / 2) + 'px'; front.style.marginTop = (-a.height / 2) + 'px';
+    function frames(opening) {
+      a = card.getBoundingClientRect(); b = sheet.getBoundingClientRect();
       var dx = (a.left + a.width / 2) - (b.left + b.width / 2), dy = (a.top + a.height / 2) - (b.top + b.height / 2);
-      return 'translate(' + dx + 'px,' + dy + 'px) scale(' + (a.width / b.width) + ',' + (a.height / b.height) + ')';
+      var sx = a.width / b.width, sy = a.height / b.height;
+      var at = { flip: 'translate(' + dx + 'px,' + dy + 'px) rotateY(0deg)', front: 'scale(1,1)', back: 'rotateY(180deg) scale(' + sx + ',' + sy + ')' };
+      var away = { flip: 'translate(0px,0px) rotateY(180deg)', front: 'scale(' + (1 / sx) + ',' + (1 / sy) + ')', back: 'rotateY(180deg) scale(1,1)' };
+      var from = opening ? at : away, to = opening ? away : at;
+      var t = { duration: timing.duration, easing: timing.easing, fill: 'forwards' };
+      backdrop.animate([{ opacity: opening ? 0 : 1 }, { opacity: opening ? 1 : 0 }], t);
+      front.animate([{ transform: from.front }, { transform: to.front }], t);
+      back.animate([{ transform: from.back }, { transform: to.back }], t);
+      return flip.animate([{ transform: from.flip }, { transform: to.flip }], t);
     }
     var timing = { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' };
-    function settle() { sheet.classList.add('settled'); close.focus({ preventScroll: true }); }
+    function clearAnims() { [backdrop, front, back, flip].forEach(function (el) { el.getAnimations().forEach(function (x) { x.cancel(); }); }); }
+    function settle() { clearAnims(); sheet.classList.add('settled'); close.focus({ preventScroll: true }); }
     flip.style.transform = 'rotateY(180deg)';
     card.style.visibility = 'hidden';
-    if (still.matches) { wrap.classList.add('shown'); settle(); }
-    else {
-      wrap.classList.add('shown');
-      backdrop.animate([{ opacity: 0 }, { opacity: 1 }], timing);
-      flip.animate([{ transform: fromCard() + ' rotateY(0deg)' }, { transform: 'translate(0px,0px) scale(1,1) rotateY(180deg)' }], timing).onfinish = settle;
-    }
+    wrap.classList.add('shown');
+    if (still.matches) settle();
+    else frames(true).onfinish = settle;
 
     var closing = false;
     function shut() {
@@ -113,10 +124,9 @@
         card.focus({ preventScroll: true });
       }
       if (still.matches) return done();
-      var to = fromCard() + ' rotateY(0deg)';
+      clearAnims();
       sheet.classList.remove('settled');
-      backdrop.animate([{ opacity: 1 }, { opacity: 0 }], { duration: timing.duration, easing: timing.easing, fill: 'forwards' });
-      flip.animate([{ transform: 'translate(0px,0px) scale(1,1) rotateY(180deg)' }, { transform: to }], { duration: timing.duration, easing: timing.easing, fill: 'forwards' }).onfinish = done;
+      frames(false).onfinish = done;
     }
     function onKey(e) {
       if (e.key === 'Escape') shut();

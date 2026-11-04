@@ -380,13 +380,13 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .card.expanded .face.back { position: static; overflow: visible; }
 .card.expanded .bio { overflow: visible; -webkit-mask-image: none; mask-image: none; }
 /* People sheet: on narrow screens a tapped card opens in front of the page (built by site.js) */
-.sheet-open { overflow: hidden; }
+.sheet-open { overflow: hidden; scrollbar-gutter: stable; }
 .sheet-wrap { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)); perspective: 1400px; }
 .sheet-backdrop { position: absolute; inset: 0; background: color-mix(in srgb, var(--paper) 45%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .sheet { position: relative; width: min(100%, 440px); max-height: 100%; display: flex; transform-style: preserve-3d; }
 .sheet .flip { width: 100%; max-height: 100%; height: auto; transform-origin: center; transform-style: preserve-3d; transition: none; }
-.sheet .face { box-shadow: 0 24px 60px -20px rgba(11, 18, 32, .45); }
-.sheet .face.front { position: absolute; inset: 0; overflow: hidden; }
+.sheet .face.back { box-shadow: 0 24px 60px -20px rgba(11, 18, 32, .45); }
+.sheet .face.front { position: absolute; left: 50%; top: 50%; inset: 50% auto auto 50%; overflow: hidden; }
 .sheet .face.back { position: relative; inset: auto; overflow: auto; max-height: calc(100dvh - 32px); padding: 24px 24px 22px; visibility: visible; }
 .sheet .face.back .name { font-size: 24px; padding-right: 40px; }
 .sheet .bio { font-size: 15.5px; overflow: visible; flex: none; }
