@@ -16,7 +16,6 @@ address: |
   University of Southampton
   Highfield Campus
   Southampton SO17 1BJ, UK
-find_us:               # e.g. Building 27, ten minutes from Southampton Airport Parkway
 university_url: https://www.southampton.ac.uk/   # linked in the footer
 school_url:            # optional, e.g. the School of Chemistry's page; linked in the footer when set
 

@@ -24,14 +24,6 @@ layout: base.njk
         {% if enquiries %}<span>{{ enquiries }}</span>{% endif %}
       </div>
       {% endif %}
-      <div class="contact-block" id="contact" aria-labelledby="contact-title">
-        <h3 id="contact-title">Contact</h3>
-        <div class="contact-grid">
-          {% if site.email %}<div><span class="k">Email</span><a href="mailto:{{ site.email }}">{{ site.email }}</a></div>{% endif %}
-          <div><span class="k">Address</span><address>{{ site.address | trim | replace("\n", "<br>") | safe }}</address></div>
-          {% if site.find_us %}<div><span class="k">Find us</span><p>{{ site.find_us }}</p></div>{% endif %}
-        </div>
-      </div>
     </div>
   </div>
 </section>

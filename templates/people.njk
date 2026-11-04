@@ -32,7 +32,7 @@ layout: base.njk
               <div class="prose">{{ person.content | safe }}</div>
               <div class="pi-links">
                 <a href="/publications/">Publications</a>
-                <a href="/join/#contact">Contact</a>
+                <a href="#contact">Contact</a>
                 <a href="/join/">Supervision enquiries</a>
                 {% if person.data.orcid %}<a href="https://orcid.org/{{ person.data.orcid }}">ORCID</a>{% endif %}
                 {% if person.data.github %}<a href="{{ person.data.github | githubUrl }}">GitHub</a>{% endif %}
