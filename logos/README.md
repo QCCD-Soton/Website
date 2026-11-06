@@ -23,12 +23,15 @@ Each folder holds all four designs in one colour scheme.
 | `dark/` | Dark backgrounds |
 | `pink-light/` | Light backgrounds, in the site's pink mode colours |
 | `pink-dark/` | Dark backgrounds, in the site's pink mode colours |
+| `white/` | Photos and coloured backgrounds: everything is white |
 
 ## File types
 
 - **SVG**: use this wherever you can (slides, posters, print). It scales to any size without going blurry, and the text is drawn as shapes, so no fonts are needed. The background is transparent.
 - **PNG**: 2000px wide with a transparent background, for anything that won't take an SVG (Word, some web forms).
-- **GIF**: the animated `circuit` and `mark`, with the electrons moving round the sphere, for slides and web pages. Each loops smoothly every 46 seconds. GIFs can't be transparent, so each one has its scheme's background colour: white for `light`, #0b1220 for `dark`, #fdf4f8 for `pink-light` and #1a0b14 for `pink-dark`.
+- **GIF** (`.gif`): all four designs animated, with the electrons moving round the sphere, for slides and web pages. Each loops smoothly every 46 seconds. These have a solid background in the scheme's colour: white for `light`, #0b1220 for `dark`, #fdf4f8 for `pink-light`, #1a0b14 for `pink-dark`, and the site's navy #13284a for `white`.
+- **Transparent GIF** (`-transparent.gif`): the same animations with a see-through background, and the one to use in PowerPoint. A GIF pixel is either fully see-through or fully solid, so the sphere is filled with the scheme's background colour. In `white`, the faint grid and the far side of the paths are left out.
+- **WebP** (`.webp`): the same animations with smooth, partly see-through edges and a glass-like sphere. Use it on web pages and in recent versions of Office. It looks better than the transparent GIF wherever it's supported.
 
 The colours are the website's own: navy #13284a and teal #0b7285 in `light`.
 
