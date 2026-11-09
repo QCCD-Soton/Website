@@ -10,4 +10,7 @@ github: Oliver-Johnson
 linkedin: oliverjjohnson
 ---
 
-I graduated from the University of Leeds with an integrated masters in Theoretical Physics. I'm currently in my first year on the QTE CDT, where I will spend most of the first semester on various training sessions for scientific and technical skills before starting my research after Christmas.
+I'm currently in my first year on the QTE CDT, where I will spend most of the first semester on various training sessions for scientific and technical skills before starting my research after Christmas.
+
+Education:
+- MPhys, BSc Theoretical Physics, University of Leeds
