@@ -4,7 +4,7 @@ role: PhD student
 group: visitor              # lead | postdoc | phd | masters | undergrad | visitor | alumni
 topic: Unrestricted Quantum Krylov Subspace Methods                 # a few words on their project, e.g. Excited-state VQE
 photo:
-linkedin: www.linkedin.com/in/pernille-volsgaard-christensen-377751286
+linkedin: pernille-volsgaard-christensen-377751286
 orcid: 0009-0009-7754-9038
 email: pvc@chem.ku.dk
 ---
