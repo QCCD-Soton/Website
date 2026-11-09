@@ -16,7 +16,6 @@ export default function (eleventyConfig) {
   // wide, never bigger than the original) in WebP and the original format go to /img/, and the
   // browser picks the one that fits. Photos can be added at full size; the originals stay in images/.
   // An <img> can set its own widths with eleventy:widths="200,400".
-  // One marked eleventy:ignore (e.g. an SVG logo) is left as it is and served straight from /images/.
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
     widths: [400, 800, 1600],
     formats: ["webp", "auto"],
@@ -31,7 +30,7 @@ export default function (eleventyConfig) {
   eleventyConfig.htmlTransformer.addPosthtmlPlugin("html", (context) => (tree) => {
     tree.match({ tag: "img" }, (node) => {
       const src = node.attrs?.src;
-      if (src?.startsWith("/images/") && !("eleventy:ignore" in node.attrs)) {
+      if (src?.startsWith("/images/")) {
         node.attrs.src = path.relative(path.dirname(context.page.inputPath), src.slice(1)).split(path.sep).join("/");
       }
       return node;
