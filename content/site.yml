@@ -16,8 +16,8 @@ address: |
   University of Southampton
   Highfield Campus
   Southampton SO17 1BJ, UK
-university_url: https://www.southampton.ac.uk/   # linked in the footer
-school_url:            # optional, e.g. the School of Chemistry's page; linked in the footer when set
+university_url: https://www.southampton.ac.uk/   # the matching address line in the footer links here
+school_url:            # optional, e.g. the School of Chemistry's page; the matching address line links here when set
 
 # Publications are fetched for every current member with an ORCID iD,
 # from this year onwards.
