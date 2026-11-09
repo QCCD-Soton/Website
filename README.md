@@ -139,6 +139,6 @@ To refresh publications locally: `python scripts/fetch_publications.py` (Python 
 
 ## Hosting
 
-The site deploys to GitHub Pages at `https://qccd-soton.github.io/website/`. Turn this on once under **Settings → Pages → Source: GitHub Actions**. The workflow adds the `/website/` prefix to links automatically, and drops it if a custom domain is set. If you do move to a custom domain, also change `url` in `site.yml`, which link previews and search engines use.
+The site deploys to GitHub Pages and is served at `https://ziemsgroup.org` (DNS on Cloudflare: A and AAAA records for the apex pointing to GitHub Pages, and `www` as a CNAME to `qccd-soton.github.io`, all set to DNS only). Pages is set to **Settings → Pages → Source: GitHub Actions** with the custom domain saved there. The workflow adds a `/website/` prefix to links when there is no custom domain and drops it when one is set, so re-run the deploy after changing the domain. `url` in `site.yml` must match the domain, because link previews and search engines use it.
 
 To use Cloudflare Pages instead, connect this repository in Cloudflare with build command `npx @11ty/eleventy` and output directory `_site`, and delete `deploy.yml`. The publications workflow works unchanged.
