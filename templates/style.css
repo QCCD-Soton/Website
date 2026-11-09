@@ -486,6 +486,13 @@ address { font-style: normal; line-height: 1.7; }
 .foot-col a:hover { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
 .foot-name { font-family: var(--font-display); font-size: 18px; color: var(--ink); }
 .foot-sub { margin-top: -4px; margin-bottom: 8px; }
+/* circuit logo under the group name, desktop only, in the colours of the current theme */
+.foot-logo { width: 200px; height: auto; margin-top: 4px; }
+.foot-logo-dark { display: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .foot-logo-light { display: none; } :root:not([data-theme="light"]) .foot-logo-dark { display: block; } }
+:root[data-theme="dark"] .foot-logo-light { display: none; }
+:root[data-theme="dark"] .foot-logo-dark { display: block; }
+@media (max-width: 720px) { .foot-logo { display: none !important; } }
 @media (max-width: 720px) { .foot-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .foot-grid > :first-child { grid-column: 1 / -1; } }
 @media (max-width: 480px) { .foot-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; } nav.foot-col { flex-direction: row; flex-wrap: wrap; gap: 6px 18px; } nav.foot-col .eyebrow { flex-basis: 100%; } }
 .legal { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; font-size: 13px; color: var(--ink-2); padding-top: 20px; border-top: 1px solid var(--line-soft); }

@@ -83,6 +83,9 @@
       <div class="foot-col">
         <a class="foot-name" href="/">{{ site.title }}</a>
         {% if site.subtitle %}<span class="foot-sub">{{ site.subtitle }}</span>{% endif %}
+        {#- the circuit logo fills this column on wide screens; hidden on phones and tablets -#}
+        <img class="foot-logo foot-logo-light" src="/images/logo-circuit-light.svg" alt="" width="200" height="134" loading="lazy" eleventy:ignore>
+        <img class="foot-logo foot-logo-dark" src="/images/logo-circuit-dark.svg" alt="" width="200" height="134" loading="lazy" eleventy:ignore>
       </div>
       <nav class="foot-col" aria-label="Footer">
         <span class="eyebrow">Pages</span>
