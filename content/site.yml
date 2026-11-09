@@ -3,7 +3,7 @@ title: Quantum Computing & Quantum Chemistry
 short_title: QCCD
 school: School of Chemistry
 university: University of Southampton
-subtitle: Ziems group   # small line under the site title in the header
+subtitle: Ziems group   # small line under the site title in the header; also ends every page title (tab, bookmarks, Google results)
 tagline: Quantum computers, built to answer chemical questions.
 # The site's address, used for link previews (on Teams, Slack, LinkedIn…) and search engines.
 # Just the host, with no slash at the end.
