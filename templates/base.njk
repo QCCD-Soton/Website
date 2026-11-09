@@ -6,7 +6,7 @@
   {%- set pageTitle %}{% if title and title != "Home" %}{{ title }} · {% endif %}{{ site.title }}{% endset %}
   {%- set description = { description: description, summary: summary } | describe(page.rawInput, site.tagline) %}
   {%- set shareImage = image or site.share_image %}
-  <title>{{ pageTitle }}</title>
+  <title>{{ pageTitle | safe }}</title>
   <meta name="description" content="{{ description }}">
   {%- if site.url and page.url %}
   <link rel="canonical" href="{{ page.url | htmlBaseUrl(site.url) }}">
