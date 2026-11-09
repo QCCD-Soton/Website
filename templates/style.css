@@ -479,7 +479,7 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 footer { padding-block: 48px 28px; border-top: 1px solid var(--line-soft); font-size: 14px; color: var(--ink-2); }
 address { font-style: normal; line-height: 1.7; }
 .foot-col address { margin-top: 6px; }
-.foot-grid { display: grid; grid-template-columns: auto auto; justify-content: space-between; gap: 32px 72px; margin-bottom: 36px; }
+.foot-grid { display: grid; grid-template-columns: repeat(2, auto); justify-content: start; gap: 32px 120px; margin-bottom: 36px; }
 .foot-col { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
 .foot-col .eyebrow { margin-bottom: 4px; }
 .foot-col a { text-decoration: none; overflow-wrap: anywhere; }
