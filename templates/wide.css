@@ -18,10 +18,11 @@
   [data-wide] .alumni { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 40px; }
   /* each research theme on one row: title, then the text in two columns, then the image */
   [data-wide] .theme { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 560px); grid-template-areas: "head detail fig"; gap: 64px; }
+  [data-wide] .theme:not(:has(.theme-fig)) { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); grid-template-areas: "head detail"; }
   [data-wide] .pubs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 64px; }
   [data-wide] .theme-index ol { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 40px; }
   [data-wide] .choose { gap: 40px; }
-  [data-wide] .contact-grid { gap: 64px; }
+  [data-wide] .roles { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
 }
 
 .wide-badge {
