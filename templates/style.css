@@ -486,6 +486,7 @@ address { font-style: normal; line-height: 1.7; }
 .foot-col a:hover { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
 .foot-name { font-family: var(--font-display); font-size: 18px; color: var(--ink); }
 .foot-sub { margin-top: -4px; margin-bottom: 8px; }
+.foot-tagline { margin: 4px 0 0; max-width: 30ch; font-family: var(--font-display); font-size: 17px; font-style: italic; line-height: 1.45; color: var(--ink-2); }
 @media (max-width: 720px) { .foot-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .foot-grid > :first-child { grid-column: 1 / -1; } }
 @media (max-width: 480px) { .foot-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; } nav.foot-col { flex-direction: row; flex-wrap: wrap; gap: 6px 18px; } nav.foot-col .eyebrow { flex-basis: 100%; } }
 .legal { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; font-size: 13px; color: var(--ink-2); padding-top: 20px; border-top: 1px solid var(--line-soft); }
