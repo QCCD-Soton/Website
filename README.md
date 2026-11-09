@@ -11,6 +11,7 @@ All the text lives in `content/` as Markdown files. Every change merged into `ma
 | `content/` | All page text, one Markdown file per page, person, research theme or news item | Anyone in the group |
 | `content/site.yml` | Site title, contact email, address, collaborators, funder logos | Maintainers |
 | `images/` | Photos, figures and logos | Anyone in the group |
+| `logos/` | Every version of the group logo (SVG, PNG and animated GIF, in light, dark and pink) for slides, posters and papers. Not part of the website | Maintainers |
 | `fonts/` | The site's three fonts and their licences, served from here rather than Google Fonts | Maintainers |
 | `templates/` | HTML layouts, `style.css` and `site.js`: how the site looks and moves (the "QCCD Classic" design) | Maintainers |
 | `data/publications.json` | Publication list. **Generated weekly, don't edit by hand** | The update workflow |
@@ -25,7 +26,7 @@ The `*.11tydata` files in `content/people/`, `content/research/` and `content/ne
 ### Add a person
 
 1. Copy `content/people/example-student.md` to `content/people/firstname-lastname.md`. The example explains each field and is never shown on the site, as is any file whose name starts with `example-`.
-2. Fill in the header: `name`, `role`, `group` (one of `lead`, `postdoc`, `phd`, `masters`, `undergrad`, `visitor`, `alumni`), `topic` (a few words on their project), `orcid` and `email`.
+2. Fill in the header: `name`, `role`, `group` (one of `lead`, `postdoc`, `phd`, `masters`, `undergrad`, `visitor`, `alumni`), `topic` (a few words on their project), `orcid` and `email`. Optionally add `github` and `linkedin`, as a username or a full profile address; a GitHub or LinkedIn link then appears on the back of their card.
 3. Write a short bio below the second `---`. It shows on the back of their card.
 4. Put a portrait headshot (4:5, e.g. 800×1000) in `images/` named `firstname-lastname.jpg` and set `photo: firstname-lastname.jpg`. Until then a coloured silhouette stands in.
 
@@ -60,7 +61,7 @@ On the quantum page each theme sits on a qubit wire behind a gate (H, Z, Rx, the
 
 ### Open positions and contact
 
-`content/join.md` lists open positions under `roles:` and holds the Join us text. A role's `text:` can hold Markdown links, written `[Apply here](https://…)`. The contact details on that page come from `email`, `address` and `find_us` in `site.yml`.
+`content/join.md` lists open positions under `roles:` and holds the Join us text. A role's `text:` can hold Markdown links, written `[Apply here](https://…)`. Its enquiry button writes to `email` in `site.yml`. Contact details (`email` and `address`) are in the footer of every page.
 
 ### Pink mode
 
@@ -83,7 +84,7 @@ Not every place you can type text understands Markdown. There are three kinds:
 - Tables, block quotes (`>`) and `` `code` `` do render, but have no styling, so they look like plain text (tables have no lines). Best avoided.
 - Headings in bios and news posts. They're shown large and look out of place in a card or a short post.
 
-**Maths** works in Markdown text, written in LaTeX between dollar signs. `$E = mc^2$` sits in the sentence; `$$ ... $$` on lines of their own is shown centred on its own line:
+Markdown text can also hold maths, written in LaTeX between dollar signs. `$E = mc^2$` sits in the sentence; `$$ ... $$` on lines of their own is shown centred on its own line:
 
 ```markdown
 The energy is bounded by $E_0 \le \langle\psi|\hat H|\psi\rangle$, where
@@ -138,6 +139,6 @@ To refresh publications locally: `python scripts/fetch_publications.py` (Python 
 
 ## Hosting
 
-The site deploys to GitHub Pages at `https://qccd-soton.github.io/website/`. Turn this on once under **Settings → Pages → Source: GitHub Actions**. The workflow adds the `/website/` prefix to links automatically, and drops it if a custom domain is set. If you do move to a custom domain, also change `url` in `site.yml`, which link previews and search engines use.
+The site deploys to GitHub Pages and is served at `https://ziemsgroup.org` (DNS on Cloudflare: A and AAAA records for the apex pointing to GitHub Pages, and `www` as a CNAME to `qccd-soton.github.io`, all set to DNS only). Pages is set to **Settings → Pages → Source: GitHub Actions** with the custom domain saved there. The workflow adds a `/website/` prefix to links when there is no custom domain and drops it when one is set, so re-run the deploy after changing the domain. `url` in `site.yml` must match the domain, because link previews and search engines use it.
 
 To use Cloudflare Pages instead, connect this repository in Cloudflare with build command `npx @11ty/eleventy` and output directory `_site`, and delete `deploy.yml`. The publications workflow works unchanged.

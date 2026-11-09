@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {%- set pageTitle %}{% if title and title != "Home" %}{{ title }} · {% endif %}{{ site.title }}{% endset %}
+  {#- The tab, bookmark and search-result title. Names the group and university so searches for them find the site. #}
+  {%- set pageTitle %}{% if title and title != "Home" %}{{ title }}{% else %}{{ site.title }}{% endif %} · {{ site.subtitle }}, {{ site.university }}{% endset %}
   {%- set description = { description: description, summary: summary } | describe(page.rawInput, site.tagline) %}
   {%- set shareImage = image or site.share_image %}
-  <title>{{ pageTitle }}</title>
+  <title>{{ pageTitle | safe }}</title>
   <meta name="description" content="{{ description }}">
   {%- if site.url and page.url %}
   <link rel="canonical" href="{{ page.url | htmlBaseUrl(site.url) }}">
@@ -94,7 +95,7 @@
         <a href="/publications/">Publications</a>
         <a href="/join/">Join us</a>
       </nav>
-      <div class="foot-col">
+      <div class="foot-col" id="contact">
         <span class="eyebrow">Contact</span>
         {% if site.email %}<a href="mailto:{{ site.email }}">{{ site.email }}</a>{% endif %}
         {% if site.school_url %}<a href="{{ site.school_url }}">{{ site.school }}</a>{% endif %}

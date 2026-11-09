@@ -3,11 +3,11 @@ title: Quantum Computing & Quantum Chemistry
 short_title: QCCD
 school: School of Chemistry
 university: University of Southampton
-subtitle: Ziems group   # small line under the site title in the header
+subtitle: Ziems group   # small line under the site title in the header; also ends every page title (tab, bookmarks, Google results)
 tagline: Quantum computers, built to answer chemical questions.
 # The site's address, used for link previews (on Teams, Slack, LinkedIn…) and search engines.
-# Just the host: the /website/ part is added when the site is built. Change it if the site moves to its own domain.
-url: https://qccd-soton.github.io
+# Just the host, with no slash at the end.
+url: https://ziemsgroup.org
 share_image:            # picture shown when a page is shared, e.g. the group photo; news posts use their own image
 share_image_alt:
 email: K.M.Ziems@soton.ac.uk
@@ -16,7 +16,6 @@ address: |
   University of Southampton
   Highfield Campus
   Southampton SO17 1BJ, UK
-find_us:               # e.g. Building 27, ten minutes from Southampton Airport Parkway
 university_url: https://www.southampton.ac.uk/   # linked in the footer
 school_url:            # optional, e.g. the School of Chemistry's page; linked in the footer when set
 
@@ -51,3 +50,6 @@ logos:
   - name: AstraZeneca
     logo: logo-astrazeneca.png
     url: https://www.astrazeneca.com/
+  - name: Fujitsu
+    logo: logo-fujitsu.png
+    url: https://www.fujitsu.com/

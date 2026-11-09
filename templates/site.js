@@ -52,15 +52,138 @@
   });
   if (pubBtn) pubBtn.addEventListener('click', function () { pubOpen = !pubOpen; showPubs(); });
 
+  // People sheet (narrow screens): the tapped card turns over and grows into a readable view in front of a blurred page
+  var narrow = window.matchMedia('(max-width: 820px)');
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function openSheet(card) {
+    var wrap = document.createElement('div');
+    wrap.className = 'sheet-wrap';
+    var backdrop = document.createElement('div');
+    backdrop.className = 'sheet-backdrop';
+    var sheet = document.createElement('div');
+    sheet.className = 'sheet person';
+    sheet.setAttribute('role', 'dialog');
+    sheet.setAttribute('aria-modal', 'true');
+    sheet.setAttribute('aria-label', card.querySelector('.face.back .name').textContent);
+    var flip = document.createElement('div');
+    flip.className = 'flip';
+    var front = card.querySelector('.face.front').cloneNode(true);
+    var back = card.querySelector('.face.back').cloneNode(true);
+    back.querySelectorAll('[tabindex]').forEach(function (el) { el.removeAttribute('tabindex'); });
+    back.querySelectorAll('.more').forEach(function (el) { el.remove(); });
+    back.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
+    var bio = back.querySelector('.bio'); if (bio) bio.classList.remove('clamped');
+    var close = document.createElement('button');
+    close.type = 'button'; close.className = 'sheet-close'; close.setAttribute('aria-label', 'Close'); close.textContent = '\u00d7';
+    back.insertBefore(close, back.firstChild);
+    flip.appendChild(front); flip.appendChild(back); sheet.appendChild(flip);
+    wrap.appendChild(backdrop); wrap.appendChild(sheet);
+    document.body.appendChild(wrap);
+
+    var others = Array.prototype.filter.call(document.body.children, function (el) { return el !== wrap; });
+    others.forEach(function (el) { el.inert = true; });
+    document.documentElement.classList.add('sheet-open');
+
+    // Grow from where the card sits to the middle of the screen, turning over on the way.
+    // The front copy is laid out at the card's own size and the back at the sheet's, and each is scaled so the two
+    // always cover the same box: the front ends at exactly the card's size, so the hand-back to the real card is seamless.
+    var a = card.getBoundingClientRect(), b = sheet.getBoundingClientRect();
+    front.style.width = a.width + 'px'; front.style.height = a.height + 'px';
+    front.style.marginLeft = (-a.width / 2) + 'px'; front.style.marginTop = (-a.height / 2) + 'px';
+    function frames(opening) {
+      a = card.getBoundingClientRect(); b = sheet.getBoundingClientRect();
+      var dx = (a.left + a.width / 2) - (b.left + b.width / 2), dy = (a.top + a.height / 2) - (b.top + b.height / 2);
+      var sx = a.width / b.width, sy = a.height / b.height;
+      var at = { flip: 'translate(' + dx + 'px,' + dy + 'px) rotateY(0deg)', front: 'scale(1,1)', back: 'rotateY(180deg) scale(' + sx + ',' + sy + ')' };
+      var away = { flip: 'translate(0px,0px) rotateY(180deg)', front: 'scale(' + (1 / sx) + ',' + (1 / sy) + ')', back: 'rotateY(180deg) scale(1,1)' };
+      var from = opening ? at : away, to = opening ? away : at;
+      var t = { duration: timing.duration, easing: timing.easing, fill: 'forwards' };
+      backdrop.animate([{ opacity: opening ? 0 : 1 }, { opacity: opening ? 1 : 0 }], t);
+      front.animate([{ transform: from.front }, { transform: to.front }], t);
+      back.animate([{ transform: from.back }, { transform: to.back }], t);
+      return flip.animate([{ transform: from.flip }, { transform: to.flip }], t);
+    }
+    var timing = { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' };
+    function clearAnims() { [backdrop, front, back, flip].forEach(function (el) { el.getAnimations().forEach(function (x) { x.cancel(); }); }); }
+    function settle() { clearAnims(); sheet.classList.add('settled'); close.focus({ preventScroll: true }); }
+    flip.style.transform = 'rotateY(180deg)';
+    card.style.visibility = 'hidden';
+    wrap.classList.add('shown');
+    if (still.matches) settle();
+    else frames(true).onfinish = settle;
+
+    var closing = false;
+    function shut() {
+      if (closing) return; closing = true;
+      document.removeEventListener('keydown', onKey);
+      function done() {
+        others.forEach(function (el) { el.inert = false; });
+        document.documentElement.classList.remove('sheet-open');
+        card.style.visibility = '';
+        wrap.remove();
+        card.focus({ preventScroll: true });
+      }
+      if (still.matches) return done();
+      clearAnims();
+      sheet.classList.remove('settled');
+      frames(false).onfinish = done;
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') shut();
+      else if (e.key === 'Tab') {
+        var f = back.querySelectorAll('a, button');
+        if (!f.length) return;
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    }
+    document.addEventListener('keydown', onKey);
+    backdrop.addEventListener('click', shut);
+    wrap.addEventListener('click', function (e) { if (e.target === wrap) shut(); });
+    close.addEventListener('click', shut);
+  }
+
   // Flip cards: tap or Enter/Space toggles; hover flips on devices with a pointer
   // Links on the back can't be reached with Tab until the card is turned over, so focus never lands on a link you can't see.
   document.querySelectorAll('.card').forEach(function (c) {
     var backLinks = c.querySelectorAll('.face.back a');
-    function setBackFocus(on) { backLinks.forEach(function (a) { if (on) a.removeAttribute('tabindex'); else a.setAttribute('tabindex', '-1'); }); }
+    var bio = c.querySelector('.face.back .bio'), more = c.querySelector('.face.back .more');
+    function setBackFocus(on) {
+      backLinks.forEach(function (a) { if (on) a.removeAttribute('tabindex'); else a.setAttribute('tabindex', '-1'); });
+      if (more) { if (on) more.removeAttribute('tabindex'); else more.setAttribute('tabindex', '-1'); }
+    }
     setBackFocus(false);
-    function toggle() { var on = !c.classList.contains('flipped'); c.classList.toggle('flipped', on); c.setAttribute('aria-pressed', String(on)); setBackFocus(on); }
-    c.addEventListener('click', function (e) { if (e.target.closest('a')) return; toggle(); });
-    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    function setExpanded(on) {
+      c.classList.toggle('expanded', on);
+      if (more) { more.setAttribute('aria-expanded', String(on)); more.textContent = on ? 'Show less' : 'Read more'; }
+      if (bio && more) bio.classList.toggle('clamped', !on && !more.hidden);
+    }
+    function toggle() {
+      var on = !c.classList.contains('flipped');
+      c.classList.toggle('flipped', on); c.setAttribute('aria-pressed', String(on)); setBackFocus(on);
+      if (!on) setExpanded(false);
+    }
+    // On a narrow screen a person's card opens as a sheet over the page instead of turning over in place
+    function activate() { if (narrow.matches && c.classList.contains('person')) openSheet(c); else toggle(); }
+    c.addEventListener('click', function (e) { if (e.target.closest('a, .more')) return; activate(); });
+    c.addEventListener('keydown', function (e) { if (e.target !== c) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+    if (more && bio) {
+      // Offer "Read more" only when the bio doesn't fit on the card
+      var measure = function () {
+        if (c.classList.contains('expanded')) return;
+        var cut = bio.scrollHeight > bio.clientHeight + 1;
+        more.hidden = !cut; bio.classList.toggle('clamped', cut);
+      };
+      measure();
+      window.addEventListener('resize', measure);
+      if (document.fonts) document.fonts.ready.then(measure);
+      more.addEventListener('click', function () {
+        var on = !c.classList.contains('expanded');
+        if (on && !c.classList.contains('flipped')) toggle();
+        setExpanded(on);
+        if (!on) { measure(); c.scrollIntoView({ block: 'nearest' }); }
+      });
+    }
   });
 
   // News timeline: latest four shown, older items on request
@@ -165,6 +288,7 @@
     var reduceB = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var raf = 0, C = {}, s0 = 0, s1 = 1, bnd = [0, .25, .5, .75], k = -1, measured = false, PAD = 12;
     var card = side.firstElementChild, body = card.querySelector('.cbox-body'), colEnd = 0, fitEnd = 0, lastFit = '';
+    var header = document.querySelector('.site-header'), narrow = matchMedia('(max-width: 920px)'), colTop = 0, stick = 0, chrome = 0, lastGrow = '';
 
     function rgba(hex, a) {
       var h = hex.replace('#', ''); if (h.length === 3) h = h.replace(/./g, '$&$&');
@@ -178,6 +302,7 @@
     function cl(v, a, b) { return Math.max(a, Math.min(b, v)); }
     function measure() {
       if (!page.offsetParent) return;
+      if (header) side.style.setProperty('--hdr', header.offsetHeight + 'px');
       var top = box.getBoundingClientRect().top + scrollY, h = box.offsetHeight;
       var maxS = document.documentElement.scrollHeight - innerHeight;
       s0 = Math.max(0, top - innerHeight * .4);
@@ -187,9 +312,12 @@
       items.forEach(function (li, i) { li.style.top = 'calc(' + PAD + 'px + ' + (bnd[i] * 100) + '% - ' + (bnd[i] * 2 * PAD) + 'px)'; });
       // with only a few themes the column ends soon after the last one. Rather than let the box be pushed up under the header,
       // it shrinks as the column's end comes up, down to the room that is left at the very bottom of the page
-      colEnd = side.parentNode.getBoundingClientRect().bottom + scrollY - parseFloat(getComputedStyle(side).top) - (card.offsetHeight - body.offsetHeight);
-      // but never so small that the theme names overlap
-      var need = 120;
+      stick = parseFloat(getComputedStyle(side).top); chrome = card.offsetHeight - body.offsetHeight;
+      colTop = side.parentNode.getBoundingClientRect().top + scrollY;
+      colEnd = side.parentNode.getBoundingClientRect().bottom + scrollY - stick - chrome;
+      // but never so small that the theme names overlap. On a phone the names are hidden, so it can go smaller and stay
+      // below the header right to the end of the page
+      var need = narrow.matches ? 48 : 120;
       items.forEach(function (li, i) {
         var gap = i + 1 < bnd.length ? bnd[i + 1] - bnd[i] : 0;
         if (li.offsetHeight && gap > 0) need = Math.max(need, li.offsetHeight / gap + 2 * PAD);
@@ -200,6 +328,9 @@
     function fit() {
       var v = Math.max(fitEnd, Math.floor(colEnd - scrollY)) + 'px';
       if (v !== lastFit) { lastFit = v; body.style.setProperty('--fit', v); }
+      // on a phone the box reaches from its top, or the header once it sticks, to 16px above the bottom of the screen
+      var g = Math.max(160, Math.floor(innerHeight - 16 - chrome - Math.max(stick, colTop - scrollY))) + 'px';
+      if (g !== lastGrow) { lastGrow = g; body.style.setProperty('--grow', g); }
     }
     function prog() { return cl((scrollY - s0) / (s1 - s0), 0, 1); }
     function secOf(p) { var i = 0; while (i + 1 < bnd.length && bnd[i + 1] <= p + 1e-4) i++; return i; }

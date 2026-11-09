@@ -150,6 +150,14 @@ export default function (eleventyConfig) {
     }).join(", ");
   });
 
+  // A person's github: / linkedin: header, given as a username or a full web address.
+  const profile = (base) => (handle = "") => {
+    const h = String(handle).trim();
+    return /^https?:\/\//i.test(h) ? h : base + h.replace(/^@/, "").replace(/\/+$/, "");
+  };
+  eleventyConfig.addFilter("githubUrl", profile("https://github.com/"));
+  eleventyConfig.addFilter("linkedinUrl", profile("https://www.linkedin.com/in/"));
+
   // Placeholder avatar: initials, and a blue-ish hue that stays the same for each name.
   eleventyConfig.addFilter("initials", (name = "") =>
     name.replace(/^(Dr|Prof)\.?\s+/, "").split(/\s+/).filter((w, i, all) => i === 0 || i === all.length - 1)

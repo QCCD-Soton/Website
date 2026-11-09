@@ -159,8 +159,10 @@ p { margin: 0; }
   height: 64px; display: grid; place-items: center; border: 1px dashed var(--line); border-radius: 4px;
   font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
 }
-@media (max-width: 900px) { .funder-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 480px) { .funder-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } .photo-ph { aspect-ratio: 4 / 3; } .hero-logo { width: 52px; height: 52px; } }
+/* wrap to more rows before the tiles shrink much below their desktop width (about 187px), rather than squeezing six or three into a row */
+@media (max-width: 1099px) { .funder-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 599px) { .funder-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .photo-ph { aspect-ratio: 4 / 3; } .hero-logo { width: 52px; height: 52px; } }
 .hero { border-bottom: 0; }
 .nav-drop { position: relative; }
 .drop-trigger { display: inline-flex; align-items: center; gap: 6px; }
@@ -295,10 +297,12 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 @media (max-width: 920px) {
   /* the box keeps its own slim column beside the themes, so it never sits over the heading or text */
   .cgrid { grid-template-columns: 42px minmax(0, 1fr); gap: 16px; }
-  .cside { top: max(80px, 20vh); }
+  /* it sticks just under the header and reaches down to near the bottom of the screen. Until it gets there it reaches from
+     wherever it is, so it grows as you scroll (--hdr and --grow come from site.js) */
+  .cside { top: calc(env(safe-area-inset-top, 0px) + var(--hdr, 66px) + 12px); }
   .cbox { padding: 6px; gap: 0; }
   .cbox .eyebrow, .cbox-list, .cbox-n { display: none; }
-  .cbox-body { grid-template-columns: 30px; height: 60vh; max-height: var(--fit, none); }
+  .cbox-body { grid-template-columns: 30px; height: var(--grow, calc(100vh - 120px)); max-height: var(--fit, none); }
   .cbox canvas { width: 30px; }
 }
 .theme-detail { grid-area: detail; columns: 2; column-gap: 40px; min-width: 0; }
@@ -364,8 +368,34 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .person .face { display: flex; flex-direction: column; gap: 4px; padding: 20px; }
 .person .back .name { font-family: var(--font-display); font-size: 19px; font-weight: 400; }
 .person .bio { font-size: 14px; color: var(--ink-2); line-height: 1.55; margin-top: 6px; }
-.person .int { font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-ink); margin-top: 8px; }
+.person .int { font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-ink); margin-top: 2px; }
 .person .links { font-size: 12.5px; color: var(--accent-ink); margin-top: auto; padding-top: 10px; }
+/* A long bio is cut to fit the card, which keeps every card the size of its front; "Read more" lets the card grow */
+.person .flip { position: relative; }
+.person .face.back { position: absolute; inset: 0; overflow: hidden; }
+.person .bio { flex: 0 1 auto; min-height: 0; overflow: hidden; }
+.person .bio.clamped { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent); }
+.person .more { align-self: flex-start; margin-top: 6px; padding: 0; border: 0; background: none; font: inherit; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .04em; color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.card.flipped .face.back .more, .card:hover .face.back .more { pointer-events: auto; }
+.card.expanded .face.back { position: static; overflow: visible; }
+.card.expanded .bio { overflow: visible; -webkit-mask-image: none; mask-image: none; }
+/* People sheet: on narrow screens a tapped card opens in front of the page (built by site.js) */
+.sheet-open { overflow: hidden; scrollbar-gutter: stable; }
+.sheet-wrap { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)); perspective: 1400px; }
+.sheet-backdrop { position: absolute; inset: 0; background: color-mix(in srgb, var(--paper) 45%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.sheet { position: relative; width: min(100%, 440px); max-height: 100%; display: flex; transform-style: preserve-3d; }
+.sheet .flip { width: 100%; max-height: 100%; height: auto; transform-origin: center; transform-style: preserve-3d; transition: none; }
+.sheet .face.back { box-shadow: 0 24px 60px -20px rgba(11, 18, 32, .45); }
+.sheet .face.front { position: absolute; left: 50%; top: 50%; inset: 50% auto auto 50%; overflow: hidden; }
+.sheet .face.back { position: relative; inset: auto; overflow: auto; max-height: calc(100dvh - 32px); padding: 24px 24px 22px; visibility: visible; }
+.sheet .face.back .name { font-size: 24px; padding-right: 40px; }
+.sheet .bio { font-size: 15.5px; overflow: visible; flex: none; }
+.sheet .links { font-size: 14px; padding-top: 18px; }
+.sheet.settled .flip { transform: none !important; }
+.sheet.settled .face.front { display: none; }
+.sheet.settled .face.back { transform: none; }
+.sheet-close { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border: 0; border-radius: 50%; background: transparent; color: var(--ink-2); font-size: 28px; line-height: 1; cursor: pointer; }
+.sheet-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .person .avatar { width: calc(100% + 40px); max-width: none; margin: -20px -20px 14px; border-radius: 5px 5px 0 0; }
 .person .name { font-weight: 600; font-size: 16px; }
 .person .role { font-size: 13.5px; color: var(--muted); }
@@ -444,12 +474,6 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .join .btn.primary:hover { background: var(--accent-wash); }
 .join-actions { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; font-size: 14.5px; }
 .join-actions span { opacity: .75; }
-.contact-block { margin-top: 72px; padding-top: 40px; border-top: 1px solid color-mix(in srgb, var(--join-ink) 22%, transparent); scroll-margin-top: 96px; }
-.contact-block h3 { font-size: 28px; margin-bottom: 28px; }
-.contact-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; font-size: 15px; }
-.contact-grid .k { display: block; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; opacity: .7; margin-bottom: 10px; }
-.contact-grid a { color: var(--join-ink); text-underline-offset: 3px; }
-.contact-grid address, .contact-grid p { font-style: normal; opacity: .85; margin: 0; }
 
 /* Footer */
 footer { padding-block: 48px 28px; border-top: 1px solid var(--line-soft); font-size: 14px; color: var(--ink-2); }
@@ -488,7 +512,6 @@ address { font-style: normal; line-height: 1.7; }
   .alumni { grid-template-columns: minmax(0, 1fr); }
   .pub { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   .roles { grid-template-columns: minmax(0, 1fr); }
-  .contact-grid { grid-template-columns: minmax(0, 1fr); }
   .role-card, .role-card + .role-card { padding: 28px 0; border-left: 0; }
   .role-card + .role-card { border-top: 1px solid color-mix(in srgb, var(--paper) 22%, transparent); }
   section.block { padding-block: 64px; }
@@ -523,9 +546,10 @@ picture { display: contents; }
 /* logos sit on white tiles so they read the same in dark mode */
 .funder-row li { height: 96px; border-style: solid; padding: 10px 14px; background: #fff; }
 .funder-row li a { display: grid; place-items: center; width: 100%; height: 100%; }
-.funder-row img { max-height: 74px; max-width: 100%; width: auto; object-fit: contain; }
+/* width and height both auto so the two max limits scale a logo down in proportion and never stretch it */
+.funder-row img { max-height: 74px; max-width: 100%; width: auto; height: auto; object-fit: contain; }
 .prose > * + * { margin-top: 1em; }
-.prose a, .theme-detail a, .contact-grid a, .tl-body a { color: var(--accent-ink); text-underline-offset: 3px; }
+.prose a, .theme-detail a, .tl-body a { color: var(--accent-ink); text-underline-offset: 3px; }
 .tl-body h3 a { color: inherit; text-decoration: none; }
 .tl-body h3 a:hover { color: var(--accent-ink); }
 a.pub-title { text-decoration: none; }

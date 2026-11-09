@@ -39,7 +39,7 @@ layout: base.njk
     </div>
     {% else %}
     <div class="cgrid">
-      <aside class="cside" id="cbox" aria-label="Page position">
+      <div class="cside" id="cbox" role="group" aria-label="Page position">
         <div class="cbox">
           <span class="eyebrow">Particle in a box</span>
           <div class="cbox-body">
@@ -50,7 +50,7 @@ layout: base.njk
           </div>
           <span class="cbox-n">n = 1</span>
         </div>
-      </aside>
+      </div>
       <div class="sec-body themes" id="cwire">
         {% for theme in themes %}
         <article class="theme" id="{{ prefix }}{{ theme.fileSlug }}">
