@@ -6,7 +6,7 @@ topic: Quantum Krylov Subspace methods for Excited States and Properties        
 photo:
 orcid: 0009-0009-0740-8395
 email: Luke.Wright@soton.ac.uk
-linkedin: www.linkedin.com/in/luke-wright-977243275
+linkedin: luke-wright-977243275
 ---
 
 I am in the first year of my PhD, currently working on developing and extending Krylov subspace methods to better find excited states. This work aims to produce more accurate molecular spectra, providing information that can support drug discovery.
