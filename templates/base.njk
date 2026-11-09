@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {%- set pageTitle %}{% if title and title != "Home" %}{{ title }} · {% endif %}{{ site.title }}{% endset %}
+  {#- The tab, bookmark and search-result title. Names the group and university so searches for them find the site. #}
+  {%- set pageTitle %}{% if title and title != "Home" %}{{ title }}{% else %}{{ site.title }}{% endif %} · {{ site.subtitle }}, {{ site.university }}{% endset %}
   {%- set description = { description: description, summary: summary } | describe(page.rawInput, site.tagline) %}
   {%- set shareImage = image or site.share_image %}
   <title>{{ pageTitle | safe }}</title>
