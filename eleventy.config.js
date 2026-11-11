@@ -72,6 +72,7 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("images");
   eleventyConfig.addPassthroughCopy("fonts");
+  eleventyConfig.addPassthroughCopy("favicon.ico"); // browsers and crawlers ask for /favicon.ico by default
   eleventyConfig.addPassthroughCopy({ "templates/style.css": "style.css" });
   eleventyConfig.addPassthroughCopy({ "templates/site.js": "site.js" });
   eleventyConfig.addPassthroughCopy({ "templates/pink.css": "pink.css" });
