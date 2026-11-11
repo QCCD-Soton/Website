@@ -186,6 +186,73 @@ export default function (eleventyConfig) {
   });
   eleventyConfig.addFilter("inlineMd", (text = "") => md.renderInline(String(text)));
 
+  // Structured data (schema.org JSON-LD) for the home and People pages: the group as a research
+  // organisation within the university, and each current member as a Person, with their ORCID,
+  // GitHub, LinkedIn and other profile links as sameAs. Helps Google connect the site to the group,
+  // to Karl Michael's other profiles, and to each member's name.
+  eleventyConfig.addFilter("groupJsonLd", (people = [], site = {}) => {
+    const base = String(site.url || "").replace(/\/+$/, "");
+    const org = `${base}/#organization`;
+    const person = (p) => {
+      const d = p.data;
+      const prefix = (d.name.match(/^(Dr|Prof)\.?\s+/) || [])[1];
+      const sameAs = [
+        d.orcid && !/^0000-0000-0000-0000$/.test(d.orcid) && `https://orcid.org/${d.orcid}`,
+        d.github && profile("https://github.com/")(d.github),
+        d.linkedin && profile("https://www.linkedin.com/in/")(d.linkedin),
+        ...Object.values(d.links || {}),
+      ].filter(Boolean);
+      return {
+        "@type": "Person",
+        "@id": `${base}/people/#${p.fileSlug}`,
+        name: d.name.replace(/^(Dr|Prof)\.?\s+/, ""),
+        ...(prefix && { honorificPrefix: prefix }),
+        ...(d.role && !d.role.includes("?") && { jobTitle: d.role }),
+        url: `${base}/people/#${p.fileSlug}`,
+        ...(d.photo && { image: `${base}/images/${d.photo}` }),
+        ...(sameAs.length && { sameAs }),
+        memberOf: { "@id": org },
+      };
+    };
+    const current = people.filter((p) => p.data.group !== "alumni");
+    const lead = current.filter((p) => p.data.group === "lead");
+    const graph = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": `${base}/#website`,
+          name: site.subtitle,
+          alternateName: site.title,
+          url: `${base}/`,
+          publisher: { "@id": org },
+        },
+        {
+          "@type": "ResearchOrganization",
+          "@id": org,
+          name: site.subtitle,
+          alternateName: [site.title, site.short_title].filter(Boolean),
+          description: site.tagline,
+          url: `${base}/`,
+          logo: `${base}/images/favicon-192.png`,
+          ...(site.email && { email: site.email }),
+          ...(lead.length && { founder: lead.map((p) => ({ "@id": `${base}/people/#${p.fileSlug}` })) }),
+          parentOrganization: {
+            "@type": "Organization",
+            name: site.school,
+            parentOrganization: {
+              "@type": "CollegeOrUniversity",
+              name: site.university,
+              ...(site.university_url && { url: site.university_url }),
+            },
+          },
+          member: current.map(person),
+        },
+      ],
+    };
+    return JSON.stringify(graph).replace(/</g, "\\u003c");
+  });
+
   eleventyConfig.addFilter("pad", (n) => String(n).padStart(2, "0"));
   eleventyConfig.addFilter("year", () => new Date().getFullYear());
 
@@ -197,11 +264,11 @@ export default function (eleventyConfig) {
     text.trim().split(/(?<=\.)\s/)[0]
   );
   // A page's description for search results and link previews: its `description`, else the first sentence
-  // of its text (Markdown and HTML stripped), else its `summary`, else the site's tagline. At most about 160 characters.
+  // of its text (Markdown and HTML stripped), else its `summary`, else its image's alt text, else the site's tagline. At most about 160 characters.
   eleventyConfig.addFilter("describe", (data = {}, raw = "", fallback = "") => {
     const text = String(raw).replace(/^---[\s\S]*?\n---/, "").replace(/\$[^$]*\$/g, "")
       .replace(/<[^>]+>/g, "").replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/[*_#>`]/g, "").replace(/\s+/g, " ").trim();
-    let d = String(data.description || text.split(/(?<=\.)\s/)[0] || data.summary || fallback).trim();
+    let d = String(data.description || text.split(/(?<=\.)\s/)[0] || data.summary || data.image_alt || fallback).trim();
     if (d.length > 160) d = d.slice(0, 157).replace(/\s+\S*$/, "") + "…";
     return d;
   });

@@ -11,7 +11,7 @@
   {%- if (titleStart + titleEnd) | length > 70 %}{% set titleEnd = " · " + site.subtitle + ", " + (site.university | replace("University of ", "")) %}{% endif %}
   {%- if (titleStart + titleEnd) | length > 70 %}{% set titleEnd = " · " + site.subtitle %}{% endif %}
   {%- set pageTitle = titleStart + titleEnd %}
-  {%- set description = { description: description, summary: summary } | describe(page.rawInput, site.tagline) %}
+  {%- set description = { description: description, summary: summary, image_alt: image_alt } | describe(page.rawInput, site.tagline) %}
   {%- set shareImage = image or site.share_image %}
   <title>{{ pageTitle }}</title>
   <meta name="description" content="{{ description }}">
@@ -27,9 +27,10 @@
   <meta property="og:image" content="{{ shareImage | img | htmlBaseUrl(site.url) }}">
   <meta property="og:image:alt" content="{{ (image_alt if image else site.share_image_alt) or site.title }}">
   {%- endif %}
-  {%- if page.url == "/" %}
-  {#- Tells Google the site's name, shown above each search result in place of the bare address. #}
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":{{ site.subtitle | dump | safe }},"alternateName":{{ site.title | dump | safe }},"url":{{ ("/" | htmlBaseUrl(site.url)) | dump | safe }}}</script>
+  {%- if page.url == "/" or page.url == "/people/" %}
+  {#- Tells Google the site's name (shown above each search result in place of the bare address),
+      that this is the Ziems group at the University of Southampton, and who its members are. #}
+  <script type="application/ld+json">{{ collections.people | groupJsonLd(site) | safe }}</script>
   {%- endif %}
   <meta name="twitter:card" content="{{ 'summary_large_image' if shareImage else 'summary' }}">
   {%- endif %}
