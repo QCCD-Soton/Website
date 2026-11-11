@@ -3,11 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {#- The tab, bookmark and search-result title. Names the group and university so searches for them find the site. #}
-  {%- set pageTitle %}{% if title and title != "Home" %}{{ title }}{% else %}{{ site.title }}{% endif %} · {{ site.subtitle }}, {{ site.university }}{% endset %}
+  {#- The tab, bookmark and search-result title. Names the group and university so searches for them find the site.
+      Search engines cut titles at about 70 characters, so a long page title gets a shorter ending:
+      "· Ziems group, University of Southampton", then "· Ziems group, Southampton", then "· Ziems group". #}
+  {%- set titleStart = title if (title and title != "Home") else site.title %}
+  {%- set titleEnd = " · " + site.subtitle + ", " + site.university %}
+  {%- if (titleStart + titleEnd) | length > 70 %}{% set titleEnd = " · " + site.subtitle + ", " + (site.university | replace("University of ", "")) %}{% endif %}
+  {%- if (titleStart + titleEnd) | length > 70 %}{% set titleEnd = " · " + site.subtitle %}{% endif %}
+  {%- set pageTitle = titleStart + titleEnd %}
   {%- set description = { description: description, summary: summary } | describe(page.rawInput, site.tagline) %}
   {%- set shareImage = image or site.share_image %}
-  <title>{{ pageTitle | safe }}</title>
+  <title>{{ pageTitle }}</title>
   <meta name="description" content="{{ description }}">
   {%- if site.url and page.url %}
   <link rel="canonical" href="{{ page.url | htmlBaseUrl(site.url) }}">
