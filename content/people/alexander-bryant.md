@@ -1,10 +1,15 @@
 ---
 name: Alexander Bryant
-role: MChem?
-group: undergrad              # lead | postdoc | phd | masters | undergrad | visitor | alumni
-topic:                  # a few words on their project, e.g. Excited-state VQE
+role: MChem
+group: masters              # lead | postdoc | phd | masters | undergrad | visitor | alumni
+topic: Chlorothiophenol theory and analysis                 # a few words on their project, e.g. Excited-state VQE
 photo:
 orcid:
-email:
+email: ab20g23@soton.ac.uk
+linkedin: alexander-bryant-3ab32a226
 ---
 
+I am currently completing my Master's research with the Ziems Group as part of my MChem in Chemistry with Digital Methods and Computational Modelling. My research focuses on modelling the spectra of Chlorothiophenol, investigating its bonding and dissociation behaviour to help interpret and support experimental findings.
+
+Education:
+- MChem in Chemistry with Digital Methods and Computational Modelling (In progress)
