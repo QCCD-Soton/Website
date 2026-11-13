@@ -3,7 +3,7 @@ name: Pragya Deori
 role: BSc
 group: undergrad              # lead | postdoc | phd | masters | undergrad | visitor | alumni
 topic: 2 Layer VQE Ansatz Analysis                  # a few words on their project, e.g. Excited-state VQE
-photo:
+photo: pragya-deori.jpg
 orcid:
 email: pd3g24@soton.ac.uk
 ---

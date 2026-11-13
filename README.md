@@ -71,6 +71,10 @@ A hidden pink theme. Tap the "&" in the home page title five times within a coup
 
 A hidden layout for the group's ultrawide owners. Tap Kyle's or Luke's card on the People page five times within a couple of seconds to switch it on or off. It drops the page width cap and spreads the layout out to fill the window (more columns, wider gaps, research themes on one row), with a springy animation; text and images keep their usual size. It only works in an ultrawide-shaped window (at least 1600px wide and 2.25 times as wide as tall, so a maximised 16:9 browser doesn't count); anywhere else it's rejected and nothing changes, and if the window later turns narrower the page simply goes back to normal. It works alongside pink mode and is remembered the same way. It lives in `templates/wide.css` and `templates/wide.js`.
 
+### Fish chase
+
+A hidden game. Click the small fish at the right-hand end of the bottom line of any page and it says "Catch me if you can!" and swims off around the screen. Click it and it flees to another page; the menu link it hid behind gets a little fish, so follow it there. After three pages it stops running away, and clicking it catches it. Catching it swaps the home page group photo for `group_photo_fish` in `content/home.md` (the group holding Karl Michael like a fish), with its own alt text and caption. The chase and the catch last until the browser tab is closed; clicking the footer fish again after a catch throws it back. With reduced motion turned on, the fish sits still in a corner instead of swimming. It lives in `templates/fish.css` and `templates/fish.js`.
+
 ### Formatting text
 
 Not every place you can type text understands Markdown. There are three kinds:

@@ -1,0 +1,47 @@
+/* Fish chase: the footer fish, the swimming fish, and the group photo it unlocks. The game is in fish.js. */
+.fish-btn {
+  margin: -6px -6px -6px auto; padding: 8px; border: 0; background: none; color: var(--muted); opacity: .55; cursor: pointer;
+  display: inline-flex; line-height: 0; border-radius: 4px; transition: opacity .2s, color .2s, transform .2s; -webkit-tap-highlight-color: transparent;
+}
+.fish-btn svg { width: 20px; height: 14px; }
+.fish-btn:hover, .fish-btn:focus-visible { opacity: 1; color: var(--accent); transform: translateX(-2px) rotate(-6deg); }
+.fish-btn.gone { visibility: hidden; }
+
+.fish-swim {
+  position: fixed; left: 0; top: 0; z-index: 45; width: 44px; height: 44px; padding: 0; border: 0; background: none;
+  color: var(--accent); cursor: pointer; display: grid; place-items: center; -webkit-tap-highlight-color: transparent;
+  transition: opacity .35s; will-change: transform;
+}
+.fish-swim > span { display: block; line-height: 0; }
+.fish-swim svg { width: 34px; height: 23px; animation: fishwag .5s ease-in-out infinite alternate; transform-origin: 30% 50%; filter: drop-shadow(0 3px 6px rgba(11, 114, 133, .25)); }
+.fish-swim.out { opacity: 0; }
+@keyframes fishwag { from { transform: skewY(-5deg); } to { transform: skewY(5deg); } }
+
+/* The menu link the fish is hiding behind */
+.fish-here { position: relative; }
+.fish-here::after {
+  content: ""; position: absolute; right: -14px; top: -6px; width: 18px; height: 12px; pointer-events: none;
+  background: var(--accent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Cpath d='M2.5 8c3-4.6 9.2-5.6 14.3-1.4L21.5 3v10l-4.7-3.6C11.7 13.6 5.5 12.6 2.5 8z'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Cpath d='M2.5 8c3-4.6 9.2-5.6 14.3-1.4L21.5 3v10l-4.7-3.6C11.7 13.6 5.5 12.6 2.5 8z'/%3E%3C/svg%3E") center / contain no-repeat;
+  animation: fishpeek 1.2s ease-in-out infinite alternate;
+}
+.nav .cta.fish-here::after { right: -8px; top: -9px; }
+@keyframes fishpeek { from { transform: translateY(0) rotate(-8deg); } to { transform: translateY(-3px) rotate(8deg); } }
+
+.fish-toast {
+  position: fixed; z-index: 46; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 12px);
+  max-width: calc(100% - 32px); padding: 10px 16px; border-radius: 999px; background: var(--navy); color: var(--surface);
+  font-size: 14px; box-shadow: 0 10px 30px rgba(11, 30, 60, .25); opacity: 0; transition: opacity .4s, transform .4s; pointer-events: none;
+}
+.fish-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* The group photo: the fish one replaces the usual one once the fish is caught */
+.group-photo .photo-main { display: contents; }
+.group-photo .photo-fish, :root[data-fish-caught] .group-photo .photo-main { display: none; }
+:root[data-fish-caught] .group-photo .photo-fish { display: contents; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fish-swim svg, .fish-here::after { animation: none; }
+  .fish-toast, .fish-btn { transition: none; }
+}
