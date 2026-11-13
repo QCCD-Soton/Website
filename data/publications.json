@@ -17,7 +17,21 @@
     "open_access_url": "https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.5c01353?ref=article_openPDF"
   },
   {
-    "title": "Cost-Effective Scalable Quantum Error Mitigation for Tiled Ansätze",
+    "title": "Quantum Reservoir Learning on Pasqal neutral-atom Quantum Computer",
+    "year": 2026,
+    "doi": "10.22323/1.523.0017",
+    "venue": "International Symposium on Grids and Clouds (ISGC)",
+    "url": "https://doi.org/10.22323/1.523.0017",
+    "preprint": false,
+    "authors": [
+      "Simone Angelozzi",
+      "Simone Gasperini",
+      "Daniele Bonacorsi"
+    ],
+    "open_access_url": "https://pos.sissa.it/523/017/pdf"
+  },
+  {
+    "title": "Cost-Effective Scalable Quantum Error Mitigation for Tiled Ansätze",
     "year": 2026,
     "doi": "10.1021/acs.jctc.6c00603",
     "venue": "Journal of Chemical Theory and Computation",
@@ -32,7 +46,7 @@
       "Karl Michael Ziems",
       "Jacob Kongsted"
     ],
-    "open_access_url": null
+    "open_access_url": "https://arxiv.org/pdf/2511.21236"
   },
   {
     "title": "Understanding and mitigating noise in molecular quantum linear response for spectroscopic properties on quantum computers",
@@ -210,6 +224,19 @@
     "open_access_url": "https://arxiv.org/pdf/2312.12386"
   },
   {
+    "title": "Exploring New Algorithms for Molecular Vibrational Spectroscopy Using Physics-Informed Program Synthesis",
+    "year": 2024,
+    "doi": "10.1021/acs.jctc.4c01312",
+    "venue": "Journal of Chemical Theory and Computation",
+    "url": "https://doi.org/10.1021/acs.jctc.4c01312",
+    "preprint": false,
+    "authors": [
+      "Kyle Acheson",
+      "Scott Habershon"
+    ],
+    "open_access_url": "https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.4c01312?ref=article_openPDF"
+  },
+  {
     "title": "Electric Field Gradient Calculations for Ice VIII and IX Using Polarizable Embedding: A Comparative Study on Classical Computers and Quantum Simulators",
     "year": 2024,
     "doi": "10.1021/acs.jpca.4c02697",
@@ -282,6 +309,32 @@
     "open_access_url": "https://pubs.aip.org/aip/jcp/article-pdf/doi/10.1063/5.0156363/18080871/044108_1_5.0156363.pdf"
   },
   {
+    "title": "Robust Inversion of Time-Resolved Data via Forward-Optimization in a Trajectory Basis",
+    "year": 2023,
+    "doi": "10.1021/acs.jctc.2c01113",
+    "venue": "Journal of Chemical Theory and Computation",
+    "url": "https://doi.org/10.1021/acs.jctc.2c01113",
+    "preprint": false,
+    "authors": [
+      "Kyle Acheson",
+      "Adam Kirrander"
+    ],
+    "open_access_url": "https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.2c01113"
+  },
+  {
+    "title": "Automatic Clustering of Excited-State Trajectories: Application to Photoexcited Dynamics",
+    "year": 2023,
+    "doi": "10.1021/acs.jctc.3c00776",
+    "venue": "Journal of Chemical Theory and Computation",
+    "url": "https://doi.org/10.1021/acs.jctc.3c00776",
+    "preprint": false,
+    "authors": [
+      "Kyle Acheson",
+      "Adam Kirrander"
+    ],
+    "open_access_url": "https://pubs.acs.org/doi/pdf/10.1021/acs.jctc.3c00776"
+  },
+  {
     "title": "Attosecond ionization dynamics of modulated, few-cycle XUV pulses",
     "year": 2023,
     "doi": "10.1088/1361-6455/acc4fa",
@@ -305,6 +358,41 @@
     "preprint": false,
     "authors": [],
     "open_access_url": null
+  },
+  {
+    "title": "Transient vibration and product formation of photoexcited CS2 measured by time-resolved x-ray scattering",
+    "year": 2022,
+    "doi": "10.1063/5.0113079",
+    "venue": "The Journal of Chemical Physics",
+    "url": "https://doi.org/10.1063/5.0113079",
+    "preprint": false,
+    "authors": [
+      "Ian Gabalski",
+      "Malick Sere",
+      "Kyle Acheson",
+      "Felix Allum",
+      "Sébastien Boutet",
+      "Gopal Dixit",
+      "Ruaridh Forbes",
+      "James M. Glownia",
+      "Nathan Goff",
+      "Kareem Hegazy",
+      "Andrew J. Howard",
+      "Mengning Liang",
+      "Michael P. Minitti",
+      "Russell S. Minns",
+      "Adi Natan",
+      "Nolan Peard",
+      "Weronika O. Rasmus",
+      "Roseanne J. Sension",
+      "Matthew R. Ware",
+      "Peter M. Weber",
+      "Nicholas Werby",
+      "Thomas Wolf",
+      "Adam Kirrander",
+      "P. H. Bucksbaum"
+    ],
+    "open_access_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9625835/"
   },
   {
     "title": "Post-Ionization Interaction of OCS in Phase-Locked Two-Color Laser Fields",
@@ -383,6 +471,39 @@
     "open_access_url": null
   },
   {
+    "title": "Multichannel photodissociation dynamics in CS 2 studied by ultrafast electron diffraction",
+    "year": 2022,
+    "doi": "10.1039/d2cp01268e",
+    "venue": "Physical Chemistry Chemical Physics",
+    "url": "https://doi.org/10.1039/d2cp01268e",
+    "preprint": false,
+    "authors": [
+      "Weronika O. Razmus",
+      "Kyle Acheson",
+      "P. H. Bucksbaum",
+      "Martin Centurion",
+      "Elio G. Champenois",
+      "Ian Gabalski",
+      "Matthias C. Hoffmann",
+      "Andrew J. Howard",
+      "Ming‐Fu Lin",
+      "Yusong Liu",
+      "Pedro Nunes",
+      "Sajib Kumar Saha",
+      "Xiaozhe Shen",
+      "Matthew R. Ware",
+      "Emily M. Warne",
+      "Thomas C. Weinacht",
+      "Kyle John Wilkin",
+      "Jie Yang",
+      "Thomas Wolf",
+      "Adam Kirrander",
+      "Russell S. Minns",
+      "Ruaridh Forbes"
+    ],
+    "open_access_url": "https://www.research.ed.ac.uk/files/287351390/20220722_Kirrander_PCCP_AAM.pdf"
+  },
+  {
     "title": "Laser-induced electron diffraction in the over-the-barrier-ionization regime",
     "year": 2022,
     "doi": "10.1103/physreva.106.043105",
@@ -458,7 +579,7 @@
     "open_access_url": "https://doi.org/10.1002/ange.201907247"
   },
   {
-    "title": "Photophysics and Photochemistry of a BODIPY‐Based Photosensitizer",
+    "title": "Photophysics and Photochemistry of a BODIPY‐Based Photosensitizer: Quantumchemical Simulations",
     "year": 2019,
     "doi": "10.1007/978-3-658-26188-7",
     "venue": "BestMasters",
