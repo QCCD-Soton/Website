@@ -3,7 +3,7 @@ name: Luke Wright
 role: PhD student
 group: phd              # lead | postdoc | phd | masters | undergrad | visitor | alumni
 topic: Quantum Krylov Subspace methods for Excited States and Properties                 # a few words on their project, e.g. Excited-state VQE
-photo:
+photo: luke-wright.jpg
 orcid: 0009-0009-0740-8395
 email: Luke.Wright@soton.ac.uk
 linkedin: luke-wright-977243275

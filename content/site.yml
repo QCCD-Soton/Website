@@ -8,8 +8,8 @@ tagline: Quantum computers, built to answer chemical questions.
 # The site's address, used for link previews (on Teams, Slack, LinkedIn…) and search engines.
 # Just the host, with no slash at the end.
 url: https://ziemsgroup.org
-share_image:            # picture shown when a page is shared, e.g. the group photo; news posts use their own image
-share_image_alt:
+share_image: team-2026.jpg   # picture shown when a page is shared; news posts use their own image
+share_image_alt: The Ziems group outside the Graham Hills Building
 email: K.M.Ziems@soton.ac.uk
 address: |
   School of Chemistry

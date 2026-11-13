@@ -34,13 +34,14 @@
   {%- endif %}
   <meta name="twitter:card" content="{{ 'summary_large_image' if shareImage else 'summary' }}">
   {%- endif %}
-  <script>try { var t = localStorage.getItem('qccd-theme'); if (t) document.documentElement.setAttribute('data-theme', t); if (localStorage.getItem('qccd-pink')) document.documentElement.setAttribute('data-pink', ''); if (localStorage.getItem('qccd-wide')) document.documentElement.setAttribute('data-wide', ''); } catch (e) {}</script>
+  <script>try { var t = localStorage.getItem('qccd-theme'); if (t) document.documentElement.setAttribute('data-theme', t); if (localStorage.getItem('qccd-pink')) document.documentElement.setAttribute('data-pink', ''); if (localStorage.getItem('qccd-wide')) document.documentElement.setAttribute('data-wide', ''); if (sessionStorage.getItem('qccd-fish-caught')) document.documentElement.setAttribute('data-fish-caught', ''); } catch (e) {}</script>
   <link rel="preload" href="/fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/instrument-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts/fonts.css">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/pink.css">
   <link rel="stylesheet" href="/wide.css">
+  <link rel="stylesheet" href="/fish.css">
   {%- if 'class="katex' in content %}
   <link rel="stylesheet" href="/katex/katex.min.css">
   {%- endif %}
@@ -126,5 +127,6 @@
 <script src="/site.js"></script>
 <script src="/pink.js"></script>
 <script src="/wide.js"></script>
+<script src="/fish.js"></script>
 </body>
 </html>

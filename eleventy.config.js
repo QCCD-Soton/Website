@@ -79,6 +79,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "templates/pink.js": "pink.js" });
   eleventyConfig.addPassthroughCopy({ "templates/wide.css": "wide.css" });
   eleventyConfig.addPassthroughCopy({ "templates/wide.js": "wide.js" });
+  eleventyConfig.addPassthroughCopy({ "templates/fish.css": "fish.css" });
+  eleventyConfig.addPassthroughCopy({ "templates/fish.js": "fish.js" });
   eleventyConfig.addPassthroughCopy({ "node_modules/katex/dist/katex.min.css": "katex/katex.min.css" });
   eleventyConfig.addPassthroughCopy({ "node_modules/katex/dist/fonts": "katex/fonts" });
 

@@ -3,7 +3,7 @@ name: Oliver Johnson
 role: PhD student
 group: phd              # lead | postdoc | phd | masters | undergrad | visitor | alumni
 topic: Fault tolerant quantum algorithms for molecular simulation   # a few words on their project, e.g. Excited-state VQE
-photo: 
+photo: oliver-johnson.jpg
 orcid: 0009-0001-8472-4967
 email: o.johnson@soton.ac.uk
 github: Oliver-Johnson

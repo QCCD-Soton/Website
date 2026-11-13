@@ -3,7 +3,7 @@ name: Alexander Bryant
 role: MChem
 group: masters              # lead | postdoc | phd | masters | undergrad | visitor | alumni
 topic: Chlorothiophenol theory and analysis                 # a few words on their project, e.g. Excited-state VQE
-photo:
+photo: alexander-bryant.jpg
 orcid:
 email: ab20g23@soton.ac.uk
 linkedin: alexander-bryant-3ab32a226
