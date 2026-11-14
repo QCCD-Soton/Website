@@ -325,7 +325,11 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 /* flip cards: hover (or tap / Enter) turns a card over to show more about the person */
 .card { display: block; cursor: pointer; perspective: 1200px; min-width: 0; border-radius: 6px; }
 .pi-card { margin-bottom: 64px; }
-.pi-card .flip { height: auto; }
+.pi-card .flip { height: auto; position: relative; }
+/* A long bio is cut to fit the card, so the card stays the size of its front; "Read more" lets it grow */
+.pi-card .face.back { position: absolute; inset: 0; overflow: hidden; display: flex; flex-direction: column; align-items: stretch; }
+.pi-card .face.back .pi-body { min-height: 0; flex: 1 1 auto; }
+.pi-card .bio { flex: 0 1 auto; min-height: 0; overflow: hidden; }
 .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .flip { display: grid; height: 100%; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
 .face { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; min-width: 0; }
@@ -374,8 +378,8 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .person .flip { position: relative; }
 .person .face.back { position: absolute; inset: 0; overflow: hidden; }
 .person .bio { flex: 0 1 auto; min-height: 0; overflow: hidden; }
-.person .bio.clamped { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent); }
-.person .more { align-self: flex-start; margin-top: 6px; padding: 0; border: 0; background: none; font: inherit; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .04em; color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.person .bio.clamped, .pi-card .bio.clamped { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent); }
+.person .more, .pi-card .more { align-self: flex-start; margin-top: 6px; padding: 0; border: 0; background: none; font: inherit; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .04em; color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .card.flipped .face.back .more, .card:hover .face.back .more { pointer-events: auto; }
 .card.expanded .face.back { position: static; overflow: visible; }
 .card.expanded .bio { overflow: visible; -webkit-mask-image: none; mask-image: none; }
