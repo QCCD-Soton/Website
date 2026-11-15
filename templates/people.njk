@@ -78,7 +78,7 @@ layout: base.njk
       {% endfor %}
 
       {% if site.collaborators.length %}
-      <div class="group-label collab-label"><h3>Academic collaborators</h3><span class="count">{{ site.collaborators.length }}</span></div>
+      <div class="group-label collab-label"><h3>Collaborators</h3><span class="count">{{ site.collaborators.length }}</span></div>
       <div class="alumni">
         {% for c in site.collaborators %}<div class="alum"><span>{% if c.url %}<a href="{{ c.url }}">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}</span><span>{{ c.affiliation }}</span></div>{% endfor %}
       </div>

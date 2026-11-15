@@ -24,7 +24,31 @@ school_url:            # optional, e.g. the School of Chemistry's page; the matc
 publications_since: 2015
 
 # Listed at the bottom of the People page. Each is hidden while its list is empty.
-collaborators: []
+collaborators:
+  - name: Prof Sonia Coriani
+    affiliation: Technical University of Denmark
+  - name: Prof Stephan Sauer
+    affiliation: University of Copenhagen
+  - name: Prof Jacob Kongsted
+    affiliation: University of Southern Denmark
+  - name: Dr Erik Kjellgren
+    affiliation: University of Southern Denmark
+  - name: Dr Peter Reinholdt
+    affiliation: University of Southern Denmark
+  - name: Dr Nina Glaser
+    affiliation: University of Copenhagen
+  - name: Prof Russell Minns
+    affiliation: University of Southampton
+  - name: Prof Artur Izmaylov
+    affiliation: University of Toronto
+  - name: Prof Chris Skylaris
+    affiliation: University of Southampton
+  - name: Dr Josh Kirsopp
+    affiliation: Fujitsu
+  - name: Dr Martin Packer
+    affiliation: AstraZeneca
+  - name: Dr Stefan Knecht
+    affiliation: Algorithmiq
 #  - name: Prof Jane Smith
 #    affiliation: University of Oxford
 #    url: https://...        # optional
