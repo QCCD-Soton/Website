@@ -4,7 +4,7 @@ short_title: QCCD
 school: School of Chemistry
 university: University of Southampton
 subtitle: Ziems group   # small line under the site title in the header; also ends every page title (tab, bookmarks, Google results)
-tagline: Quantum computers, built to answer chemical questions.
+tagline: A research group at the University of Southampton working on quantum computing and quantum chemistry.
 # The site's address, used for link previews (on Teams, Slack, LinkedIn…) and search engines.
 # Just the host, with no slash at the end.
 url: https://ziemsgroup.org
