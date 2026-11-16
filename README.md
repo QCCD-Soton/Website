@@ -32,7 +32,7 @@ The `*.11tydata` files in `content/people/`, `content/research/` and `content/ne
 
 When someone leaves, change their `group` to `alumni` and their `role` to a one-liner such as `PhD 2025 → Postdoc`. They move to the "Former members" list at the end of the page and their new papers stop being fetched.
 
-Academic collaborators and industry partners are listed in `site.yml`.
+Collaborators (people, with their university or company) and industry partners (companies) are listed in `site.yml`.
 
 ### Post news
 

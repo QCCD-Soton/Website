@@ -402,6 +402,7 @@ section.block { padding-block: 96px; border-bottom: 1px solid var(--line-soft); 
 .person .topic { font-size: 14px; color: var(--ink-2); margin-top: 6px; }
 .collab-label { margin-top: 56px; }
 .alumni { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 28px; border-top: 1px solid var(--line); }
+.alumni + .group-label { margin-top: 56px; }
 .alum { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line-soft); font-size: 14.5px; min-width: 0; }
 .alum span:last-child { color: var(--muted); font-size: 13px; text-align: right; }
 
