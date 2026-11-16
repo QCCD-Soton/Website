@@ -5,8 +5,9 @@ import { HtmlBasePlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import katex from "@vscode/markdown-it-katex";
 
-// Order that people groups appear on the People page.
-const PEOPLE_GROUPS = ["lead", "postdoc", "phd", "masters", "visitor", "undergrad"];
+// Order that people groups appear on the People page. Masters students and undergraduates share one heading.
+const PEOPLE_GROUPS = ["lead", "postdoc", "phd", "visitor", "students"];
+const GROUP_MEMBERS = { students: ["masters", "undergrad"] };
 
 export default function (eleventyConfig) {
   // Adds the GitHub Pages path prefix (e.g. /website/) to every link and image.
@@ -115,7 +116,7 @@ export default function (eleventyConfig) {
     PEOPLE_GROUPS.map((group) => ({
       group,
       people: people
-        .filter((p) => p.data.group === group)
+        .filter((p) => (GROUP_MEMBERS[group] ?? [group]).includes(p.data.group))
         .sort((a, b) =>
           (a.data.order ?? 99) - (b.data.order ?? 99) ||
           a.data.name.localeCompare(b.data.name)
