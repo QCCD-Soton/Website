@@ -29,7 +29,8 @@ layout: base.njk
           <div class="face back pi">
             <div class="pi-body">
               <span class="eyebrow">{{ person.data.name }}</span>
-              <div class="prose">{{ person.content | safe }}</div>
+              <div class="prose bio" id="bio-{{ person.fileSlug }}">{{ person.content | safe }}</div>
+              <button type="button" class="more" aria-expanded="false" aria-controls="bio-{{ person.fileSlug }}" hidden>Read more</button>
               <div class="pi-links">
                 <a href="/publications/">Publications</a>
                 <a href="#contact">Contact</a>
