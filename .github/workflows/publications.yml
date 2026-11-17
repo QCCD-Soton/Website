@@ -1,5 +1,8 @@
-# Refreshes data/publications.json from ORCID and OpenAlex every Monday,
-# and opens a pull request if anything changed so a person can check it first.
+# Refreshes data/publications.json from ORCID and OpenAlex every Monday. If anything
+# changed, it pushes the update to the update-publications branch and opens (or updates)
+# a "Publications update ready" issue, assigned to ASSIGNEE, with a link to open the
+# pull request, so a person can check it first. Actions can't open pull requests in this
+# organisation, so the issue does the notifying instead.
 name: Update publications
 
 on:
@@ -9,7 +12,13 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
+  issues: write
+  pull-requests: read
+
+env:
+  BRANCH: update-publications
+  ISSUE_TITLE: Publications update ready
+  ASSIGNEE: Oliver-Johnson
 
 jobs:
   update:
@@ -20,11 +29,59 @@ jobs:
         with:
           python-version: "3.12"
       - run: python scripts/fetch_publications.py
-      - uses: peter-evans/create-pull-request@v8
-        with:
-          branch: update-publications
-          commit-message: Update publications from ORCID and OpenAlex
-          title: Update publications
-          body: Weekly refresh of `data/publications.json`. Check that the new entries belong to the group, then merge to publish them.
-          add-paths: data/publications.json
-          delete-branch: true
+
+      - name: Push the update and open or update the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          issue=$(gh issue list --state open --author "app/github-actions" --json number,title \
+            --jq ".[] | select(.title == \"$ISSUE_TITLE\") | .number" | head -n 1)
+
+          # Nothing differs from main: the last update was merged (or is no longer needed).
+          if git diff --quiet -- data/publications.json; then
+            echo "No changes to publications." >> "$GITHUB_STEP_SUMMARY"
+            if [ -n "$issue" ]; then
+              gh issue close "$issue" --comment "The publications on main are up to date now, so this is no longer needed."
+            fi
+            exit 0
+          fi
+
+          # Same update as last week, still waiting: leave the branch and the issue alone.
+          if [ -n "$issue" ] && git fetch --quiet origin "$BRANCH" 2>/dev/null \
+             && git diff --quiet FETCH_HEAD -- data/publications.json; then
+            echo "Same update as last time, still waiting in issue #$issue." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          git show HEAD:data/publications.json > "$RUNNER_TEMP/old.json"
+          changes=$(python scripts/publications_changes.py "$RUNNER_TEMP/old.json" data/publications.json)
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$BRANCH"
+          git add data/publications.json
+          git commit -m "Update publications from ORCID and OpenAlex"
+          git push --force origin "$BRANCH"
+
+          repo_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
+          pr=$(gh pr list --head "$BRANCH" --state open --json url --jq '.[0].url // empty')
+          if [ -n "$pr" ]; then
+            next="The pull request is already open and now has this update: $pr. Check it, then merge to publish."
+          else
+            next="[Open the pull request]($repo_url/compare/main...$BRANCH?expand=1), check it, then merge to publish."
+          fi
+
+          body=$(printf '%s\n\n%s\n\n%s\n\n%s' \
+            "The weekly refresh of \`data/publications.json\` found changes and pushed them to the \`$BRANCH\` branch." \
+            "$changes" \
+            "$next" \
+            "This issue closes itself once main is up to date. [Workflow run]($repo_url/actions/runs/$GITHUB_RUN_ID)")
+
+          if [ -n "$issue" ]; then
+            gh issue edit "$issue" --body "$body" --add-assignee "$ASSIGNEE"
+            gh issue comment "$issue" --body "The update has changed since last time. The list above is now current."
+          else
+            gh issue create --title "$ISSUE_TITLE" --body "$body" --assignee "$ASSIGNEE"
+          fi
+
+          { echo "Publications changed, see the \"$ISSUE_TITLE\" issue."; echo; echo "$changes"; } >> "$GITHUB_STEP_SUMMARY"
