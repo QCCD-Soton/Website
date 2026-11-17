@@ -116,9 +116,7 @@ Add photos at full size: there's no need to shrink them first. When the site is 
 
 ## Publications
 
-`.github/workflows/publications.yml` runs every Monday (or from the Actions tab with "Run workflow"). It collects the works of every current member with an `orcid` in their person file, fills in details from OpenAlex, and opens a pull request if anything changed. Check that the new papers belong to the group, then merge. Only papers from `publications_since` in `site.yml` onwards are included.
-
-For this to work, enable **Settings → Actions → General → Allow GitHub Actions to create and approve pull requests**.
+`.github/workflows/publications.yml` runs every Monday (or from the Actions tab with "Run workflow"). It collects the works of every current member with an `orcid` in their person file, fills in details from OpenAlex, and, if anything changed, pushes the update to the `update-publications` branch and opens a **Publications update ready** issue assigned to Oliver (change `ASSIGNEE` in the workflow to send it to someone else). The issue lists what changed and has a link to open the pull request. Check that the new papers belong to the group, then merge. The issue closes itself on the next run once main is up to date. (GitHub Actions isn't allowed to open pull requests in this organisation, which is why it uses an issue.) Only papers from `publications_since` in `site.yml` onwards are included.
 
 ### Add a preprint
 
