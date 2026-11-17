@@ -504,7 +504,7 @@ address { font-style: normal; line-height: 1.7; }
   .hero > .wrap:first-child { grid-template-columns: minmax(0, 1fr); padding-block: 24px 40px; gap: 24px; }
   /* no large logo on phones and narrow tablets: the header mark carries it */
   .orbital { display: none; }
-  /* keep the desktop's two lines on phones: "&amp; Quantum Chemistry" is about 8.6 times the font size wide,
+  /* keep the desktop's two lines on phones: "& Quantum Chemistry" is about 8.6 times the font size wide,
      so below about 400px the size shrinks with the screen to fit the width (less the 16px gutters) */
   .hero h1 { font-size: clamp(28px, min(max(40px, 8vw), calc((100vw - 32px) * .112)), 64px); }
   .hero h1 > span { white-space: normal; }
