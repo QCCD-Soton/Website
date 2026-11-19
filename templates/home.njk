@@ -15,10 +15,10 @@ layout: base.njk
   <div class="wrap">
     <figure class="group-photo">
       {% if group_photo %}
-      <div class="photo-main"><img class="photo" src="{{ group_photo | img }}" loading="eager" alt="{{ group_photo_alt or 'The group' }}"></div>
+      <div class="photo-main"><span class="photo-frame"><img class="photo" src="{{ group_photo | img }}" loading="eager" alt="{{ group_photo_alt or 'The group' }}"></span></div>
       {%- if group_photo_fish %}
       {#- The fish chase prize (fish.js): shown instead once the fish is caught; it only downloads then #}
-      <div class="photo-fish"><img class="photo" src="{{ group_photo_fish | img }}" loading="lazy" alt="{{ group_photo_fish_alt or 'The group' }}"></div>
+      <div class="photo-fish"><span class="photo-frame"><img class="photo" src="{{ group_photo_fish | img }}" loading="lazy" alt="{{ group_photo_fish_alt or 'The group' }}"></span></div>
       {%- endif %}
       {% else %}
       <div class="photo-ph" role="img" aria-label="Group photo placeholder">
