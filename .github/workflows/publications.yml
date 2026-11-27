@@ -65,23 +65,32 @@ jobs:
 
           repo_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
           pr=$(gh pr list --head "$BRANCH" --state open --json url --jq '.[0].url // empty')
-          if [ -n "$pr" ]; then
-            next="The pull request is already open and now has this update: $pr. Check it, then merge to publish."
-          else
-            next="[Open the pull request]($repo_url/compare/main...$BRANCH?expand=1), check it, then merge to publish."
-          fi
 
-          body=$(printf '%s\n\n%s\n\n%s\n\n%s' \
-            "The weekly refresh of \`data/publications.json\` found changes and pushed them to the \`$BRANCH\` branch." \
-            "$changes" \
-            "$next" \
-            "This issue closes itself once main is up to date. [Workflow run]($repo_url/actions/runs/$GITHUB_RUN_ID)")
+          # The issue body for issue number $1 (empty before the issue exists). The link
+          # prefills the pull request's title and "Closes #N", so merging it closes the issue.
+          make_body() {
+            if [ -n "$pr" ]; then
+              next="The pull request is already open and now has this update: $pr. Check it, then merge to publish."
+            else
+              link="$repo_url/compare/main...$BRANCH?expand=1&title=Update%20publications%20from%20ORCID%20and%20OpenAlex"
+              if [ -n "$1" ]; then link="$link&body=Closes%20%23$1"; fi
+              next="[Open the pull request]($link), check it, then merge to publish."
+            fi
+            printf '%s\n\n%s\n\n%s\n\n%s' \
+              "The weekly refresh of \`data/publications.json\` found changes and pushed them to the \`$BRANCH\` branch." \
+              "$changes" \
+              "$next" \
+              "This issue closes itself when the pull request is merged, or on the next run once main is up to date. [Workflow run]($repo_url/actions/runs/$GITHUB_RUN_ID)"
+          }
 
           if [ -n "$issue" ]; then
-            gh issue edit "$issue" --body "$body" --add-assignee "$ASSIGNEE"
+            gh issue edit "$issue" --body "$(make_body "$issue")" --add-assignee "$ASSIGNEE"
             gh issue comment "$issue" --body "The update has changed since last time. The list above is now current."
           else
-            gh issue create --title "$ISSUE_TITLE" --body "$body" --assignee "$ASSIGNEE"
+            # The issue's number is only known once it exists, so add the link's "Closes #N" after.
+            url=$(gh issue create --title "$ISSUE_TITLE" --body "$(make_body "")" --assignee "$ASSIGNEE")
+            issue="${url##*/}"
+            gh issue edit "$issue" --body "$(make_body "$issue")"
           fi
 
           { echo "Publications changed, see the \"$ISSUE_TITLE\" issue."; echo; echo "$changes"; } >> "$GITHUB_STEP_SUMMARY"
